@@ -1,0 +1,134 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skinparam classFontStyle Bold
+hide empty members
+
+Package DxD {
+Package personnage {
+class Personnage {
+    - nom: String
+    - race: Race
+    - classe: Classe
+    - pointsDeVie: int
+    - force: int
+    - dexterite: int
+    - vitesse: int
+    - initiative: int
+    - inventaire: List<Equipement>
+    - armeEquipee: Arme
+    - armureEquipee: Armure
+    + <<create>> Personnage (nom,race,classe)
+    + seDeplacer(): void
+    + attaquer(cible: Monstre): void
+    + sEquiper(equipement: Equipement): void
+    }
+}
+
+Package race {
+interface Race {
+    + {abstract} appliquerRace(personnage: Personnage): void
+}
+
+class Elf implements Race{
+    + <<class>> Elf()
+    + appliquerRace(personnage: Personnage): void
+}
+
+class Halfelin implements Race {
+    + <<class>> Halfelin()
+    + appliquerPouvoir(personnage: Personnage): void
+}
+
+class Human implements Race {
+    + <<class>> Human()
+    + appliquerRace(personnage: Personnage): void
+}
+
+class Dwarf implements Race {
+    + <<class>> Dwarf()
+    + appliquerRace(personnage: Personnage): void
+    }
+}
+
+Package classe {
+interface Classe {
+    + {abstract} appliquerPouvoir(personnage: Personnage): void
+
+    }
+class Guerrier implements Classe {
+    + <<create>> Guerrier()
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+class Magicien implements Classe {
+    + <<create>> Magicien()
+    + appliquerPouvoir(personnage: Personnage): void
+}
+class Clerc implements Classe {
+    + <<create>> Clerc()+
+    + appliquerPouvoir(personnage: Personnage): void
+}
+class Roublard  implements Classe {
+    + <<create>> Roublard()
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+}
+
+Package monstre {
+class Monstre {
+    - nom: String
+    - pointsDeVie: int
+    - force: int
+    - dexterite: int
+    - vitesse: int
+    + <<create>> Monstre()
+    + attaquer(cible: Personnage): void
+    }
+
+}
+Package equipement {
+abstract class Equipement {
+    - nom: String
+    + <<create>> Equipement()
+    + utiliser(): void
+}
+
+class Arme extends Equipement {
+    - degats: String
+    - portee: int
+    + <<create>> Arme()
+    + attaquer(): void
+}
+
+class Armure extends Equipement  {
+    - classeArmure: int
+    + <<create>> Armure()
+    }
+   }
+
+class Donjon {
+    - carte: List<List<String>>
+    - obstacles: List<String>
+    - monstres: List<Monstre>
+    - personnages: List<Personnage>
+    + <<create>> Donjon()
+    + miseEnPlace(): void
+    + jouerTour(): void
+    + verifierFin(): boolean
+    }
+
+Personnage  *--> "1 -race " Race : possède
+Personnage  *--> "1 -class " Classe : possède
+
+Personnage "1" *-- "1 -armeEquipee" Arme : équipe
+Personnage "1" *-- "1 -armeArmure" Armure : équipe
+
+Donjon "1" *-- "0..*" Monstre
+Donjon "1" *-- "0..*" Personnage
+
+}
+
+
+
+
+@enduml
