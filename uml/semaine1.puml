@@ -26,49 +26,49 @@ class Personnage {
 }
 
 Package race {
-interface Race {
+abstract Race {
     + {abstract} appliquerRace(personnage: Personnage): void
 }
 
-class Elf implements Race{
+class Elf extends Race{
     + <<class>> Elf()
     + appliquerRace(personnage: Personnage): void
 }
 
-class Halfelin implements Race {
+class Halfelin extends Race {
     + <<class>> Halfelin()
     + appliquerPouvoir(personnage: Personnage): void
 }
 
-class Human implements Race {
+class Human extends Race {
     + <<class>> Human()
     + appliquerRace(personnage: Personnage): void
 }
 
-class Dwarf implements Race {
+class Dwarf extends Race {
     + <<class>> Dwarf()
     + appliquerRace(personnage: Personnage): void
     }
 }
 
 Package classe {
-interface Classe {
+abstract Classe {
     + {abstract} appliquerPouvoir(personnage: Personnage): void
 
     }
-class Guerrier implements Classe {
+class Guerrier extends Classe {
     + <<create>> Guerrier()
     + appliquerPouvoir(personnage: Personnage): void
     }
-class Magicien implements Classe {
+class Magicien extends Classe {
     + <<create>> Magicien()
     + appliquerPouvoir(personnage: Personnage): void
 }
-class Clerc implements Classe {
+class Clerc extends Classe {
     + <<create>> Clerc()+
     + appliquerPouvoir(personnage: Personnage): void
 }
-class Roublard  implements Classe {
+class Roublard extends Classe {
     + <<create>> Roublard()
     + appliquerPouvoir(personnage: Personnage): void
     }
@@ -86,6 +86,7 @@ class Monstre {
     }
 
 }
+
 Package equipement {
 abstract class Equipement {
     - nom: String
