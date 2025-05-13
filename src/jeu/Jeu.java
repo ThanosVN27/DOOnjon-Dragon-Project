@@ -18,21 +18,20 @@ public class Jeu {
 
 
         Personnage joueur = new Personnage(nom);
-        Monstre dragon = new Monstre("Dragon");
+        Monstre monstre = new Monstre("Dragon", 1, "Souffle de feu", 5, "2d6", 100, 10, 20, 15, 18);
 
 
 
         System.out.println("Votre personnage a été créé avec succès !");
         System.out.println(joueur.toString());
 
-        int choix;
-        Scanner scanner1 = new Scanner(System.in);
-        choix = scanner1.nextInt();
 
-        joueur.equiperEquipement(choix);
 
         System.out.println(joueur.toString());
+        joueur.attaquer(monstre);
+        monstre.attaquer(joueur);
 
+        System.out.println(monstre);
 
     }
 }

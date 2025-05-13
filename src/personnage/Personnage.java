@@ -18,7 +18,7 @@ public class Personnage {
     private int dexterite;
     private int vitesse;
     private int initiative;
-    private final List<Object> inventaire;
+    private final ArrayList<Object> inventaire;
     private Arme armeEquipe;
     private Armure armurEquipe;
 
@@ -44,7 +44,6 @@ public class Personnage {
         return pointsDeVie;
     }
 
-    // Getters et setters
     public void setPointsDeVie(int pv) { this.pointsDeVie = pv; }
     public void setForce(int force) { this.force = force; }
     public void setDexterite(int dexterite) { this.dexterite = dexterite; }
@@ -109,7 +108,7 @@ public class Personnage {
     }
 
     public String toString() {
-        return  "\u001B[34m" + "- Personnage = "  + nom + "\u001B[0m [ " +
+        return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
                 "Race = " + race.getNomRaces()  +
                 " ; Classe = " + classe.getNomClasse()  +
                 " ; PointsDeVie = " + pointsDeVie  +
@@ -118,8 +117,8 @@ public class Personnage {
                 " ; Vitesse = " + vitesse  +
                 " ; Initiative = " + initiative + "\n" +
                 "--[Inventaire]-- = " + inventaire  + "\n" +
-                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.getNom() : "Aucune") + "\n" +
-                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.getNom() : "Aucune");
+                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.toString() : "Aucune") + "\n" +
+                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.toString(): "Aucune");
 
     }
 
@@ -159,18 +158,26 @@ public class Personnage {
                 armeEquipe = (Arme) equipement;
                 inventaire.remove(choix);
                 System.out.println("Arme équipée : " + armeEquipe.getNom());
+                if (armeEquipe.getNom().equals("Épée longue") || armeEquipe.getNom().equals("Rapière")) {
+                    this.vitesse -= 2;
+                    this.force += 4;
+                    System.out.println("Vitesse diminuée de 2 en raison de l'arme lourde.");
+                    System.out.println("Force augmentée de 4 en raison de l'arme lourde.");
+                }
+
             } else if (equipement instanceof Armure) {
                 armurEquipe = (Armure) equipement;
                 inventaire.remove(choix);
                 System.out.println("Armure équipée : " + armurEquipe.getNom());
+                if (armurEquipe.getNom().equals("Cotte de mailles") || armurEquipe.getNom().equals("Harnois")) {
+                    this.vitesse -= 4;
+                    System.out.println("Vitesse diminuée de 4 en raison de l'armure lourde.");
+                } else {
+                    System.out.println("Équipement non valide.");
+                }
             } else {
-                System.out.println("Équipement non valide.");
+                System.out.println("Choix invalide.");
             }
-        } else {
-            System.out.println("Choix invalide.");
         }
     }
-
-
-
 }
