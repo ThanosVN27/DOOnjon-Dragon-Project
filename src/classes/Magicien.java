@@ -1,10 +1,11 @@
 package classes;
 
+import equipements.Arme;
+
 public class Magicien extends Classe {
     public Magicien() {
-        super("Magicien");
-    }
-    public void appliquerClasse() {
-        System.out.println("Le magicien utilise la magie pour infliger des dégâts à distance !");
+        super("Magicien", 12);
+        ajouterEquipement(Arme.BATON);
+        ajouterEquipement(Arme.FRONDE);
     }
 }

@@ -1,11 +1,12 @@
 package jeu;
 
+import personnage.Monstre;
 import personnage.Personnage;
 
 import java.util.Scanner;
 
 public class Jeu {
-    private Personnage joueur;
+
 
 
     public void lancerJeu() {
@@ -16,10 +17,22 @@ public class Jeu {
         String nom = scanner.nextLine();
 
 
-        joueur = new Personnage(nom);
+        Personnage joueur = new Personnage(nom);
+        Monstre dragon = new Monstre("Dragon");
+
 
 
         System.out.println("Votre personnage a été créé avec succès !");
         System.out.println(joueur.toString());
+
+        int choix;
+        Scanner scanner1 = new Scanner(System.in);
+        choix = scanner1.nextInt();
+
+        joueur.equiperEquipement(choix);
+
+        System.out.println(joueur.toString());
+
+
     }
 }
