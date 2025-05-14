@@ -1,6 +1,6 @@
 package personnage;
 
-import java.util.Random;
+
 
 public class Monstre {
     private final String nom;
@@ -16,7 +16,7 @@ public class Monstre {
     private int initiative;
 
     public Monstre(String nom, int numero, String attaque, int portee, String degats, int pointsDeVie, int vitesse, int force, int dexterite, int classeArmure) {
-        this.nom = ramdomNom();
+        this.nom = nom;
         this.numero = numero;
         this.attaque = attaque;
         this.portee = portee;
@@ -87,27 +87,6 @@ public class Monstre {
     public int getClasseArmure() {
         return classeArmure;
     }
-
-    private static String ramdomNom() {
-        String[] nomMonster = {
-                "Dragon",
-                "Gobelin",
-                "Orc",
-                "Vampire",
-                "Loup-garou",
-                "Squelette",
-                "Zombie",
-                "Golem",
-                "Minotaure",
-                "Hydre"
-        };
-        Random random = new Random();
-        int i = random.nextInt(nomMonster.length);
-        return nomMonster[i];
-    }
-
-
-
 
     @Override
     public String toString() {
