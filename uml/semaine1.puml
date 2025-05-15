@@ -5,7 +5,9 @@ skinparam classFontStyle Bold
 hide empty members
 
 Package DxD {
+
 Package personnage {
+
 class Personnage {
     - nom: String
     - race: Race
@@ -15,35 +17,108 @@ class Personnage {
     - dexterite: int
     - vitesse: int
     - initiative: int
-    - inventaire: List<Equipement>
+    - inventaire: List<Object>
     - armeEquipee: Arme
     - armureEquipee: Armure
-    + <<create>> Personnage (nom,race,classe)
+
+    + <<create>> Personnage(nom : String)
+
+    + choisirRace(): Race
     + seDeplacer(): void
-    + attaquer(cible: Monstre): void
-    + sEquiper(equipement: Equipement): void
+    + lancerDes(): int
+    + initialiserEquipement(): void
+    + equiperEquipement(choix: int): void
+
+
+    + setPointDeVie(pointsDeVie: int): void
+    + setForce(force: int): void
+    + setDexterite(dexterite: int): void
+    + setVitesse(vitesse: int): void
+    + setInitiative(initiative: int): void
+
+    + getRace(): Race
+    + getClasse(): Classe
+    + getPointsDeVie(): int
+    + getNom(): String
+    + toString(): String
+    }
+class Monstre {
+    - nom: String
+    - numero: int
+    - attaque: String
+    - portee: int
+    - degats: String
+    - pointsDeVie: int
+    - vitesse: int
+    - force: int
+    - dexterite: int
+    - classeArmure: int
+    - initiative: int
+    
+    + <<create>> Monstre(nom : String, numero : int, attaque : String, portee : int, degats : String, pointsDeVie: int, vitesse: int, force: int, dexterite: int, classeArmure: int, initiative: int)
+    
+    + attaquer(cible: Personnage): void
+    + lancerDes(des: string): int
+
+    + setInitiative(initiative: int): void
+    + setPointDeVie(pointsDeVie: int): void
+    + setForce(force: int): void
+
+    + getInitiative(): int
+    + getNom(): String
+    + getNumero(): int
+    + getPointsDeVie(): int
+    + getVitesse(): int
+    + getForce(): int
+    + getDexterite(): int
+    + getClasseArmure(): int
+    + randomNom(): String
+    }
+class MaitreDuJeu {
     }
 }
 
-Package race {
+Package races {
 abstract Race {
     + {abstract} appliquerRace(personnage: Personnage): void
-}
+
+    - nom: String
+    - dexterite: int
+    - force: int
+    - vitesse: int
+    - pointsDeVie: int
+    - initiative: int
+
+    + <<create>> Race(nom: String)
+
+    + setDexterite(dexterite: int): void
+    + setForce(force: int): void
+    + setVitesse(vitesse: int): void
+    + setPointsDeVie(pointsDeVie: int): void
+    + setInitiative(initiative: int): void
+
+    + getDexterite(): int
+    + getForce(): int
+    + getVitesse(): int
+    + getPointsDeVie(): int
+    + getInitiative(): int
+    + getNomRace(): String
+    }
 
 class Elf extends Race{
     + <<class>> Elf()
     + appliquerRace(personnage: Personnage): void
-}
+    }
 
 class Halfelin extends Race {
     + <<class>> Halfelin()
     + appliquerPouvoir(personnage: Personnage): void
-}
+    }
 
 class Human extends Race {
     + <<class>> Human()
     + appliquerRace(personnage: Personnage): void
-}
+    }
 
 class Dwarf extends Race {
     + <<class>> Dwarf()
@@ -51,11 +126,23 @@ class Dwarf extends Race {
     }
 }
 
-Package classe {
+Package classes {
 abstract Classe {
     + {abstract} appliquerPouvoir(personnage: Personnage): void
 
+    + nom: String
+    + pointsDeVie: int
+    + EquipementDeBase: List<Object>
+
+    + <<create>> Classe(nom: String, pointsDeVie: int)
+
+    + ajouterEquipementDeBase(equipement: Object): void
+
+    + getPointsDeVie(): int
+    + getNomClasse(): String
+    + getEqipementDeBase(): List<Object>
     }
+
 class Guerrier extends Classe {
     + <<create>> Guerrier()
     + appliquerPouvoir(personnage: Personnage): void
@@ -63,73 +150,50 @@ class Guerrier extends Classe {
 class Magicien extends Classe {
     + <<create>> Magicien()
     + appliquerPouvoir(personnage: Personnage): void
-}
+    }
 class Clerc extends Classe {
     + <<create>> Clerc()+
     + appliquerPouvoir(personnage: Personnage): void
-}
+    }
 class Roublard extends Classe {
     + <<create>> Roublard()
     + appliquerPouvoir(personnage: Personnage): void
     }
 }
 
-Package monstre {
-class Monstre {
-    - nom: String
-    - pointsDeVie: int
-    - force: int
-    - dexterite: int
-    - vitesse: int
-    + <<create>> Monstre()
-    + attaquer(cible: Personnage): void
-    }
-
-}
-
 Package equipement {
-abstract class Equipement {
+class Arme {
     - nom: String
-    + <<create>> Equipement()
-    + utiliser(): void
-}
-
-class Arme extends Equipement {
     - degats: String
     - portee: int
-    + <<create>> Arme()
-    + attaquer(): void
-}
 
-class Armure extends Equipement  {
+    + <<create>> Arme(String nom, String degats, int portee)
+
+    + getNom(): String
+    + getDegats(): String
+    + getPortee(): int
+    + toString(): String
+    }
+
+class Armure {
+    - nom: String
     - classeArmure: int
-    + <<create>> Armure()
+
+    + <<create>> Armure(String nom, int classeArmure)
+
+    + getNom(): String
+    + getClasseArmure(): int
+    + toString(): String
     }
-   }
-
-class Donjon {
-    - carte: List<List<String>>
-    - obstacles: List<String>
-    - monstres: List<Monstre>
-    - personnages: List<Personnage>
-    + <<create>> Donjon()
-    + miseEnPlace(): void
-    + jouerTour(): void
-    + verifierFin(): boolean
-    }
-
-Personnage  *--> "1 -race " Race : possède
-Personnage  *--> "1 -class " Classe : possède
-
-Personnage "1" *-- "1 -armeEquipee" Arme : équipe
-Personnage "1" *-- "1 -armeArmure" Armure : équipe
-
-Donjon "1" *-- "0..*" Monstre
-Donjon "1" *-- "0..*" Personnage
-
 }
 
-
-
+Package jeu {
+class Donjon {
+    - hauteur: int
+    - largeur: int
+    }
+class Jeu {
+    }
+}
 
 @enduml
