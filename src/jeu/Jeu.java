@@ -12,7 +12,7 @@ public class Jeu {
 
     public void lancerJeu() {
         MaitreDuJeu maitreDuJeu = new MaitreDuJeu();
-        maitreDuJeu.CommencerLeJeu();
+        maitreDuJeu.commencerLeJeu();
 
 
     }

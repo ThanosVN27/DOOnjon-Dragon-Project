@@ -1,5 +1,7 @@
 package equipements;
 
+import java.util.ArrayList;
+
 public enum Arme {
     BATON("Bâton", "1d6", 1),
     MASSE_ARMES("Masse d'armes", "1d6", 1),
@@ -13,10 +15,12 @@ public enum Arme {
     private final String degats;
     private final int portee;
 
+
     Arme(String nom, String degats, int portee) {
         this.nom = nom;
         this.degats = degats;
         this.portee = portee;
+
     }
 
 

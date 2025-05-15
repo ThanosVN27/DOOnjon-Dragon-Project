@@ -11,9 +11,6 @@ public class Donjon {
     private String[][] carte;
 
     public Donjon(int hauteur, int largeur) {
-        if (largeur < 15 || largeur > 25 || hauteur < 15 || hauteur > 25) {
-            throw new IllegalArgumentException("Les dimensions de la carte doivent être comprises entre 15 et 25 cases.");
-        }
         this.hauteur = hauteur;
         this.largeur = largeur;
         this.carte = new String[hauteur][largeur];
@@ -23,10 +20,19 @@ public class Donjon {
     private void creerCarte() {
         for (int i = 0; i < hauteur; i++) {
             for (int j = 0; j < largeur; j++) {
-                carte[i][j] = "."; // Empty space
+                carte[0][0] = "0";
+                if (i == 0 && j > 0) {
+                    carte[i][j] = String.valueOf(j );
+                } else if (j == 0 && i > 0) {
+                    carte[i][j] = String.valueOf(i);
+                } else {
+                    carte[i][j] = ".";
+                }
             }
         }
     }
+
+
 
     public void positionnerObstacles(int nombreObstacles) {
         Random random = new Random();
@@ -42,22 +48,23 @@ public class Donjon {
     }
 
     public String[][] getCarte() {
-        String[][] carteAffichage = new String[hauteur][largeur];
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
+        String [][] carteAffichage = new String[hauteur][largeur];
+        for (int i = 0; i < carte.length; i++) {
+            for (int j = 0; j < carte.length; j++) {
                 carteAffichage[i][j] = carte[i][j];
             }
         }
         return carteAffichage;
     }
 
-    public void setHauteur(int hauteur) {
-        this.hauteur = hauteur;
+    public void placerEquipement(Object equipement, int x, int y) {
+        if (carte[x][y] == ".") {
+            carte[x][y] = "E";
+        } else {
+            System.out.println("Impossible de positionner l'équipement ici. Case occupée.");
+        }
     }
 
-    public void setLargeur(int largeur) {
-        this.largeur = largeur;
-    }
 
     public int getHauteur() {
         return hauteur;
@@ -97,11 +104,12 @@ public class Donjon {
 
 
     public void afficherCarte() {
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
-                System.out.print(carte[i][j] + " ");
+        for (int i = 0; i < carte.length; i++) {
+            for (int j = 0; j < carte.length; j++) {
+                System.out.print(String.format("%3s", carte[i][j]));
             }
             System.out.println();
         }
     }
+
 }
