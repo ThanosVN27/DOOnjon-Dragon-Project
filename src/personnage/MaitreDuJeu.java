@@ -156,7 +156,7 @@ public class MaitreDuJeu {
 
 
 
-public void ajouterEquiment() {
+    public void ajouterEquiment() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Entrez le nom de l'équipement :");
         String nom = scanner.nextLine();
