@@ -75,6 +75,18 @@ class Monstre {
     + randomNom(): String
     }
 class MaitreDuJeu {
+    - donjon: Donjon
+    - monstres: List<Monstre>
+    - joueurs: List<Personnage>
+    - equipement: List<Object>
+
+    + <<create>> MaitreDuJeu()
+    
+    + creerDonjon(): void
+    + ajouterMonstre(): void
+    + ajouterJoueur(): void
+    + ajouterEquipement(): void
+    + commencerLeJeu(): void
     }
 }
 
@@ -191,9 +203,28 @@ Package jeu {
 class Donjon {
     - hauteur: int
     - largeur: int
+    - carte: String[][]
+
+    + <<create>> Donjon(hauteur: int, largeur: int)
+
+    + creerCarte(): void
+    + positionnerObstacles(nombreObstacles: int): void
+    + getCarte(): String[][]
+    + placerEquipement(equipement: Object, x: int, y: int): void
+    + placerMonstreAleatoirement(monstre: Monstre): void
+    + placerJoueur(personnage: Personnage, x: int, y: int): void
+    + afficherCarte(): void
+
+    + getHauteur(): int
+    + getLargeur(): int
     }
 class Jeu {
+    - maitreDuJeu: MaitreDuJeu
+    
+    + <<create>> Jeu()
+    + demarrerJeu(): void
     }
 }
+}       
 
 @enduml
