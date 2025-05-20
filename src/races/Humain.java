@@ -8,6 +8,6 @@ public class Humain extends Race {
         setDexterite(getForce() + 2);
         setVitesse(getVitesse() + 2);
         setForce(getForce() + 2);
-        setInitiative(getInitiative() + 2);
+
     }
 }

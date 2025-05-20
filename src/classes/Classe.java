@@ -1,6 +1,6 @@
 package classes;
 
-import personnage.Personnage;
+import equipements.Equipement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class Classe {
     private final String nom;
     private int pointsDeVie;
-    private final List<Object> equipementDeBase;
+    private final List<Equipement> equipementDeBase;
 
     public Classe(String nom,int pointsDeVie) {
         this.nom = nom;
@@ -24,11 +24,11 @@ public abstract class Classe {
         return pointsDeVie;
     }
 
-    public List<Object> getEquipementDeBase() {
+    public List<Equipement> getEquipementDeBase() {
         return equipementDeBase;
     }
 
-    protected void ajouterEquipement(Object equipement) {
+    protected void ajouterEquipement(Equipement equipement) {
         equipementDeBase.add(equipement);
     }
 

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import equipements.Arme;
-import equipements.Armure;
+import equipements.Equipement;
+import equipements.TypeEquipement;
 import races.*;
 import classes.*;
 
-public class Personnage {
+public class Joueur {
     private final String nom;
     private final Race race;
     private final Classe classe;
@@ -18,15 +18,14 @@ public class Personnage {
     private int dexterite;
     private int vitesse;
     private int initiative;
-    private final ArrayList<Object> inventaire;
-    private Arme armeEquipe;
-    private Armure armurEquipe;
+    private List<Equipement> inventaire;
+    private Equipement armeEquipe;
+    private Equipement armurEquipe;
     private int x;
     private int y;
 
 
-
-    public Personnage(String nom) {
+    public Joueur(String nom) {
         this.nom = nom;
         this.race = choisirRace();
         this.classe = choisirClasse();
@@ -36,7 +35,7 @@ public class Personnage {
         this.force = race.getForce() +  lancerDes();
         this.dexterite = race.getDexterite() + lancerDes();
         this.vitesse = race.getVitesse() +   lancerDes() ;
-        this.initiative = race.getInitiative() + lancerDes();
+        this.initiative = 0;
         this.inventaire = new ArrayList<>();
         initialiserEquipement();
 
@@ -53,6 +52,27 @@ public class Personnage {
 
     public int getX() {
         return x;
+    }
+
+    public int getForce() {
+        return force;
+    }
+    public int getDexterite() {
+        return dexterite;
+    }
+    public int getVitesse() {
+        return vitesse;
+    }
+    public int getInitiative() {
+        return initiative;
+    }
+
+    public void modifierForce(int points) {
+        force += points ;
+    }
+
+    public void modifierVitesse(int points) {
+        vitesse += points;
     }
 
     public void setY(int y) {
@@ -142,7 +162,7 @@ public class Personnage {
         int total = 0;
         for (int i = 0; i < 4; i++) {
             int des = (int) (Math.random() * 4) + 1;
-            System.out.println("Lancer de dé " + (i + 1) + " : " + des);
+            //System.out.println("Lancer de dé " + (i + 1) + " : " + des);
             total += des;
         }
         System.out.println("Total des caractéristiques : " + total);
@@ -154,35 +174,44 @@ public class Personnage {
         System.out.println("Équipement initial ajouté à l'inventaire : " + inventaire);
     }
 
-    public void equiperEquipement(int choix) {
-        choix = choix - 1;
-        if (choix >= 0 && choix < inventaire.size()) {
-            Object equipement = inventaire.get(choix);
-            if (equipement instanceof Arme) {
-                armeEquipe = (Arme) equipement;
-                inventaire.remove(choix);
-                System.out.println("Arme équipée : " + armeEquipe.getNom());
-                if (armeEquipe.getNom().equals("Épée longue") || armeEquipe.getNom().equals("Rapière")) {
-                    this.vitesse -= 2;
-                    this.force += 4;
-                    System.out.println("Vitesse diminuée de 2 en raison de l'arme lourde.");
-                    System.out.println("Force augmentée de 4 en raison de l'arme lourde.");
-                }
+    public void equiperInventaire() {
+        Scanner scanner = new Scanner(System.in);
 
-            } else if (equipement instanceof Armure) {
-                armurEquipe = (Armure) equipement;
-                inventaire.remove(choix);
-                System.out.println("Armure équipée : " + armurEquipe.getNom());
-                if (armurEquipe.getNom().equals("Cotte de mailles") || armurEquipe.getNom().equals("Harnois")) {
-                    this.vitesse -= 4;
-                    System.out.println("Vitesse diminuée de 4 en raison de l'armure lourde.");
-                } else {
-                    System.out.println("Équipement non valide.");
-                }
-            } else {
-                System.out.println("Choix invalide.");
-            }
+        System.out.println("----------------------Inventaire-----------------");
+        for (int i = 0; i < inventaire.size(); i++) {
+            System.out.println((i + 1) + " : " + inventaire.get(i).getNom());
         }
+        System.out.println(inventaire.size() + 1 + " : Aucun équipement");
+
+
+        System.out.println("Choisissez un équipement à équiper :");
+        int choix = scanner.nextInt() - 1;
+
+        if (choix >= 0 && choix < inventaire.size()) {
+            Equipement e = inventaire.remove(choix);
+
+            if (e.getType() == TypeEquipement.ARME) {
+                if (armeEquipe != null) inventaire.add(armeEquipe);
+                armeEquipe = e;
+            } else {
+                if (armurEquipe != null) inventaire.add(armurEquipe);
+                armurEquipe = e;
+            }
+
+            e.appliquerEffets(this);
+            System.out.println("Équipé : " + e.getNom());
+        } else if (choix == inventaire.size()) {
+            System.out.println("Choix aucun.");
+        }
+        else {
+            System.out.println("Erreur !!");
+        }
+        System.out.println("--------------------------------------------------");
+    }
+
+    public void recuperEquipement(Equipement e) {
+        inventaire.add(e);
+        System.out.println("Récupéré : " + e.getNom());
     }
 
     public String toString() {
@@ -201,4 +230,6 @@ public class Personnage {
 
 
     }
+
+
 }

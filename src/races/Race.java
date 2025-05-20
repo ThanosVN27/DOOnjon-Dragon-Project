@@ -1,16 +1,10 @@
 package races;
 
-import personnage.Personnage;
-
-import java.util.Scanner;
-import classes.Classe;
-
 public abstract class Race {
     private final String nom;
     private int dexterite;
     private int vitesse;
     private int force;
-    private int initiative;
     private int pointsDeVie;
 
 
@@ -19,7 +13,6 @@ public abstract class Race {
         this.dexterite = 3;
         this.vitesse = 3;
         this.force = 3;
-        this.initiative = 3;
         this.pointsDeVie = 0;
 
     }
@@ -43,12 +36,7 @@ public abstract class Race {
     public void setForce(int force) {
         this.force = force;
     }
-    public int getInitiative() {
-        return initiative;
-    }
-    public void setInitiative(int initiative) {
-        this.initiative = initiative;
-    }
+
 
     public int getPointsDeVie() {
         return pointsDeVie;

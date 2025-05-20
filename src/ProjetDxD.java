@@ -1,6 +1,4 @@
 import jeu.Jeu;
-import personnage.Personnage;
-
 
 
 public class ProjetDxD {
@@ -9,6 +7,8 @@ public class ProjetDxD {
 
         Jeu jeu = new Jeu();
         jeu.lancerJeu();
+
+
 
         System.out.println("Merci d'avoir joué à Donjon et Dragons !");
 

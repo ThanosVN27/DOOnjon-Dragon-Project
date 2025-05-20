@@ -14,6 +14,8 @@ public class Monstre {
     private int dexterite;
     private int classeArmure;
     private int initiative;
+    private int x;
+    private int y;
 
     public Monstre(String nom, int numero, String attaque, int portee, String degats, int pointsDeVie, int vitesse, int force, int dexterite, int classeArmure) {
         this.nom = nom;
@@ -29,7 +31,7 @@ public class Monstre {
         this.initiative = 0;
     }
 
-    public void attaquer(Personnage cible) {
+    public void attaquer(Joueur cible) {
         System.out.println(nom + " #" + numero + " attaque " + cible.getNom() + " avec " + attaque);
         int degatsInfliges = lancerDes(degats);
         cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
@@ -88,7 +90,20 @@ public class Monstre {
         return classeArmure;
     }
 
-    @Override
+    public int getX() {
+        return x;
+    }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public String toString() {
         return "\u001B[31m --[Monstre]--\u001B[0m = [" +
                 "Espece = " + nom +

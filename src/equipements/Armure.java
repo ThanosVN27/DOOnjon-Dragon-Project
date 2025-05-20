@@ -1,19 +1,21 @@
 package equipements;
+import personnage.Joueur;
 
-public enum Armure {
-    ARMURE_ECAILLES("Armure d'écailles", 9),
-    DEMI_PLATE("Demi-plate", 10),
-    COTTE_MAILLES("Cotte de mailles", 11),
-    HARNOIS("Harnois", 12);
+public enum Armure implements Equipement {
+    ARMURE_ECAILLES("Armure d'écailles", 9, false),
+    DEMI_PLATE("Demi-plate", 10, false),
+    COTTE_MAILLES("Cotte de mailles", 11, true),
+    HARNOIS("Harnois", 12, true);
 
     private final String nom;
     private final int classeArmure;
+    private final boolean estArmureLourde;
 
-    Armure(String nom, int classeArmure) {
+    Armure(String nom, int classeArmure, boolean estArmureLourde) {
         this.nom = nom;
         this.classeArmure = classeArmure;
+        this.estArmureLourde = estArmureLourde;
     }
-
 
     public String getNom() {
         return nom;
@@ -23,8 +25,23 @@ public enum Armure {
         return classeArmure;
     }
 
+    public boolean estArmureLourde() {
+        return estArmureLourde;
+    }
+
+    public TypeEquipement getType() {
+        return TypeEquipement.ARMURE;
+    }
+
+    @Override
+    public void appliquerEffets(Joueur p) {
+        if (estArmureLourde) {
+            p.modifierVitesse(-4);
+            System.out.println("Vitesse -4 (armure lourde)");
+        }
+    }
     @Override
     public String toString() {
-        return nom + " (Classe d'Armure: " + classeArmure + ")";
+        return nom + " (Classe d'armure : " + classeArmure + ")";
     }
 }

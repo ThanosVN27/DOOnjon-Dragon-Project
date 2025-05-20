@@ -1,9 +1,11 @@
 package personnage;
 
 import equipements.Arme;
+import equipements.Equipement;
 import jeu.Donjon;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import equipements.Armure;
@@ -13,9 +15,8 @@ public class MaitreDuJeu {
     private Donjon donjon;
 
 
-
     public MaitreDuJeu() {
-        this.donjon = null;
+        this.donjon = creerDonjon();
     }
 
     public Donjon creerDonjon() {
@@ -62,13 +63,13 @@ public class MaitreDuJeu {
         if (option == 1) {
             // Option: Décider
             System.out.println("Combien de monstres voulez-vous ajouter ?");
-            int nombreDeMonstres = scanner.nextInt();
+            int nbMonstre = scanner.nextInt();
 
             for (int i = 0; i < nomsMonstres.length; i++) {
                 System.out.println((i + 1) + ". " + nomsMonstres[i]);
             }
 
-            for (int i = 0; i < nombreDeMonstres; i++) {
+            for (int i = 0; i < nbMonstre; i++) {
                 System.out.println("Choisissez le numéro du monstre #" + (i + 1) + " : ");
                 int choix = scanner.nextInt();
 
@@ -106,10 +107,15 @@ public class MaitreDuJeu {
                 scanner.nextLine();
                 String degats = scanner.nextLine();
 
-                Monstre monstre = new Monstre(nom, i + 1, attaque, portee, degats, pointsDeVie, vitesse, force, dexterite, classeArmure);
-                donjon.getMonstresListe().add(monstre);
+                System.out.println("La position du x du monstre :");
+                int x = scanner.nextInt();
 
-                donjon.placerMonstreAleatoirement(monstre);
+                System.out.println("La position du y du monstre :");
+                int y = scanner.nextInt();
+
+                Monstre monstre = new Monstre(nom, i + 1, attaque, portee, degats, pointsDeVie, vitesse, force, dexterite, classeArmure);
+
+                donjon.placerMonstre(monstre,x,y,i + 1);
                 System.out.println("Monstres ajoutés et positionnés.");
 
 
@@ -132,8 +138,7 @@ public class MaitreDuJeu {
                 String degats = "1d" + (random.nextInt(6) + 4); // Random dégâts (1d4 à 1d10)
 
                 Monstre monstre = new Monstre(nom, i + 1, attaque, portee, degats, pointsDeVie, vitesse, force, dexterite, classeArmure);
-                donjon.getMonstresListe().add(monstre);
-                donjon.placerMonstreAleatoirement(monstre);
+                donjon.placerMonstreAleatoirement(monstre, i + 1);
 
             }
 
@@ -149,34 +154,32 @@ public class MaitreDuJeu {
     public void ajouterJoueur() {
         Scanner scanner = new Scanner(System.in);
 
-        //nombre de joueurs
-        int nombreDeJoueurs = 0;
-        while (nombreDeJoueurs <= 0) {
+        int nbJoueurs = 0;
+        while (nbJoueurs <= 0) {
             System.out.println("Combien de joueurs voulez-vous ajouter ?");
             if (scanner.hasNextInt()) {
-                nombreDeJoueurs = scanner.nextInt();
-                if (nombreDeJoueurs <= 0) {
+                nbJoueurs = scanner.nextInt();
+                if (nbJoueurs <= 0) {
                     System.out.println("Veuillez entrer un nombre strictement positif.");
                 }
             } else {
                 System.out.println("\u001B[31mEntrée invalide. Veuillez entrer un nombre.\u001B[0m");
-                scanner.next(); // Vider
+                scanner.next();
             }
         }
-        scanner.nextLine(); // Vider
 
-        // Ajout de chaque joueur
-        for (int i = 0; i < nombreDeJoueurs; i++) {
+        scanner.nextLine();
+
+        for (int i = 0; i < nbJoueurs; i++) {
             System.out.println("\n--- Joueur #" + (i + 1) + " ---");
-
 
             System.out.println("Entrez le nom du joueur :");
             String nom = scanner.nextLine();
 
             int x = -1, y = -1;
-            boolean positionValide = false;
+            boolean valide = false;
 
-            while (!positionValide) {
+            while (!valide) {
                 // Posiotion X
                 while (x < 1 || x >= donjon.getHauteur()) {
                     System.out.println("Position X (1-" + (donjon.getHauteur()-1) + ") :");
@@ -187,10 +190,10 @@ public class MaitreDuJeu {
                         }
                     } else {
                         System.out.println("\u001B[31mEntrez un nombre valide\u001B[0m");
-                        scanner.next(); // Vide l'entrée invalide
+                        scanner.next();
                     }
                 }
-                scanner.nextLine(); // Vide le reste de la ligne
+                scanner.nextLine();
 
                 // Position Y
                 while (y < 1 || y >= donjon.getLargeur()) {
@@ -202,20 +205,19 @@ public class MaitreDuJeu {
                         }
                     } else {
                         System.out.println("\u001B[31mEntrez un nombre valide\u001B[0m");
-                        scanner.next(); // Vide l'entrée invalide
+                        scanner.next();
                     }
                 }
-                scanner.nextLine(); // Vide le reste de la ligne
 
-                // Placement du joueur
-                Personnage joueur = new Personnage(nom);
-                if (donjon.placerJoueur(joueur, x, y)) {
-                    donjon.getJoueursListe().add(joueur);
+                scanner.nextLine();
+
+                // Placement
+                if (donjon.placerJoueur(nom, x, y,i + 1)) {
                     System.out.println("✅ Joueur " + nom + " ajouté en (" + x + "," + y + ")");
-                    positionValide = true;
+                    valide = true;
                 } else {
                     System.out.println("\u001B[31mCase occupée, choisissez une autre position\u001B[0m");
-                    x = y = -1; //
+                    x = y = -1;
                 }
             }
 
@@ -223,14 +225,10 @@ public class MaitreDuJeu {
         }
     }
 
-    public void ajouterEquiment() {
-        ArrayList<Object> equipementListe = new ArrayList<>();
-        for (Arme arme : Arme.values()) {
-            equipementListe.add(arme);
-        }
-        for (Armure armure : Armure.values()) {
-            equipementListe.add(armure);
-        }
+    public void ajouterEquipement() {
+        List<Equipement> equipementListe = new ArrayList<>();
+        equipementListe.addAll(List.of(Arme.values()));
+        equipementListe.addAll(List.of(Armure.values()));
 
         Scanner scanner = new Scanner(System.in);
 
@@ -238,62 +236,59 @@ public class MaitreDuJeu {
         int nombreEquipement = scanner.nextInt();
 
         for (int i = 0; i < nombreEquipement; i++) {
-            System.out.println("Choisissez un équipement Arme/Armure :");
+
+            System.out.println("\nChoisissez un équipement parmi la liste suivante :");
             for (int j = 0; j < equipementListe.size(); j++) {
                 System.out.println((j + 1) + ". " + equipementListe.get(j));
             }
 
-            System.out.println("Entrez le numéro de l'équipement :");
-            int choix = scanner.nextInt();
-            scanner.nextLine();
-
-            if (choix < 1 || choix > equipementListe.size()) {
-                System.out.println("\u001B[31mChoix invalide. Réessayez. \u001B[0m");
-                i--;
-                continue;
+            int choix = -1;
+            while (choix < 1 || choix > equipementListe.size()) {
+                System.out.print("Entrez le numéro de l'équipement : ");
+                choix = scanner.nextInt();
+                if (choix < 1 || choix > equipementListe.size()) {
+                    System.out.println("\u001B[31mChoix invalide. Réessayez.\u001B[0m");
+                }
             }
 
-            Object equipementChoisi = equipementListe.get(choix - 1);
+            Equipement equipementChoisi = equipementListe.get(choix - 1);
             System.out.println("Vous avez choisi : " + equipementChoisi);
 
             donjon.getEquipementsListe().add(equipementChoisi);
 
-            System.out.println("Entrez la position X de l'équipement (entre 1 et + " + (donjon.getHauteur() - 1) +  ":");
-            int x = scanner.nextInt();
-            System.out.println("Entrez la position Y de l'équipement (entre 1 et " + (donjon.getHauteur() - 1) + ":");
-            int y = scanner.nextInt();
+            boolean positionValide = false;
+            while (!positionValide) {
+                System.out.print("Entrez la position X de l'équipement (entre 1 et " + (donjon.getHauteur() - 1) + ") : ");
+                int x = scanner.nextInt();
+                System.out.print("Entrez la position Y de l'équipement (entre 1 et " + (donjon.getLargeur() - 1) + ") : ");
+                int y = scanner.nextInt();
 
-            if (x < 1 || x >= donjon.getHauteur() || y < 1 || y >= donjon.getLargeur()) {
-                System.out.println("\u001B[31mPosition hors limites. Réessayez.\u001B[0m");
-                i--;
-                continue;
-            }
+                if (x < 1 || x >= donjon.getHauteur() || y < 1 || y >= donjon.getLargeur()) {
+                    System.out.println("\u001B[31mPosition hors limites. Réessayez.\u001B[0m");
+                    continue;
+                }
 
-            if (!donjon.placerEquipement(equipementChoisi, x, y)) {
-                System.out.println("\u001B[31mImpossible de positionner l'équipement ici. Case occupée.\u001B[0m");
-                i--;
-            } else {
-                System.out.println("Équipement ajouté à la position (" + x + ", " + y + ").");
+                if (!donjon.placerEquipement(equipementChoisi, x, y)) {
+                    System.out.println("\u001B[31mImpossible de positionner l'équipement ici. Case occupée.\u001B[0m");
+                } else {
+                    positionValide = true;
+                    System.out.println("Équipement ajouté à la position (" + x + ", " + y + ").");
+                    donjon.afficherCarte();
+                }
             }
-            donjon.afficherCarte();
         }
     }
 
 
+    public Donjon getDonjon() {
+        return donjon;
+    }
 
-    public void commencerLeJeu(){
-        Scanner scanner = new Scanner(System.in);
-        creerDonjon();
+
+    public void miseEnPlace(){
         ajouterMonstre();
+        ajouterEquipement();
         ajouterJoueur();
-        ajouterEquiment();
-        System.out.println("Voulez-vous commencer le jeu ? (O/N)");
-        String reponse = scanner.nextLine();
 
-        if (reponse.equalsIgnoreCase("O")) {
-            System.out.println("Le jeu commence !");
-        } else {
-            System.out.println("Jeu annulé.");
-        }
     }
 }
