@@ -21,6 +21,9 @@ public class Personnage {
     private final ArrayList<Object> inventaire;
     private Arme armeEquipe;
     private Armure armurEquipe;
+    private int x;
+    private int y;
+
 
 
     public Personnage(String nom) {
@@ -42,6 +45,21 @@ public class Personnage {
 
     public int getPointsDeVie() {
         return pointsDeVie;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    public void setX(int x) {
+        this.x = x;
     }
 
     public void setPointsDeVie(int pv) { this.pointsDeVie = pv; }
@@ -107,20 +125,6 @@ public class Personnage {
         return "\u001B[34m" + nom + "\u001B[0m";
     }
 
-    public String toString() {
-        return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
-                "Race = " + race.getNomRaces()  +
-                " ; Classe = " + classe.getNomClasse()  +
-                " ; PointsDeVie = " + pointsDeVie  +
-                " ; Force = " + force  +
-                " ; Dexterite = " + dexterite  +
-                " ; Vitesse = " + vitesse  +
-                " ; Initiative = " + initiative + "\n" +
-                "--[Inventaire]-- = " + inventaire  + "\n" +
-                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.toString() : "Aucune") + "\n" +
-                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.toString(): "Aucune");
-
-    }
 
     public void seDeplacer() {
         System.out.println(nom + " se déplace.");
@@ -179,5 +183,22 @@ public class Personnage {
                 System.out.println("Choix invalide.");
             }
         }
+    }
+
+    public String toString() {
+        return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
+                "Race = " + race.getNomRaces()  +
+                " ; Classe = " + classe.getNomClasse()  +
+                " ; PointsDeVie = " + pointsDeVie  +
+                " ; Force = " + force  +
+                " ; Dexterite = " + dexterite  +
+                " ; Vitesse = " + vitesse  +
+                " ; Initiative = " + initiative + "\n" +
+                "--[Inventaire]-- = " + inventaire  + "\n" +
+                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.toString() : "Aucune") + "\n" +
+                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.toString(): "Aucune") + "\n" +
+                "Position = (" + x + ", " + y + ")";
+
+
     }
 }

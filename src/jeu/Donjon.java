@@ -3,17 +3,24 @@ package jeu;
 import personnage.Monstre;
 import personnage.Personnage;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Donjon {
     private int hauteur;
     private int largeur;
     private String[][] carte;
+    private ArrayList<Monstre> monstresListe;
+    private ArrayList<Personnage> joueursListe;
+    private ArrayList<Object> equipementsListe;
 
     public Donjon(int hauteur, int largeur) {
         this.hauteur = hauteur;
         this.largeur = largeur;
         this.carte = new String[hauteur][largeur];
+        this.monstresListe = new ArrayList<>();
+        this.joueursListe = new ArrayList<>();
+        this.equipementsListe = new ArrayList<>();
         creerCarte();
     }
 
@@ -57,12 +64,27 @@ public class Donjon {
         return carteAffichage;
     }
 
-    public void placerEquipement(Object equipement, int x, int y) {
+    public boolean placerEquipement(Object equipement, int x, int y) {
         if (carte[x][y] == ".") {
             carte[x][y] = "E";
+            return true;
         } else {
+
             System.out.println("Impossible de positionner l'équipement ici. Case occupée.");
+            return false;
         }
+    }
+
+    public ArrayList<Monstre> getMonstresListe() {
+        return monstresListe;
+    }
+
+    public ArrayList<Personnage> getJoueursListe() {
+        return joueursListe;
+    }
+
+    public ArrayList<Object> getEquipementsListe() {
+        return equipementsListe;
     }
 
 
@@ -89,8 +111,10 @@ public class Donjon {
 
     public boolean placerJoueur(Personnage joueur, int x, int y) {
         if (x >= 0 && x < hauteur && y >= 0 && y < largeur) {
-            if (carte[x][y] == ".") {
+            if (carte[x][y].equals(".")) {
                 carte[x][y] = "J";
+                joueur.setX(x);
+                joueur.setY(y);
                 return true;
             } else {
                 System.out.println("Impossible de positionner le joueur ici. Case occupée.");
@@ -104,8 +128,8 @@ public class Donjon {
 
 
     public void afficherCarte() {
-        for (int i = 0; i < carte.length; i++) {
-            for (int j = 0; j < carte.length; j++) {
+        for (int i = 0; i < hauteur; i++) {
+            for (int j = 0; j < largeur; j++) {
                 System.out.print(String.format("%3s", carte[i][j]));
             }
             System.out.println();

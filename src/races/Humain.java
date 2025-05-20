@@ -1,7 +1,6 @@
 package races;
 
 public class Humain extends Race {
-    private int pointsDeVie;
 
     public Humain() {
         super("Humain");
