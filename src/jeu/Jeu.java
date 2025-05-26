@@ -18,7 +18,7 @@ public class Jeu {
     public Jeu() {
         this.maitreDuJeu = new MaitreDuJeu();
         this.tour = 0;
-        listeJoueurs = maitreDuJeu.getDonjon().ordreJeu();
+        listeJoueurs = new ArrayList<>();
     }
 
     public void lancerJeu() {
@@ -42,7 +42,7 @@ public class Jeu {
 
     public void afficherOrdreDeJeu() {
         System.out.println("---------------- Ordre de Jeu ----------------");
-
+        listeJoueurs = maitreDuJeu.getDonjon().ordreJeu();
         for (Combattant c : listeJoueurs) {
             if (c.estJoueur()) {
                 System.out.println("👤 Joueur  : " + c.afficherInfos() + " | Initiative : " + c.getInitiative());
