@@ -81,22 +81,22 @@ public class MaitreDuJeu {
 
                 String nom = nomsMonstres[choix - 1];
 
-                System.out.println("Entrez les points de vie du monstre :");
+                System.out.println("Entrez les points de vie:");
                 int pointsDeVie = scanner.nextInt();
 
-                System.out.println("Entrez la vitesse du monstre :");
+                System.out.println("Entrez la vitesse:");
                 int vitesse = scanner.nextInt();
 
-                System.out.println("Entrez la force du monstre :");
+                System.out.println("Entrez la force:");
                 int force = scanner.nextInt();
 
-                System.out.println("Entrez la dextérité du monstre :");
+                System.out.println("Entrez la dextérité:");
                 int dexterite = scanner.nextInt();
 
-                System.out.println("Entrez la classe d'armure du monstre :");
+                System.out.println("Entrez la classe d'armure:");
                 int classeArmure = scanner.nextInt();
 
-                System.out.println("Entrez l'attaque du monstre :");
+                System.out.println("Entrez l'attaque:");
                 scanner.nextLine();
                 String attaque = scanner.nextLine();
 
@@ -116,7 +116,7 @@ public class MaitreDuJeu {
                 Monstre monstre = new Monstre(nom, i + 1, attaque, portee, degats, pointsDeVie, vitesse, force, dexterite, classeArmure);
 
                 donjon.placerMonstre(monstre,x,y,i + 1);
-                System.out.println("Monstres ajoutés et positionnés.");
+                System.out.println("Monstres ajoutés et positionnés.!!");
 
 
             }
@@ -272,7 +272,7 @@ public class MaitreDuJeu {
                     System.out.println("\u001B[31mImpossible de positionner l'équipement ici. Case occupée.\u001B[0m");
                 } else {
                     positionValide = true;
-                    System.out.println("Équipement ajouté à la position (" + x + ", " + y + ").");
+                    System.out.println("Équipement ajouté à la position(" + x + ", " + y + ").");
                     donjon.afficherCarte();
                 }
             }

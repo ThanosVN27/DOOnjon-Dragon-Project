@@ -1,27 +1,27 @@
 package jeu;
 
 import equipements.Equipement;
+import personnage.Combattant;
 import personnage.Monstre;
 import personnage.Joueur;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Donjon {
-    private int hauteur;
-    private int largeur;
-    private String[][] carte;
-    private ArrayList<Monstre> monstresListe;
-    private ArrayList<Joueur> joueursListe;
-    private ArrayList<Equipement> equipementsListe;
+    private final int hauteur;
+    private final int largeur;
+    private final String[][] carte;
+    private List<Combattant> combattant;
+    private final List<Equipement> equipementsListe;
 
     public Donjon(int hauteur, int largeur) {
         this.hauteur = hauteur;
         this.largeur = largeur;
         this.carte = new String[hauteur][largeur];
-        this.monstresListe = new ArrayList<>();
-        this.joueursListe = new ArrayList<>();
         this.equipementsListe = new ArrayList<>();
+        this.combattant = new ArrayList<>();
         creerCarte();
     }
 
@@ -77,15 +77,8 @@ public class Donjon {
         }
     }
 
-    public ArrayList<Monstre> getMonstresListe() {
-        return monstresListe;
-    }
 
-    public ArrayList<Joueur> getJoueursListe() {
-        return joueursListe;
-    }
-
-    public ArrayList<Equipement> getEquipementsListe() {
+    public List<Equipement> getEquipementsListe() {
         return equipementsListe;
     }
 
@@ -108,7 +101,7 @@ public class Donjon {
                 carte[x][y] = "M" + numero;
                 monstre.setX(x);
                 monstre.setY(y);
-                this.monstresListe.add(monstre);
+                combattant.add(monstre);
                 place = true;
             }
 
@@ -121,7 +114,7 @@ public class Donjon {
                 carte[x][y] = "M" + numero;
                 monstre.setX(x);
                 monstre.setY(y);
-                this.monstresListe.add(monstre);
+                combattant.add(monstre);
             } else {
                 System.out.println("Impossible de positionner le monstre ici. Case occupée.");
             }
@@ -135,9 +128,8 @@ public class Donjon {
             if (carte[x][y].equals(".")) {
                 Joueur joueur = new Joueur(nom);
                 joueur.equiperInventaire();
-                joueur.toString();
                 carte[x][y] = "J" + numeroJoueur;
-                joueursListe.add(joueur);
+                this.combattant.add(joueur);
                 joueur.setX(x);
                 joueur.setY(y);
                 return true;
@@ -153,35 +145,26 @@ public class Donjon {
 
 
     public void afficherCarte() {
+        System.out.println();
+        System.out.println("--------------------- Carte du Donjon --------------------");
+
         for (int i = 0; i < hauteur; i++) {
             for (int j = 0; j < largeur; j++) {
                 System.out.print(String.format("%3s", carte[i][j]));
             }
             System.out.println();
         }
+        System.out.println("---------------------------------------------------------");
     }
 
-    public ArrayList<Object> ordreJeu() {
-        ArrayList<Object> tousLesPersonnages = new ArrayList<>();
-
-        for (Joueur joueur : joueursListe) {
-            joueur.setInitiative(lancerDes());
+    public List<Combattant> ordreJeu() {
+        List<Combattant> listeOrdre = new ArrayList<>(combattant);
+        for(Combattant c : listeOrdre) {
+            int initiative = lancerDes() + c.getInitiative();
+            c.setInitiative(initiative);
         }
-
-        for (Monstre monstre : monstresListe) {
-            monstre.setInitiative(lancerDes());
-        }
-
-        tousLesPersonnages.addAll(joueursListe);
-        tousLesPersonnages.addAll(monstresListe);
-
-        tousLesPersonnages.sort((a, b) -> {
-            int initiativeA = (a instanceof Joueur) ? ((Joueur) a).getInitiative() : ((Monstre) a).getInitiative();
-            int initiativeB = (b instanceof Joueur) ? ((Joueur) b).getInitiative() : ((Monstre) b).getInitiative();
-            return Integer.compare(initiativeB, initiativeA);
-        });
-
-        return tousLesPersonnages;
+        listeOrdre.sort((c1, c2) -> Integer.compare(c2.getInitiative(), c1.getInitiative()));
+        return listeOrdre;
     }
 
     public int lancerDes() {

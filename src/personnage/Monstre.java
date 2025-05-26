@@ -2,17 +2,17 @@ package personnage;
 
 
 
-public class Monstre {
+public class Monstre implements Combattant {
     private final String nom;
     private final int numero;
     private final String attaque;
     private final int portee;
     private final String degats;
     private int pointsDeVie;
-    private int vitesse;
-    private int force;
-    private int dexterite;
-    private int classeArmure;
+    private final int vitesse;
+    private final int force;
+    private final int dexterite;
+    private final int classeArmure;
     private int initiative;
     private int x;
     private int y;
@@ -31,7 +31,7 @@ public class Monstre {
         this.initiative = 0;
     }
 
-    public void attaquer(Joueur cible) {
+    public void attaquer(Combattant cible) {
         System.out.println(nom + " #" + numero + " attaque " + cible.getNom() + " avec " + attaque);
         int degatsInfliges = lancerDes(degats);
         cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
@@ -50,10 +50,12 @@ public class Monstre {
         return total;
     }
 
+    @Override
     public void setInitiative(int initiative) {
         this.initiative = initiative;
     }
 
+    @Override
     public int getInitiative() {
         return initiative;
     }
@@ -70,9 +72,11 @@ public class Monstre {
         return pointsDeVie;
     }
 
-    public void setPointsDeVie(int pointsDeVie) {
-        this.pointsDeVie = pointsDeVie;
+    @Override
+    public void setPointsDeVie(int pv) {
+        this.pointsDeVie = Math.max(0, pv); //valeur negatif
     }
+
 
     public int getVitesse() {
         return vitesse;
@@ -104,7 +108,9 @@ public class Monstre {
         this.y = y;
     }
 
-    public String toString() {
+
+
+    public String afficherMonster() {
         return "\u001B[31m --[Monstre]--\u001B[0m = [" +
                 "Espece = " + nom +
                 ", Numéro = " + numero +
@@ -113,10 +119,29 @@ public class Monstre {
                 ", Dégâts = '" + degats + '\'' +
                 ", Points de Vie = " + pointsDeVie +
                 ", Vitesse = " + vitesse +
-                ", Force=" + force +
+                ", Force =" + force +
                 ", Dextérité = " + dexterite +
                 ", Classe d'Armure =" + classeArmure +
                 ", Initiative = " + initiative +
                 ']';
+    }
+
+    @Override
+    public String afficherInfos() {
+        return getNom() + " (PV: " + getPointsDeVie() +
+                ",Position: " + getX() + "," + getY() + ")";
+    }
+
+
+    @Override
+    public boolean estJoueur() {
+        return false;
+    }
+
+    @Override
+    public void deplacer(int x, int y) {
+        this.x = x;
+        this.y = y;
+        System.out.println(nom + " se déplace vers la position(" + x + ", " + y + ")");
     }
 }

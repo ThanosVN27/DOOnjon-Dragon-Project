@@ -2,7 +2,7 @@ import jeu.Jeu;
 
 
 public class ProjetDxD {
-    public static void main(String args[]){
+    public static void main(String[] args) {
         System.out.println("Bienvenue dans Donjon et Dragons");
 
         Jeu jeu = new Jeu();

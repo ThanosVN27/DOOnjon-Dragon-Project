@@ -9,7 +9,7 @@ import equipements.TypeEquipement;
 import races.*;
 import classes.*;
 
-public class Joueur {
+public class Joueur implements Combattant {
     private final String nom;
     private final Race race;
     private final Classe classe;
@@ -29,8 +29,6 @@ public class Joueur {
         this.nom = nom;
         this.race = choisirRace();
         this.classe = choisirClasse();
-
-
         this.pointsDeVie = classe.getPointsDeVie() + race.getPointsDeVie() ;
         this.force = race.getForce() +  lancerDes();
         this.dexterite = race.getDexterite() + lancerDes();
@@ -40,6 +38,11 @@ public class Joueur {
         initialiserEquipement();
 
 
+    }
+
+    @Override
+    public boolean estJoueur() {
+        return true;
     }
 
     public int getPointsDeVie() {
@@ -63,6 +66,8 @@ public class Joueur {
     public int getVitesse() {
         return vitesse;
     }
+
+    @Override
     public int getInitiative() {
         return initiative;
     }
@@ -82,16 +87,22 @@ public class Joueur {
         this.x = x;
     }
 
-    public void setPointsDeVie(int pv) { this.pointsDeVie = pv; }
+    @Override
+    public void setPointsDeVie(int pv) {
+        this.pointsDeVie = Math.max(0, pv); // empêche les valeurs négatives
+    }
+
     public void setForce(int force) { this.force = force; }
     public void setDexterite(int dexterite) { this.dexterite = dexterite; }
     public void setVitesse(int vitesse) { this.vitesse = vitesse; }
+
+    @Override
     public void setInitiative(int initiative) { this.initiative = initiative; }
 
     public Race getRace() { return race; }
     public Classe getClasse() { return classe; }
 
-    public static Classe choisirClasse() {
+    private static Classe choisirClasse() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -116,7 +127,7 @@ public class Joueur {
         }
     }
 
-    public static Race choisirRace() {
+    private static Race choisirRace() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -146,11 +157,15 @@ public class Joueur {
     }
 
 
-    public void seDeplacer() {
-        System.out.println(nom + " se déplace.");
+    @Override
+    public void deplacer(int x, int y) {
+        this.x = x;
+        this.y = y;
+        System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
     }
 
-    public void attaquer(Monstre cible) {
+    @Override
+    public void attaquer(Combattant cible) {
         System.out.println(nom + " attaque " + cible.getNom()) ;
         int degats = this.force;
         cible.setPointsDeVie(cible.getPointsDeVie() - degats);
@@ -173,6 +188,7 @@ public class Joueur {
         inventaire.addAll(classe.getEquipementDeBase());
         System.out.println("Équipement initial ajouté à l'inventaire : " + inventaire);
     }
+
 
     public void equiperInventaire() {
         Scanner scanner = new Scanner(System.in);
@@ -214,7 +230,9 @@ public class Joueur {
         System.out.println("Récupéré : " + e.getNom());
     }
 
-    public String toString() {
+
+
+    public String afficherJoueur() {
         return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
                 "Race = " + race.getNomRaces()  +
                 " ; Classe = " + classe.getNomClasse()  +
@@ -229,6 +247,13 @@ public class Joueur {
                 "Position = (" + x + ", " + y + ")";
 
 
+    }
+
+    @Override
+    public String afficherInfos() {
+        return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRaces() +
+                ", PV: " + getPointsDeVie() +
+                ", Position: " + getX() + "," + getY() + ")";
     }
 
 
