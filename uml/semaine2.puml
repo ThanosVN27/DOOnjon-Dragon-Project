@@ -1,0 +1,242 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skinparam classFontStyle Bold
+hide empty members
+
+Package DxD {
+
+Package personnage {
+
+class Personnage {
+    - nom: String
+    - race: Race
+    - classe: Classe
+    - pointsDeVie: int
+    - force: int
+    - dexterite: int
+    - vitesse: int
+    - initiative: int
+    - inventaire: List<Object>
+    - armeEquipee: Arme
+    - armureEquipee: Armure
+
+    + <<create>> Personnage(nom : String)
+
+    + choisirRace(): Race
+    + seDeplacer(): void
+    + lancerDes(): int
+    + initialiserEquipement(): void
+    + equiperEquipement(choix: int): void
+
+
+    + setPointDeVie(pointsDeVie: int): void
+    + setForce(force: int): void
+    + setDexterite(dexterite: int): void
+    + setVitesse(vitesse: int): void
+    + setInitiative(initiative: int): void
+
+    + getRace(): Race
+    + getClasse(): Classe
+    + getPointsDeVie(): int
+    + getNom(): String
+    + toString(): String
+    }
+class Monstre {
+    - nom: String
+    - numero: int
+    - attaque: String
+    - portee: int
+    - degats: String
+    - pointsDeVie: int
+    - vitesse: int
+    - force: int
+    - dexterite: int
+    - classeArmure: int
+    - initiative: int
+
+    + <<create>> Monstre(nom : String, numero : int, attaque : String, portee : int, degats : String, pointsDeVie: int, vitesse: int, force: int, dexterite: int, classeArmure: int, initiative: int)
+
+    + attaquer(cible: Personnage): void
+    + lancerDes(des: string): int
+
+    + setInitiative(initiative: int): void
+    + setPointDeVie(pointsDeVie: int): void
+    + setForce(force: int): void
+
+    + getInitiative(): int
+    + getNom(): String
+    + getNumero(): int
+    + getPointsDeVie(): int
+    + getVitesse(): int
+    + getForce(): int
+    + getDexterite(): int
+    + getClasseArmure(): int
+    + randomNom(): String
+    }
+class MaitreDuJeu {
+    - donjon: Donjon
+    - monstres: List<Monstre>
+    - joueurs: List<Personnage>
+    - equipement: List<Object>
+
+    + <<create>> MaitreDuJeu()
+
+    + creerDonjon(): void
+    + ajouterMonstre(): void
+    + ajouterJoueur(): void
+    + ajouterEquipement(): void
+    + commencerLeJeu(): void
+    }
+}
+
+Package races {
+abstract Race {
+    + {abstract} appliquerRace(personnage: Personnage): void
+
+    - nom: String
+    - dexterite: int
+    - force: int
+    - vitesse: int
+    - pointsDeVie: int
+    - initiative: int
+
+    + <<create>> Race(nom: String)
+
+    + setDexterite(dexterite: int): void
+    + setForce(force: int): void
+    + setVitesse(vitesse: int): void
+    + setPointsDeVie(pointsDeVie: int): void
+    + setInitiative(initiative: int): void
+
+    + getDexterite(): int
+    + getForce(): int
+    + getVitesse(): int
+    + getPointsDeVie(): int
+    + getInitiative(): int
+    + getNomRace(): String
+    }
+
+class Elf extends Race{
+    + <<class>> Elf()
+    + appliquerRace(personnage: Personnage): void
+    }
+
+class Halfelin extends Race {
+    + <<class>> Halfelin()
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+
+class Human extends Race {
+    + <<class>> Human()
+    + appliquerRace(personnage: Personnage): void
+    }
+
+class Dwarf extends Race {
+    + <<class>> Dwarf()
+    + appliquerRace(personnage: Personnage): void
+    }
+}
+
+Package classes {
+abstract Classe {
+    + {abstract} appliquerPouvoir(personnage: Personnage): void
+
+    + nom: String
+    + pointsDeVie: int
+    + EquipementDeBase: List<Object>
+
+    + <<create>> Classe(nom: String, pointsDeVie: int)
+
+    + ajouterEquipementDeBase(equipement: Object): void
+
+    + getPointsDeVie(): int
+    + getNomClasse(): String
+    + getEqipementDeBase(): List<Object>
+    }
+
+class Guerrier extends Classe {
+    + <<create>> Guerrier()
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+class Magicien extends Classe {
+    + <<create>> Magicien()
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+class Clerc extends Classe {
+    + <<create>> Clerc()+
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+class Roublard extends Classe {
+    + <<create>> Roublard()
+    + appliquerPouvoir(personnage: Personnage): void
+    }
+}
+
+Package equipements {
+interface Equipement {
+    + {abstract} getNom : String
+    + {abstract} appliquerEffet : void
+    + {abstract} getType() : TypeEquipement
+    + {abstract} toString : String
+}
+
+enum TypeEquipement {
+
+}
+
+enum Arme implements Equipement{
+    - nom: String
+    - degats: String
+    - portee: int
+
+    + <<create>> Arme(String nom, String degats, int portee)
+
+    + getNom(): String
+    + getDegats(): String
+    + getPortee(): int
+    + toString(): String
+    }
+
+enum Armure implements Equipement {
+    - nom: String
+    - classeArmure: int
+
+    + <<create>> Armure(String nom, int classeArmure)
+
+    + getNom(): String
+    + getClasseArmure(): int
+    + toString(): String
+    }
+}
+
+Package jeu {
+class Donjon {
+    - hauteur: int
+    - largeur: int
+    - carte: String[][]
+
+    + <<create>> Donjon(hauteur: int, largeur: int)
+
+    + creerCarte(): void
+    + positionnerObstacles(nombreObstacles: int): void
+    + getCarte(): String[][]
+    + placerEquipement(equipement: Object, x: int, y: int): void
+    + placerMonstreAleatoirement(monstre: Monstre): void
+    + placerJoueur(personnage: Personnage, x: int, y: int): void
+    + afficherCarte(): void
+
+    + getHauteur(): int
+    + getLargeur(): int
+    }
+class Jeu {
+    - maitreDuJeu: MaitreDuJeu
+    - listeJoueur: List []
+
+    + <<create>> Jeu()
+    + demarrerJeu(): void
+    }
+}
+}
+
+@enduml

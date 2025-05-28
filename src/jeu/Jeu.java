@@ -55,14 +55,7 @@ public class Jeu {
     }
 
     public void boucleJeu() {
-        boolean fin = false;
 
-        while (!fin) {
-            jouerTour();
-            fin = true;
-        }
-
-        System.out.println("🎉 Partie terminée !");
     }
 
 
@@ -85,6 +78,7 @@ public class Jeu {
                 System.out.print("Choisissez une option (1-3) : ");
                 int choix;
                 System.out.println("Choisissez une option (1-3) : ");
+
 
         }
 
