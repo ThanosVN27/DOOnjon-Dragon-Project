@@ -1,19 +1,20 @@
 package jeu;
 
 import equipements.Equipement;
-import personnage.Combattant;
-import personnage.Monstre;
-import personnage.Joueur;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import personnage.Combattant;
+import personnage.Joueur;
+import personnage.Monstre;
 
 public class Donjon {
     private final int hauteur;
     private final int largeur;
     private final String[][] carte;
     private List<Combattant> combattant;
+    private List<Monstre> monstres;
+    private List<Joueur> joueurs;
     private final List<Equipement> equipementsListe;
 
     public Donjon(int hauteur, int largeur) {
@@ -39,8 +40,6 @@ public class Donjon {
             }
         }
     }
-
-
 
     public void positionnerObstacles(int nombreObstacles) {
         Random random = new Random();
@@ -102,6 +101,7 @@ public class Donjon {
                 monstre.setX(x);
                 monstre.setY(y);
                 combattant.add(monstre);
+                monstres.add(monstre);
                 place = true;
             }
 
@@ -115,6 +115,7 @@ public class Donjon {
                 monstre.setX(x);
                 monstre.setY(y);
                 combattant.add(monstre);
+                monstres.add(monstre);
             } else {
                 System.out.println("Impossible de positionner le monstre ici. Case occupée.");
             }
@@ -132,6 +133,7 @@ public class Donjon {
                 this.combattant.add(joueur);
                 joueur.setX(x);
                 joueur.setY(y);
+                this.joueurs.add(joueur);
                 return true;
             } else {
                 System.out.println("Impossible de positionner le joueur ici. Case occupée.");
@@ -141,8 +143,6 @@ public class Donjon {
         }
         return false;
     }
-
-
 
     public void afficherCarte() {
         System.out.println();

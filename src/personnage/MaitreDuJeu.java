@@ -1,14 +1,13 @@
 package personnage;
 
 import equipements.Arme;
+import equipements.Armure;
 import equipements.Equipement;
-import jeu.Donjon;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import equipements.Armure;
+import jeu.Donjon;
 
 
 public class MaitreDuJeu {
@@ -39,14 +38,18 @@ public class MaitreDuJeu {
         this.donjon = new Donjon(hauteur + 1, largeur + 1);
         System.out.println("Le donjon a été créé avec succès !");
 
-
         System.out.println("Entrez le nombre d'obstacles à positionner :");
         int nombreObstacles = scanner.nextInt();
+        while (nombreObstacles < 0 || nombreObstacles > largeur * hauteur)
+        {
+            System.out.println("\u001B[31mLe nombre d'obstacles doit être compris entre 0 et " + (largeur * hauteur) + ". Réessayez.\u001B[0m");
+            System.out.println("Entrez le nombre d'obstacles à positionner :");
+            nombreObstacles = scanner.nextInt();
+        }
         donjon.positionnerObstacles(nombreObstacles);
 
         return donjon;
     }
-
 
     public void ajouterMonstre() {
         Scanner scanner = new Scanner(System.in);
@@ -279,11 +282,9 @@ public class MaitreDuJeu {
         }
     }
 
-
     public Donjon getDonjon() {
         return donjon;
     }
-
 
     public void miseEnPlace(){
         ajouterMonstre();

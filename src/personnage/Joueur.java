@@ -1,13 +1,12 @@
 package personnage;
 
+import classes.*;
+import equipements.Equipement;
+import equipements.TypeEquipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import equipements.Equipement;
-import equipements.TypeEquipement;
 import races.*;
-import classes.*;
 
 public class Joueur implements Combattant {
     private final String nom;
@@ -156,7 +155,6 @@ public class Joueur implements Combattant {
         return "\u001B[34m" + nom + "\u001B[0m";
     }
 
-
     @Override
     public void deplacer(int x, int y) {
         this.x = x;
@@ -188,7 +186,6 @@ public class Joueur implements Combattant {
         inventaire.addAll(classe.getEquipementDeBase());
         System.out.println("Équipement initial ajouté à l'inventaire : " + inventaire);
     }
-
 
     public void equiperInventaire() {
         Scanner scanner = new Scanner(System.in);
@@ -230,8 +227,6 @@ public class Joueur implements Combattant {
         System.out.println("Récupéré : " + e.getNom());
     }
 
-
-
     public String afficherJoueur() {
         return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
                 "Race = " + race.getNomRaces()  +
@@ -256,5 +251,26 @@ public class Joueur implements Combattant {
                 ", Position: " + getX() + "," + getY() + ")";
     }
 
+    public void seDeplacer(int x, int y) {
+        int vectV = (getVitesse()/3);
+        if ( x < getX() - vectV || x > getX() + vectV ||
+             y < getY() - vectV || y > getY() + vectV) {
+            System.out.println("❌ Déplacement impossible, trop loin !");
+            while (x < getX() - vectV || x > getX() + vectV ||
+                   y < getY() - vectV || y > getY() + vectV) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Veuillez entrer une nouvelle position (X, Y) dans la portée de " + vectV + " :");
+                System.out.print("X : ");
+                x = scanner.nextInt();
+                System.out.print("Y : ");
+                y = scanner.nextInt();
+            }
+        } else {
+            setX(x);
+            setY(y);
+            System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
+        }
+    }
 
+    
 }
