@@ -1,0 +1,216 @@
+@startuml
+skinparam classFontStyle Bold
+hide empty members
+
+package personnage {
+    abstract class Entite {
+        - nom: String
+        - pointsDeVie: int
+        - force: int
+        - dexterite: int
+        - vitesse: int
+        - initiative: int
+        - x: int
+        - y: int
+
+        + getNom(): String
+        + getPointsDeVie(): int
+        + setPointsDeVie(pv: int): void
+        + getForce(): int
+        + getDexterite(): int
+        + getVitesse(): int
+        + getInitiative(): int
+        + setInitiative(i: int): void
+        + getX(): int
+        + getY(): int
+        + setX(x: int): void
+        + setY(y: int): void
+        + deplacer(x: int, y: int): void
+        + estJoueur(): boolean
+    }
+
+    class Joueur extends Entite {
+        - race: Race
+        - classe: Classe
+        - inventaire: List<Equipement>
+        - armeEquipe: Arme
+        - armurEquipe: Armure
+
+        + Joueur(nom: String)
+        + getRace(): Race
+        + getClasse(): Classe
+        + afficherJoueur(): String
+        + afficherInfos(): String
+        + seDeplacer(x: int, y: int): void
+        + ramasser(equipement: Equipement): void
+        + equiperInventaire(): void
+        + attaquer(cible: Monstre): void
+        + recuperEquipement(e: Equipement): void
+        + lancerDes(): int
+        + modifierForce(points: int): void
+        + modifierVitesse(points: int): void
+    }
+
+    class Monstre extends Entite {
+        - numero: int
+        - attaque: String
+        - portee: int
+        - degats: String
+        - classeArmure: int
+
+        + Monstre(nom: String, numero: int, attaque: String, portee: int, degats: String, pointsDeVie: int, vitesse: int, force: int, dexterite: int, classeArmure: int)
+        + attaquer(cible: Joueur): void
+        + lancerDes(des: String): int
+        + getClasseArmure(): int
+        + afficherMonster(): String
+        + afficherInfos(): String
+    }
+
+    class MaitreDuJeu {
+        - donjon: Donjon
+
+        + MaitreDuJeu()
+        + creerDonjon(): Donjon
+        + ajouterMonstre(): void
+        + ajouterJoueur(): void
+        + ajouterEquipement(): void
+        + miseEnPlace(): void
+        + getDonjon(): Donjon
+    }
+}
+
+package races {
+    abstract class Race {
+        - nom: String
+        - dexterite: int
+        - vitesse: int
+        - force: int
+        - pointsDeVie: int
+
+        + Race(nom: String)
+        + getDexterite(): int
+        + setDexterite(dexterite: int): void
+        + getVitesse(): int
+        + setVitesse(vitesse: int): void
+        + getForce(): int
+        + setForce(force: int): void
+        + getPointsDeVie(): int
+        + setPointsDeVie(pointsDeVie: int): void
+        + getNomRaces(): String
+    }
+
+    class Humain extends Race
+    class Elfe extends Race
+    class Nain extends Race
+    class Halfelin extends Race
+}
+
+package classes {
+    abstract class Classe {
+        - nom: String
+        - pointsDeVie: int
+        - equipementDeBase: List<Equipement>
+
+        + Classe(nom: String, pointsDeVie: int)
+        + getNomClasse(): String
+        + getPointsDeVie(): int
+        + getEquipementDeBase(): List<Equipement>
+        + ajouterEquipement(equipement: Equipement): void
+    }
+
+    class Guerrier extends Classe
+    class Magicien extends Classe
+    class Clerc extends Classe
+    class Roublard extends Classe
+}
+
+package equipements {
+    interface Equipement {
+        + getNom(): String
+        + appliquerEffets(p: Joueur): void
+        + getType(): TypeEquipement
+        + toString(): String
+    }
+
+    enum Arme implements Equipement {
+        + getNom(): String
+        + getDegatsNumeriques(): int
+        + getDegats(): String
+        + getPortee(): int
+        + estArmeDeGuerre(): boolean
+        + appliquerEffets(p: Joueur): void
+        + toString(): String
+    }
+
+    enum Armure implements Equipement {
+        + getNom(): String
+        + getClasseArmure(): int
+        + estArmureLourde(): boolean
+        + appliquerEffets(p: Joueur): void
+        + toString(): String
+    }
+
+    enum TypeEquipement {
+        ARME, ARMURE
+    }
+}
+
+package jeu {
+    class Donjon {
+        - hauteur: int
+        - largeur: int
+        - carte: String[][]
+        - monstres: List<Monstre>
+        - joueurs: List<Joueur>
+        - equipementsListe: List<Equipement>
+
+        + Donjon(hauteur: int, largeur: int)
+        + creerCarte(): void
+        + positionnerObstacles(nombreObstacles: int): void
+        + getCarte(): String[][]
+        + placerEquipement(equipement: Equipement, x: int, y: int): boolean
+        + placerMonstreAleatoirement(monstre: Monstre, numero: int): void
+        + placerMonstre(monstre: Monstre, x: int, y: int, numero: int): void
+        + placerJoueur(nom: String, x: int, y: int, numeroJoueur: int): boolean
+        + afficherCarte(): void
+        + ordreJeuJoueur(): List<Joueur>
+        + ordreJeuMonstre(): List<Monstre>
+        + lancerDes(): int
+        + getHauteur(): int
+        + getLargeur(): int
+        + getEquipementsListe(): List<Equipement>
+    }
+
+    class Jeu {
+        - maitreDuJeu: MaitreDuJeu
+        - listeJoueurs: List<Joueur>
+        - listeMonstres: List<Monstre>
+        - listeEntite: List<Object>
+        - tour: int
+
+        + Jeu()
+        + lancerJeu(): void
+        + jouerTour(): void
+        + afficherOrdreDeJeu(): void
+        + boucleJeu(): void
+    }
+}
+
+personnage.Joueur --|> personnage.Entite
+personnage.Monstre --|> personnage.Entite
+personnage.Joueur o-- races.Race
+personnage.Joueur o-- classes.Classe
+personnage.Joueur o-- equipements.Arme
+personnage.Joueur o-- equipements.Armure
+personnage.Joueur o-- equipements.Equipement
+personnage.Monstre ..> personnage.Joueur
+personnage.Monstre ..> personnage.Monstre
+jeu.Donjon o-- personnage.Joueur
+jeu.Donjon o-- personnage.Monstre
+jeu.Donjon o-- equipements.Equipement
+jeu.Jeu o-- personnage.Joueur
+jeu.Jeu o-- personnage.Monstre
+jeu.Jeu o-- personnage.MaitreDuJeu
+personnage.MaitreDuJeu o-- jeu.Donjon
+
+@enduml

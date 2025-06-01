@@ -19,6 +19,7 @@ public class Jeu {
         this.tour = 0;
         listeJoueurs = new ArrayList<>();
         listeMonstres = new ArrayList<>();
+        listeEntite = new ArrayList<>();
     }
 
     public void lancerJeu() {
@@ -28,10 +29,25 @@ public class Jeu {
 
     public void jouerTour() {
         System.out.println("------------------Tour " + (tour + 1) + "-----------------");
-
-
-
-
+        tour++;
+        for (Object entite : listeEntite) {
+            if (entite instanceof Joueur) {
+                Joueur joueur = (Joueur) entite;
+                if (joueur.getPointsDeVie() > 0) {
+                    System.out.println(joueur.getNom() + " joue son tour.");
+                } else {
+                    System.out.println(joueur.getNom() + " est mort et ne peut pas jouer.");
+                }
+            } else if (entite instanceof Monstre) {
+                Monstre monstre = (Monstre) entite;
+                if (monstre.getPointsDeVie() > 0) {
+                    System.out.println(monstre.getNom() + " joue son tour.");
+                    
+                } else {
+                    System.out.println(monstre.getNom() + " est mort et ne peut pas jouer.");
+                }
+            }
+        }
 
     }
 
@@ -39,7 +55,6 @@ public class Jeu {
         System.out.println("---------------- Ordre de Jeu ----------------");
         listeJoueurs = maitreDuJeu.getDonjon().ordreJeuJoueur();
         listeMonstres = maitreDuJeu.getDonjon().ordreJeuMonstre();
-        listeEntite = new ArrayList<>();
         listeEntite.addAll(listeJoueurs);
         listeEntite.addAll(listeMonstres);
         listeEntite.sort((e1, e2) -> {

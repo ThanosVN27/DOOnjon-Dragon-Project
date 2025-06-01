@@ -1,6 +1,8 @@
 package personnage;
 
 import classes.*;
+import equipements.Arme;
+import equipements.Armure;
 import equipements.Equipement;
 import equipements.TypeEquipement;
 import java.util.ArrayList;
@@ -18,8 +20,8 @@ public class Joueur  {
     private int vitesse;
     private int initiative;
     private List<Equipement> inventaire;
-    private Equipement armeEquipe;
-    private Equipement armurEquipe;
+    private Arme armeEquipe;
+    private Armure armurEquipe;
     private int x;
     private int y;
 
@@ -34,8 +36,6 @@ public class Joueur  {
         this.initiative = 0;
         this.inventaire = new ArrayList<>();
         initialiserEquipement();
-
-
     }
 
     public boolean estJoueur() {
@@ -162,14 +162,6 @@ public class Joueur  {
         System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
     }
 
-    public void attaquer(Monstre cible) {
-        System.out.println(nom + " attaque " + cible.getNom()) ;
-        int degats = this.force;
-        cible.setPointsDeVie(cible.getPointsDeVie() - degats);
-        System.out.println("Dégâts infligés : " + degats);
-        System.out.println("Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
-    }
-
     public int lancerDes() {
         int total = 0;
         for (int i = 0; i < 4; i++) {
@@ -273,4 +265,24 @@ public class Joueur  {
             System.out.println("Erreur !!");
         }
         System.out.println("--------------------------------------------------");}
+
+    public void attaqerMonstre(Monstre cible) {
+        if (armeEquipe != null) {
+            //vérifie la portée de l'arme
+            int distance = (int) Math.sqrt(Math.pow(cible.getX() - this.x, 2) + Math.pow(cible.getY() - this.y, 2));
+            if (distance > armeEquipe.getPortee()) {
+                System.out.println(nom + " est trop loin pour attaquer " + cible.getNom() + " avec " + armeEquipe.getNom());
+                return;
+            }
+            System.out.println(nom + " attaque " + cible.getNom() + " avec " + armeEquipe.getNom());
+            int degats = this.force + armeEquipe.getDegatsNumeriques();
+            cible.setPointsDeVie(cible.getPointsDeVie() - degats);
+            System.out.println("Dégâts infligés : " + degats);
+            System.out.println("Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
+        } else {
+            System.out.println(nom + " n'a pas d'arme équipée pour attaquer.");
+        }
+    }
+
+
 }
