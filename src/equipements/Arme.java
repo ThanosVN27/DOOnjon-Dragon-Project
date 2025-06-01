@@ -22,6 +22,7 @@ public enum Arme implements Equipement {
         this.estArmeDeGuerre = estArmeDeGuerre;
     }
 
+    @Override
     public String getNom() {
         return nom;
     }
@@ -38,6 +39,7 @@ public enum Arme implements Equipement {
         return estArmeDeGuerre;
     }
 
+    @Override
     public TypeEquipement getType() {
         return TypeEquipement.ARME;
     }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import races.*;
 
-public class Joueur implements Combattant {
+public class Joueur  {
     private final String nom;
     private final Race race;
     private final Classe classe;
@@ -22,7 +22,6 @@ public class Joueur implements Combattant {
     private Equipement armurEquipe;
     private int x;
     private int y;
-
 
     public Joueur(String nom) {
         this.nom = nom;
@@ -39,7 +38,6 @@ public class Joueur implements Combattant {
 
     }
 
-    @Override
     public boolean estJoueur() {
         return true;
     }
@@ -59,14 +57,15 @@ public class Joueur implements Combattant {
     public int getForce() {
         return force;
     }
+    
     public int getDexterite() {
         return dexterite;
     }
+    
     public int getVitesse() {
         return vitesse;
     }
 
-    @Override
     public int getInitiative() {
         return initiative;
     }
@@ -82,23 +81,25 @@ public class Joueur implements Combattant {
     public void setY(int y) {
         this.y = y;
     }
+    
     public void setX(int x) {
         this.x = x;
     }
 
-    @Override
     public void setPointsDeVie(int pv) {
         this.pointsDeVie = Math.max(0, pv); // empêche les valeurs négatives
     }
 
     public void setForce(int force) { this.force = force; }
+    
     public void setDexterite(int dexterite) { this.dexterite = dexterite; }
+    
     public void setVitesse(int vitesse) { this.vitesse = vitesse; }
 
-    @Override
     public void setInitiative(int initiative) { this.initiative = initiative; }
 
     public Race getRace() { return race; }
+   
     public Classe getClasse() { return classe; }
 
     private static Classe choisirClasse() {
@@ -155,15 +156,13 @@ public class Joueur implements Combattant {
         return "\u001B[34m" + nom + "\u001B[0m";
     }
 
-    @Override
     public void deplacer(int x, int y) {
         this.x = x;
         this.y = y;
         System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
     }
 
-    @Override
-    public void attaquer(Combattant cible) {
+    public void attaquer(Monstre cible) {
         System.out.println(nom + " attaque " + cible.getNom()) ;
         int degats = this.force;
         cible.setPointsDeVie(cible.getPointsDeVie() - degats);
@@ -185,6 +184,60 @@ public class Joueur implements Combattant {
     private void initialiserEquipement() {
         inventaire.addAll(classe.getEquipementDeBase());
         System.out.println("Équipement initial ajouté à l'inventaire : " + inventaire);
+    }
+
+    public void recuperEquipement(Equipement e) {
+        inventaire.add(e);
+        System.out.println("Récupéré : " + e.getNom());
+    }
+
+    public String afficherJoueur() {
+        return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
+                "Race = " + race.getNomRaces()  +
+                " ; Classe = " + classe.getNomClasse()  +
+                " ; PointsDeVie = " + pointsDeVie  +
+                " ; Force = " + force  +
+                " ; Dexterite = " + dexterite  +
+                " ; Vitesse = " + vitesse  +
+                " ; Initiative = " + initiative + "\n" +
+                "--[Inventaire]-- = " + inventaire  + "\n" +
+                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.toString() : "Aucune") + "\n" +
+                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.toString(): "Aucune") + "\n" +
+                "Position = (" + x + ", " + y + ")";
+
+
+    }
+ 
+    public String afficherInfos() {
+        return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRaces() +
+                ", PV: " + getPointsDeVie() +
+                ", Position: " + getX() + "," + getY() + ")";
+    }
+
+    public void seDeplacer(int x, int y) {
+        int vectV = (getVitesse()/3);
+        if ( x < getX() - vectV || x > getX() + vectV ||
+             y < getY() - vectV || y > getY() + vectV) {
+            System.out.println("❌ Déplacement impossible, trop loin !");
+            while (x < getX() - vectV || x > getX() + vectV ||
+                   y < getY() - vectV || y > getY() + vectV) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Veuillez entrer une nouvelle position (X, Y) dans la portée de " + vectV + " :");
+                System.out.print("X : ");
+                x = scanner.nextInt();
+                System.out.print("Y : ");
+                y = scanner.nextInt();
+            }
+        } else {
+            setX(x);
+            setY(y);
+            System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
+        }
+    }
+
+    public void ramasser(Equipement equipement) {
+        inventaire.add(equipement);
+        System.out.println(nom + " ramasse l'équipement : " + equipement.getNom());
     }
 
     public void equiperInventaire() {
@@ -219,58 +272,5 @@ public class Joueur implements Combattant {
         else {
             System.out.println("Erreur !!");
         }
-        System.out.println("--------------------------------------------------");
-    }
-
-    public void recuperEquipement(Equipement e) {
-        inventaire.add(e);
-        System.out.println("Récupéré : " + e.getNom());
-    }
-
-    public String afficherJoueur() {
-        return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
-                "Race = " + race.getNomRaces()  +
-                " ; Classe = " + classe.getNomClasse()  +
-                " ; PointsDeVie = " + pointsDeVie  +
-                " ; Force = " + force  +
-                " ; Dexterite = " + dexterite  +
-                " ; Vitesse = " + vitesse  +
-                " ; Initiative = " + initiative + "\n" +
-                "--[Inventaire]-- = " + inventaire  + "\n" +
-                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.toString() : "Aucune") + "\n" +
-                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.toString(): "Aucune") + "\n" +
-                "Position = (" + x + ", " + y + ")";
-
-
-    }
-
-    @Override
-    public String afficherInfos() {
-        return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRaces() +
-                ", PV: " + getPointsDeVie() +
-                ", Position: " + getX() + "," + getY() + ")";
-    }
-
-    public void seDeplacer(int x, int y) {
-        int vectV = (getVitesse()/3);
-        if ( x < getX() - vectV || x > getX() + vectV ||
-             y < getY() - vectV || y > getY() + vectV) {
-            System.out.println("❌ Déplacement impossible, trop loin !");
-            while (x < getX() - vectV || x > getX() + vectV ||
-                   y < getY() - vectV || y > getY() + vectV) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Veuillez entrer une nouvelle position (X, Y) dans la portée de " + vectV + " :");
-                System.out.print("X : ");
-                x = scanner.nextInt();
-                System.out.print("Y : ");
-                y = scanner.nextInt();
-            }
-        } else {
-            setX(x);
-            setY(y);
-            System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
-        }
-    }
-
-    
+        System.out.println("--------------------------------------------------");}
 }

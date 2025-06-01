@@ -1,8 +1,6 @@
 package personnage;
 
-
-
-public class Monstre implements Combattant {
+public class Monstre {
     private final String nom;
     private final int numero;
     private final String attaque;
@@ -31,7 +29,7 @@ public class Monstre implements Combattant {
         this.initiative = 0;
     }
 
-    public void attaquer(Combattant cible) {
+    public void attaquer(Joueur cible) {
         System.out.println(nom + " #" + numero + " attaque " + cible.getNom() + " avec " + attaque);
         int degatsInfliges = lancerDes(degats);
         cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
@@ -49,13 +47,11 @@ public class Monstre implements Combattant {
         }
         return total;
     }
-
-    @Override
+    
     public void setInitiative(int initiative) {
         this.initiative = initiative;
     }
 
-    @Override
     public int getInitiative() {
         return initiative;
     }
@@ -71,12 +67,10 @@ public class Monstre implements Combattant {
     public int getPointsDeVie() {
         return pointsDeVie;
     }
-
-    @Override
+    
     public void setPointsDeVie(int pv) {
         this.pointsDeVie = Math.max(0, pv); //valeur negatif
     }
-
 
     public int getVitesse() {
         return vitesse;
@@ -97,9 +91,11 @@ public class Monstre implements Combattant {
     public int getX() {
         return x;
     }
+    
     public void setX(int x) {
         this.x = x;
     }
+    
     public int getY() {
         return y;
     }
@@ -107,8 +103,6 @@ public class Monstre implements Combattant {
     public void setY(int y) {
         this.y = y;
     }
-
-
 
     public String afficherMonster() {
         return "\u001B[31m --[Monstre]--\u001B[0m = [" +
@@ -126,19 +120,15 @@ public class Monstre implements Combattant {
                 ']';
     }
 
-    @Override
     public String afficherInfos() {
         return getNom() + " (PV: " + getPointsDeVie() +
                 ",Position: " + getX() + "," + getY() + ")";
     }
 
-
-    @Override
     public boolean estJoueur() {
         return false;
     }
 
-    @Override
     public void deplacer(int x, int y) {
         this.x = x;
         this.y = y;

@@ -4,7 +4,6 @@ import equipements.Equipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import personnage.Combattant;
 import personnage.Joueur;
 import personnage.Monstre;
 
@@ -12,7 +11,6 @@ public class Donjon {
     private final int hauteur;
     private final int largeur;
     private final String[][] carte;
-    private List<Combattant> combattant;
     private List<Monstre> monstres;
     private List<Joueur> joueurs;
     private final List<Equipement> equipementsListe;
@@ -22,7 +20,8 @@ public class Donjon {
         this.largeur = largeur;
         this.carte = new String[hauteur][largeur];
         this.equipementsListe = new ArrayList<>();
-        this.combattant = new ArrayList<>();
+        this.monstres = new ArrayList<>();
+        this.joueurs = new ArrayList<>();
         creerCarte();
     }
 
@@ -57,9 +56,7 @@ public class Donjon {
     public String[][] getCarte() {
         String [][] carteAffichage = new String[hauteur][largeur];
         for (int i = 0; i < carte.length; i++) {
-            for (int j = 0; j < carte.length; j++) {
-                carteAffichage[i][j] = carte[i][j];
-            }
+            System.arraycopy(carte[i], 0, carteAffichage[i], 0, carte.length);
         }
         return carteAffichage;
     }
@@ -76,11 +73,9 @@ public class Donjon {
         }
     }
 
-
     public List<Equipement> getEquipementsListe() {
         return equipementsListe;
     }
-
 
     public int getHauteur() {
         return hauteur;
@@ -100,8 +95,7 @@ public class Donjon {
                 carte[x][y] = "M" + numero;
                 monstre.setX(x);
                 monstre.setY(y);
-                combattant.add(monstre);
-                monstres.add(monstre);
+                this.monstres.add(monstre);
                 place = true;
             }
 
@@ -114,7 +108,6 @@ public class Donjon {
                 carte[x][y] = "M" + numero;
                 monstre.setX(x);
                 monstre.setY(y);
-                combattant.add(monstre);
                 monstres.add(monstre);
             } else {
                 System.out.println("Impossible de positionner le monstre ici. Case occupée.");
@@ -130,7 +123,6 @@ public class Donjon {
                 Joueur joueur = new Joueur(nom);
                 joueur.equiperInventaire();
                 carte[x][y] = "J" + numeroJoueur;
-                this.combattant.add(joueur);
                 joueur.setX(x);
                 joueur.setY(y);
                 this.joueurs.add(joueur);
@@ -157,9 +149,19 @@ public class Donjon {
         System.out.println("---------------------------------------------------------");
     }
 
-    public List<Combattant> ordreJeu() {
-        List<Combattant> listeOrdre = new ArrayList<>(combattant);
-        for(Combattant c : listeOrdre) {
+    public List<Joueur> ordreJeuJoueur() {
+        List<Joueur> listeOrdre = new ArrayList<>(joueurs);
+        for(Joueur c : listeOrdre) {
+            int initiative = lancerDes() + c.getInitiative();
+            c.setInitiative(initiative);
+        }
+        listeOrdre.sort((c1, c2) -> Integer.compare(c2.getInitiative(), c1.getInitiative()));
+        return listeOrdre;
+    }
+
+    public List<Monstre> ordreJeuMonstre() {
+        List<Monstre> listeOrdre = new ArrayList<>(monstres);
+        for(Monstre c : listeOrdre) {
             int initiative = lancerDes() + c.getInitiative();
             c.setInitiative(initiative);
         }

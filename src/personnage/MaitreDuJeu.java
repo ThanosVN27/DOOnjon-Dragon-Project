@@ -13,7 +13,6 @@ import jeu.Donjon;
 public class MaitreDuJeu {
     private Donjon donjon;
 
-
     public MaitreDuJeu() {
         this.donjon = creerDonjon();
     }
