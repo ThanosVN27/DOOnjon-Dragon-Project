@@ -42,11 +42,7 @@ public class Jeu {
                 Monstre monstre = (Monstre) entite;
                 if (monstre.getPointsDeVie() > 0) {
                     System.out.println(monstre.getNom() + " joue son tour.");
-<<<<<<< HEAD
 
-=======
-                    
->>>>>>> 3d18a2db2e1fd16c1f41f5da3f1bfa3c83c55b57
                 } else {
                     System.out.println(monstre.getNom() + " est mort et ne peut pas jouer.");
                 }
@@ -62,7 +58,7 @@ public class Jeu {
         listeEntite.addAll(listeJoueurs);
         listeEntite.addAll(listeMonstres);
         listeEntite.sort((e1, e2) -> {
-<<<<<<< HEAD
+
             if (e1 instanceof Joueur && e2 instanceof Joueur)
             {
                 return Integer.compare(((Joueur) e2).getInitiative(), ((Joueur) e1).getInitiative());
@@ -78,23 +74,9 @@ public class Jeu {
             else {
                 return 1;
             }
-=======
-            if (e1 instanceof Joueur && e2 instanceof Joueur) 
-            {
-                return Integer.compare(((Joueur) e2).getInitiative(), ((Joueur) e1).getInitiative());
-            } 
-            else if (e1 instanceof Monstre && e2 instanceof Monstre) 
-            {
-                return Integer.compare(((Monstre) e2).getInitiative(), ((Monstre) e1).getInitiative());
-            } 
-            else if (e1 instanceof Joueur) 
-            {
-                return -1;
-            } 
-            else {
-                return 1;
-            }
->>>>>>> 3d18a2db2e1fd16c1f41f5da3f1bfa3c83c55b57
+
+
+
         });
 
         System.out.println("------------------------------------------------");
