@@ -8,6 +8,7 @@ public interface Equipement {
     TypeEquipement getType();
     @Override
     String toString();
-    
+    int getDegatsNumeriques();
+    int getPortee();
 }
 

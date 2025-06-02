@@ -268,7 +268,7 @@ public class Joueur  {
     }
 
 
-    public void attaqerMonstre(Monstre cible) {
+    public void attaquerMonstre(Monstre cible) {
         if (armeEquipe != null) {
             //vérifie la portée de l'arme
             int distance = (int) Math.sqrt(Math.pow(cible.getX() - this.x, 2) + Math.pow(cible.getY() - this.y, 2));
