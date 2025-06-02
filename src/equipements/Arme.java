@@ -1,4 +1,6 @@
 package equipements;
+import java.util.Random;
+import java.util.random.RandomGenerator;
 import personnage.Joueur;
 
 public enum Arme implements Equipement {
@@ -22,8 +24,16 @@ public enum Arme implements Equipement {
         this.estArmeDeGuerre = estArmeDeGuerre;
     }
 
+    @Override
     public String getNom() {
         return nom;
+    }
+
+    public int getDegatsNumeriques() {
+        if (degats.equals("1d4")) return RandomGenerator.getDefault().nextInt(1, 5); // 1d4
+        if (degats.equals("1d6")) return RandomGenerator.getDefault().nextInt(1, 7); // 1d6
+        if (degats.equals("1d8")) return RandomGenerator.getDefault().nextInt(1, 9); // 1d8
+        return 0;
     }
 
     public String getDegats() {
@@ -38,6 +48,7 @@ public enum Arme implements Equipement {
         return estArmeDeGuerre;
     }
 
+    @Override
     public TypeEquipement getType() {
         return TypeEquipement.ARME;
     }
