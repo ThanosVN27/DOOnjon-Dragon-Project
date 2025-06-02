@@ -100,6 +100,30 @@ public class Jeu {
     }
 
     public int optionsJouer() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choisissez une option :");
+        System.out.println("1. Lancer le jeu");
+        System.out.println("2. Afficher l'ordre de jeu");
+        System.out.println("3. Jouer un tour");
+        System.out.println("4. Quitter le jeu");
 
+        int choix = scanner.nextInt();
+        switch (choix) {
+            case 1:
+                lancerJeu();
+                break;
+            case 2:
+                afficherOrdreDeJeu();
+                break;
+            case 3:
+                jouerTour();
+                break;
+            case 4:
+                System.out.println("Merci d'avoir joué !");
+                return -1; // Indique la fin du jeu
+            default:
+                System.out.println("Option invalide, veuillez réessayer.");
+        }
+        return choix;
     }
 }
