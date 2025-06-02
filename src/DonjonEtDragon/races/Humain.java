@@ -1,4 +1,4 @@
-package races;
+package tests.races;
 
 public class Humain extends Race {
 

@@ -21,8 +21,8 @@ public class Joueur  {
     private int vitesse;
     private int initiative;
     private List<Equipement> inventaire;
-    private Arme armeEquipe;
-    private Armure armurEquipe;
+    private Equipement armeEquipe;
+    private Equipement armurEquipe;
     private int x;
     private int y;
 
@@ -251,7 +251,7 @@ public class Joueur  {
 
             if (e.getType() == TypeEquipement.ARME) {
                 if (armeEquipe != null) inventaire.add(armeEquipe);
-                armeEquipe = e;
+                armeEquipe= e;
             } else {
                 if (armurEquipe != null) inventaire.add(armurEquipe);
                 armurEquipe = e;
@@ -265,9 +265,11 @@ public class Joueur  {
         else {
             System.out.println("Erreur !!");
         }
-        System.out.println("--------------------------------------------------");}
+        System.out.println("--------------------------------------------------");
+    }
 
-    public void attaqerMonstre(Monstre cible) {
+
+    public void attaquerMonstre(Monstre cible) {
         if (armeEquipe != null) {
             //vérifie la portée de l'arme
             int distance = (int) Math.sqrt(Math.pow(cible.getX() - this.x, 2) + Math.pow(cible.getY() - this.y, 2));

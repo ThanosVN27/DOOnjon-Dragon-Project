@@ -48,12 +48,12 @@ public enum Arme implements Equipement {
         return estArmeDeGuerre;
     }
 
-    @Override
+
     public TypeEquipement getType() {
         return TypeEquipement.ARME;
     }
 
-    @Override
+
     public void appliquerEffets(Joueur p) {
         if (estArmeDeGuerre) {
             p.modifierForce(4);

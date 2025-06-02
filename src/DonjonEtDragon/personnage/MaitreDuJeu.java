@@ -290,6 +290,5 @@ public class MaitreDuJeu {
         ajouterMonstre();
         ajouterEquipement();
         ajouterJoueur();
-
     }
 }

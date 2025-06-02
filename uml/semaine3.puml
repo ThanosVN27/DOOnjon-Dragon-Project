@@ -17,7 +17,7 @@ class Personnage {
     - dexterite: int
     - vitesse: int
     - initiative: int
-    - inventaire: List<Object>
+    - inventaire: Equipement[]
     - armeEquipee: Arme
     - armureEquipee: Armure
 
@@ -56,10 +56,8 @@ class Monstre {
     - initiative: int
 
     + <<create>> Monstre(nom : String, numero : int, attaque : String, portee : int, degats : String, pointsDeVie: int, vitesse: int, force: int, dexterite: int, classeArmure: int, initiative: int)
-
     + attaquer(cible: Personnage): void
     + lancerDes(des: string): int
-
     + setInitiative(initiative: int): void
     + setPointDeVie(pointsDeVie: int): void
     + setForce(force: int): void
@@ -76,12 +74,11 @@ class Monstre {
     }
 class MaitreDuJeu {
     - donjon: Donjon
-    - monstres: List<Monstre>
-    - joueurs: List<Personnage>
-    - equipement: List<Object>
+    - monstres: Monstre []
+    - joueurs:  Personnage []
+    - equipement: Equipement []
 
     + <<create>> MaitreDuJeu()
-
     + creerDonjon(): void
     + ajouterMonstre(): void
     + ajouterJoueur(): void
@@ -102,13 +99,11 @@ abstract Race {
     - initiative: int
 
     + <<create>> Race(nom: String)
-
     + setDexterite(dexterite: int): void
     + setForce(force: int): void
     + setVitesse(vitesse: int): void
     + setPointsDeVie(pointsDeVie: int): void
     + setInitiative(initiative: int): void
-
     + getDexterite(): int
     + getForce(): int
     + getVitesse(): int
@@ -132,8 +127,8 @@ class Human extends Race {
     + appliquerRace(personnage: Personnage): void
     }
 
-class Dwarf extends Race {
-    + <<class>> Dwarf()
+class Nain extends Race {
+    + <<class>> Nain()
     + appliquerRace(personnage: Personnage): void
     }
 }
@@ -144,15 +139,13 @@ abstract Classe {
 
     + nom: String
     + pointsDeVie: int
-    + EquipementDeBase: List<Object>
+    + EquipementDeBase: Equipement[]
 
     + <<create>> Classe(nom: String, pointsDeVie: int)
-
-    + ajouterEquipementDeBase(equipement: Object): void
-
+    + ajouterEquipementDeBase(equipement: Equipements): void
     + getPointsDeVie(): int
     + getNomClasse(): String
-    + getEqipementDeBase(): List<Object>
+    + getEqipementDeBase(): Equipement[]
     }
 
 class Guerrier extends Classe {
@@ -164,7 +157,7 @@ class Magicien extends Classe {
     + appliquerPouvoir(personnage: Personnage): void
     }
 class Clerc extends Classe {
-    + <<create>> Clerc()+
+    + <<create>> Clerc()
     + appliquerPouvoir(personnage: Personnage): void
     }
 class Roublard extends Classe {
@@ -194,16 +187,13 @@ enum Arme <<enumerate>> implements Equipement{
     ARBALETE_LEGERE
     FRONDE
     ARC_COURT
-
     --
     - nom: String
     - degats: String
     - portee: int
     - estArmeDeGuerre : Boolean
     --
-
     + <<create>> Arme(String nom, String degats, int portee)
-
     + getNom(): String
     + getDegats(): String
     + getPortee(): int
@@ -241,11 +231,10 @@ class Donjon {
     + creerCarte(): void
     + positionnerObstacles(nombreObstacles: int): void
     + getCarte(): String[][]
-    + placerEquipement(equipement: Object, x: int, y: int): void
+    + placerEquipement(equipement: Equipement, x: int, y: int): void
     + placerMonstreAleatoirement(monstre: Monstre): void
     + placerJoueur(personnage: Personnage, x: int, y: int): void
     + afficherCarte(): void
-
     + getHauteur(): int
     + getLargeur(): int
     }
@@ -268,6 +257,18 @@ Personnage o-- "*" Equipement : inventaire
 
 Personnage --> Race
 Personnage --> Classe
+
+Classe o-- "*" Equipement : equipementDeBase
+MaitreDuJeu --> Donjon
+MaitreDuJeu o-- "*" Personnage : joueurs
+MaitreDuJeu o-- "*" Monstre : monstres
+MaitreDuJeu o-- "*" Equipement : equipements
+
+Monstre --> Personnage : attaque()
+
+Donjon --> Monstre : placerMonstreAleatoirement()
+Donjon --> Personnage : placerJoueur()
+Donjon --> Equipement : placerEquipement()
 
 
 }

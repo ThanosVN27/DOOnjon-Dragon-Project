@@ -42,9 +42,18 @@ public enum Armure implements Equipement {
             System.out.println("Vitesse -4 (armure lourde)");
         }
     }
+
+
     
     @Override
     public String toString() {
         return nom + " (Classe d'armure : " + classeArmure + ")";
+    }
+
+    public int getDegatsNumeriques() {
+        return 0; // Les armures n'ont pas de dégâts associés
+    }
+    public int getPortee() {
+        return 0; // Les armures n'ont pas de portée
     }
 }
