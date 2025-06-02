@@ -17,6 +17,7 @@ public enum Armure implements Equipement {
         this.estArmureLourde = estArmureLourde;
     }
 
+    @Override
     public String getNom() {
         return nom;
     }
@@ -29,6 +30,7 @@ public enum Armure implements Equipement {
         return estArmureLourde;
     }
 
+    @Override
     public TypeEquipement getType() {
         return TypeEquipement.ARMURE;
     }
@@ -40,6 +42,9 @@ public enum Armure implements Equipement {
             System.out.println("Vitesse -4 (armure lourde)");
         }
     }
+
+
+    
     @Override
     public String toString() {
         return nom + " (Classe d'armure : " + classeArmure + ")";
