@@ -43,7 +43,7 @@ public class Jeu {
                 Monstre monstre = (Monstre) entite;
                 if (monstre.getPointsDeVie() > 0) {
                     System.out.println(monstre.getNom() + " joue son tour.");
-                    
+
                 } else {
                     System.out.println(monstre.getNom() + " est mort et ne peut pas jouer.");
                 }
@@ -72,6 +72,7 @@ public class Jeu {
 
             // Si égalité d'initiative et types différents, on peut définir une priorité
             // Mais ici, on suppose que les initiatives sont suffisantes
+
         });
 
         // Affichage

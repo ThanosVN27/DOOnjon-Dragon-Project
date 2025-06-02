@@ -1,15 +1,12 @@
-package DonjonEtDragon.personnage;
+package personnage;
 
+import classes.*;
+import equipements.Equipement;
+import equipements.TypeEquipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import DonjonEtDragon.classes.*;
-import DonjonEtDragon.equipements.Arme;
-import DonjonEtDragon.equipements.Armure;
-import DonjonEtDragon.equipements.Equipement;
-import DonjonEtDragon.equipements.TypeEquipement;
-import DonjonEtDragon.races.*;
+import races.*;
 
 public class Joueur  {
     private final String nom;
@@ -251,7 +248,7 @@ public class Joueur  {
 
             if (e.getType() == TypeEquipement.ARME) {
                 if (armeEquipe != null) inventaire.add(armeEquipe);
-                armeEquipe= e;
+                armeEquipe = e;
             } else {
                 if (armurEquipe != null) inventaire.add(armurEquipe);
                 armurEquipe = e;
@@ -265,11 +262,9 @@ public class Joueur  {
         else {
             System.out.println("Erreur !!");
         }
-        System.out.println("--------------------------------------------------");
-    }
+        System.out.println("--------------------------------------------------");}
 
-
-    public void attaquerMonstre(Monstre cible) {
+    public void attaqerMonstre(Monstre cible) {
         if (armeEquipe != null) {
             //vérifie la portée de l'arme
             int distance = (int) Math.sqrt(Math.pow(cible.getX() - this.x, 2) + Math.pow(cible.getY() - this.y, 2));

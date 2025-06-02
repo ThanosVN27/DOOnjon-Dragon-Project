@@ -1,7 +1,7 @@
-package DonjonEtDragon.equipements;
+package equipements;
+import java.util.Random;
 import java.util.random.RandomGenerator;
-
-import DonjonEtDragon.personnage.Joueur;
+import personnage.Joueur;
 
 public enum Arme implements Equipement {
     BATON("Bâton", "1d6", 1, false),
@@ -48,12 +48,12 @@ public enum Arme implements Equipement {
         return estArmeDeGuerre;
     }
 
-
+    @Override
     public TypeEquipement getType() {
         return TypeEquipement.ARME;
     }
 
-
+    @Override
     public void appliquerEffets(Joueur p) {
         if (estArmeDeGuerre) {
             p.modifierForce(4);
@@ -66,4 +66,6 @@ public enum Arme implements Equipement {
     public String toString() {
         return nom + " (Dégâts : " + degats + ", Portée : " + portee + ")";
     }
+
+
 }

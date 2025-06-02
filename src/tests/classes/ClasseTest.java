@@ -2,8 +2,8 @@ package tests.classes;
 
 import org.junit.jupiter.api.Test;
 
-import DonjonEtDragon.classes.Classe;
-import DonjonEtDragon.classes.Guerrier;
+import classes.Classe;
+import classes.Guerrier;
 
 import org.junit.jupiter.api.Assertions;
 

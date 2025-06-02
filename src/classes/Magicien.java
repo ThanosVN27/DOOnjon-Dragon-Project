@@ -1,6 +1,6 @@
-package DonjonEtDragon.classes;
+package classes;
 
-import DonjonEtDragon.equipements.Arme;
+import equipements.Arme;
 
 public class Magicien extends Classe {
     public Magicien() {

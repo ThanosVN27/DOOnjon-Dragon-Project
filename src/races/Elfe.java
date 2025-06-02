@@ -1,4 +1,4 @@
-package tests.races;
+package races;
 
 public class Elfe extends Race{
     public Elfe() {

@@ -1,14 +1,13 @@
-package DonjonEtDragon.personnage;
+package personnage;
 
+import equipements.Arme;
+import equipements.Armure;
+import equipements.Equipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
-import DonjonEtDragon.equipements.Arme;
-import DonjonEtDragon.equipements.Armure;
-import DonjonEtDragon.equipements.Equipement;
-import DonjonEtDragon.jeu.Donjon;
+import jeu.Donjon;
 
 
 public class MaitreDuJeu {
@@ -290,5 +289,6 @@ public class MaitreDuJeu {
         ajouterMonstre();
         ajouterEquipement();
         ajouterJoueur();
+
     }
 }

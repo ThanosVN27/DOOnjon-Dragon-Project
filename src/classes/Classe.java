@@ -1,9 +1,9 @@
-package DonjonEtDragon.classes;
+package classes;
+
+import equipements.Equipement;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import DonjonEtDragon.equipements.Equipement;
 
 public abstract class Classe {
     private final String nom;
