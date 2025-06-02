@@ -1,5 +1,5 @@
-package DonjonEtDragon.equipements;
-import DonjonEtDragon.personnage.Joueur;
+package equipements;
+import personnage.Joueur;
 
 public interface Equipement {
     
@@ -8,7 +8,7 @@ public interface Equipement {
     TypeEquipement getType();
     @Override
     String toString();
-    int getDegatsNumeriques();
     int getPortee();
+    int getDegatsNumeriques();
 }
 

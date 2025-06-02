@@ -1,4 +1,4 @@
-package tests.races;
+package races;
 
 public abstract class Race {
     private final String nom;

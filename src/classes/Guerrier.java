@@ -1,7 +1,7 @@
-package DonjonEtDragon.classes;
+package classes;
 
-import DonjonEtDragon.equipements.Arme;
-import DonjonEtDragon.equipements.Armure;
+import equipements.Arme;
+import equipements.Armure;
 
 public class Guerrier extends Classe {
     public Guerrier() {

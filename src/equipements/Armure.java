@@ -1,5 +1,5 @@
-package DonjonEtDragon.equipements;
-import DonjonEtDragon.personnage.Joueur;
+package equipements;
+import personnage.Joueur;
 
 public enum Armure implements Equipement {
     ARMURE_ECAILLES("Armure d'écailles", 9, false),
@@ -42,18 +42,16 @@ public enum Armure implements Equipement {
             System.out.println("Vitesse -4 (armure lourde)");
         }
     }
-
-
     
     @Override
     public String toString() {
         return nom + " (Classe d'armure : " + classeArmure + ")";
     }
 
-    public int getDegatsNumeriques() {
-        return 0; // Les armures n'ont pas de dégâts associés
-    }
     public int getPortee() {
         return 0; // Les armures n'ont pas de portée
+    }
+    public int getDegatsNumeriques() {
+        return 0; // Les armures n'infligent pas de dégâts
     }
 }

@@ -93,7 +93,11 @@ public class Jeu {
 
             // Si égalité d'initiative et types différents, on peut définir une priorité
             // Mais ici, on suppose que les initiatives sont suffisantes
+<<<<<<< HEAD:src/DonjonEtDragon/jeu/Jeu.java
 >>>>>>> thanhlong
+=======
+
+>>>>>>> thanhlong:src/jeu/Jeu.java
         });
 
         // Affichage

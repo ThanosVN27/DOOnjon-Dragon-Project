@@ -2,6 +2,7 @@ package tests.classes;
 
 import org.junit.jupiter.api.Test;
 
+<<<<<<< HEAD
 import DonjonEtDragon.classes.Classe;
 import DonjonEtDragon.classes.Clerc;
 import DonjonEtDragon.classes.Guerrier;
@@ -10,6 +11,10 @@ import DonjonEtDragon.classes.Roublard;
 
 import DonjonEtDragon.classes.Guerrier;
 
+=======
+import classes.Classe;
+import classes.Guerrier;
+>>>>>>> thanhlong
 
 import org.junit.jupiter.api.Assertions;
 

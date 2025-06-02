@@ -1,4 +1,4 @@
-package DonjonEtDragon.equipements;
+package equipements;
 
 public enum TypeEquipement {
     ARME,
