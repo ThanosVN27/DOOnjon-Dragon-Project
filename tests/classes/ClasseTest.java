@@ -1,13 +1,14 @@
 package tests.classes;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
-import classes.Classe;
-import classes.Guerrier;
-import classes.Magicien;
-import classes.Clerc;
-import classes.Roublard;
+import DonjonEtDragon.classes.Classe;
+import DonjonEtDragon.classes.Clerc;
+import DonjonEtDragon.classes.Guerrier;
+import DonjonEtDragon.classes.Magicien;
+import DonjonEtDragon.classes.Roublard;
+
+import org.junit.jupiter.api.Assertions;
 
 public class ClasseTest {
     @Test

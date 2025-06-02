@@ -1,5 +1,5 @@
-package equipements;
-import personnage.Joueur;
+package DonjonEtDragon.equipements;
+import DonjonEtDragon.personnage.Joueur;
 
 public enum Armure implements Equipement {
     ARMURE_ECAILLES("Armure d'écailles", 9, false),
