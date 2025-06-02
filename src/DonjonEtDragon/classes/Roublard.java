@@ -1,6 +1,6 @@
-package classes;
+package DonjonEtDragon.classes;
 
-import equipements.Arme;
+import DonjonEtDragon.equipements.Arme;
 
 public class Roublard extends Classe {
     public Roublard() {

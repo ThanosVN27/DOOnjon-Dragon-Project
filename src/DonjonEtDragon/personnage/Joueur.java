@@ -1,14 +1,15 @@
-package personnage;
+package DonjonEtDragon.personnage;
 
-import classes.*;
-import equipements.Arme;
-import equipements.Armure;
-import equipements.Equipement;
-import equipements.TypeEquipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import races.*;
+
+import DonjonEtDragon.classes.*;
+import DonjonEtDragon.equipements.Arme;
+import DonjonEtDragon.equipements.Armure;
+import DonjonEtDragon.equipements.Equipement;
+import DonjonEtDragon.equipements.TypeEquipement;
+import DonjonEtDragon.races.*;
 
 public class Joueur  {
     private final String nom;

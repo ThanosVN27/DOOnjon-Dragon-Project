@@ -1,7 +1,7 @@
-package equipements;
-import java.util.Random;
+package DonjonEtDragon.equipements;
 import java.util.random.RandomGenerator;
-import personnage.Joueur;
+
+import DonjonEtDragon.personnage.Joueur;
 
 public enum Arme implements Equipement {
     BATON("Bâton", "1d6", 1, false),

@@ -1,7 +1,7 @@
-package classes;
+package DonjonEtDragon.classes;
 
-import equipements.Arme;
-import equipements.Armure;
+import DonjonEtDragon.equipements.Arme;
+import DonjonEtDragon.equipements.Armure;
 
 public class Clerc extends Classe {
     public Clerc() {
