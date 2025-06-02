@@ -3,14 +3,13 @@ package tests.classes;
 import org.junit.jupiter.api.Test;
 
 import DonjonEtDragon.classes.Classe;
-<<<<<<< HEAD
 import DonjonEtDragon.classes.Clerc;
 import DonjonEtDragon.classes.Guerrier;
 import DonjonEtDragon.classes.Magicien;
 import DonjonEtDragon.classes.Roublard;
-=======
+
 import DonjonEtDragon.classes.Guerrier;
->>>>>>> thanhlong
+
 
 import org.junit.jupiter.api.Assertions;
 
