@@ -4,7 +4,9 @@ import equipements.Equipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
+import personnage.Joueur;
 import personnage.Monstre;
 
 public class Donjon {
@@ -13,7 +15,7 @@ public class Donjon {
     private final String[][] carte;
     private List<Monstre> monstres;
     private List<Joueur> joueurs;
-    private final List<Equipement> equipementsListe;
+    private List<Equipement> equipementsListe;
 
     public Donjon(int hauteur, int largeur) {
         this.hauteur = hauteur;
@@ -120,11 +122,9 @@ public class Donjon {
         }
     }
 
-    public boolean placerJoueur(String nom, int x, int y,int numeroJoueur) {
+    public boolean placerJoueur(Joueur joueur, int x, int y,int numeroJoueur) {
         if (x >= 0 && x < hauteur && y >= 0 && y < largeur) {
             if (carte[x][y].equals(".")) {
-                Joueur joueur = new Joueur(nom);
-                joueur.equiperInventaire();
                 carte[x][y] = "J" + numeroJoueur;
                 joueur.setX(x);
                 joueur.setY(y);
@@ -141,16 +141,34 @@ public class Donjon {
 
     public void afficherCarte() {
         System.out.println();
-        System.out.println("-------------------------- Carte du Donjon --------------------------------");
+        afficherTitreCarte();
 
         for (int i = 0; i < hauteur; i++) {
             for (int j = 0; j < largeur; j++) {
-                System.out.print(String.format("%3s", carte[i][j]));
+                System.out.print(String.format("%4s", carte[i][j]));
             }
             System.out.println();
         }
-        System.out.println("--------------------------------------------------------------------------");
+
+        afficherLigneBasCarte();
     }
+
+    // Affiche le titre centré en fonction de la largeur de la carte
+    private void afficherTitreCarte() {
+        String titre = " Carte du Donjon ";
+        int largeurTotale = largeur * 4; // 4 caractères par case
+        int pad = (largeurTotale - titre.length()) / 2;
+
+        String ligne = "─".repeat(Math.max(0, pad)) + titre + "─".repeat(Math.max(0, largeurTotale - pad - titre.length()));
+        System.out.println(ligne);
+    }
+
+    // Affiche une ligne de fin pour fermer la carte proprement
+    private void afficherLigneBasCarte() {
+        int largeurTotale = largeur * 4;
+        System.out.println("─".repeat(largeurTotale));
+    }
+
 
     public List<Joueur> ordreJeuJoueur() {
         List<Joueur> listeOrdre = new ArrayList<>(joueurs);
@@ -186,22 +204,25 @@ public class Donjon {
 
     public boolean mettreAPositionJoueur(Joueur joueur, int x, int y) {
         if (x > 0 && x < hauteur && y > 0 && y < largeur) {
-            if (carte[x][y].equals(".")) {
+            if (carte[x][y].equals(".") || carte[x][y].equals("E")) {
                 int ancienX = joueur.getX();
                 int ancienY = joueur.getY();
-
-                joueur.seDeplacer(x, y);
-
                 if (ancienX > 0 && ancienY > 0) {
                     carte[ancienX][ancienY] = ".";
+
                 }
 
+                joueur.seDeplacer(x, y);
+                int nouveauX = joueur.getX();
+                int nouveauY = joueur.getY();
                 int numeroJoueur = joueurs.indexOf(joueur) + 1;
-                carte[x][y] = "J" + numeroJoueur;
+                carte[nouveauX][nouveauY] = "J" + numeroJoueur;
+                mettreAJourEquipement();
                 afficherCarte();
 
                 return true;
             } else {
+                joueur.seDeplacer(x, y);
                 System.out.println("Impossible de déplacer le joueur ici. Case occupée.");
             }
         } else {
@@ -227,21 +248,62 @@ public class Donjon {
         }
     }
 
-    public boolean mettreAJourEquipement(Equipement equipement, int x, int y) {
-        if( x >= 0 && x < hauteur && y >= 0 && y < largeur) {
-            if (carte[x][y].equals("E")) {
-                carte[equipement.getPositionX()][equipement.getPositionY()] = "E";
-                equipementsListe.remove(equipement);
-                carte[x][y] = ".";
-                return true;
+    public void mettreAJourEquipement() {
+        for(Equipement equipement : equipementsListe) {
+            System.out.println("Mise à jour de l'équipement : " + equipement.getNom());
+            int x = equipement.getPositionX();
+            int y = equipement.getPositionY();
+            if (carte[x][y].equals(".")) {
+                carte[x][y] = "E";
+            }
+        }
+
+    }
+
+    public Equipement getEquipementAtPosition(int x, int y) {
+        for (Equipement equipement : equipementsListe) {
+            if (equipement.getPositionX() == x && equipement.getPositionY() == y) {
+                return equipement;
+            }
+        }
+        return null;
+    }
+
+    public void verifierPositionJoueur(Joueur joueur) {
+        int x = joueur.getX();
+        int y = joueur.getY();
+        Equipement equipement = getEquipementAtPosition(x, y);
+
+        if (equipement != null) {
+            System.out.println("Vous avez trouvé un équipement : " + equipement.getNom());
+            System.out.println("Voulez-vous le ramasser ? (oui/non)");
+
+            Scanner scanner = new Scanner(System.in);
+            String reponse = scanner.nextLine().trim().toLowerCase();
+
+            if (reponse.equals("oui")) {
+                retirerEquipementDeLaCarte(equipement);
+                joueur.ramasser(equipement);
+
             } else {
-                System.out.println("Impossible de déplacer l'équipement ici. Case occupée.");
+                System.out.println("Vous avez choisi de ne pas ramasser l'équipement.");
             }
         } else {
-            System.out.println("Position invalide.");
+            System.out.println("Aucun équipement à cette position.");
         }
-        return false;
     }
+
+    private void retirerEquipementDeLaCarte(Equipement equipement) {
+        if(equipementsListe.contains(equipement)) {
+            equipementsListe.remove(equipement);
+            mettreAJourEquipement();
+        }
+
+
+    }
+
+
+
 
 
 }

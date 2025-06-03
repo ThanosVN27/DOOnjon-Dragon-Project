@@ -177,6 +177,8 @@ public class MaitreDuJeu {
 
             System.out.println("Entrez le nom du joueur :");
             String nom = scanner.nextLine();
+            Joueur joueur = new Joueur(nom);
+            joueur.equiperInventaire();
 
             int x = -1, y = -1;
             boolean valide = false;
@@ -214,7 +216,7 @@ public class MaitreDuJeu {
                 scanner.nextLine();
 
                 // Placement
-                if (donjon.placerJoueur(nom, x, y,i + 1)) {
+                if (donjon.placerJoueur(joueur, x, y,i + 1)) {
                     System.out.println("✅ Joueur " + nom + " ajouté en (" + x + "," + y + ")");
                     valide = true;
                 } else {
@@ -256,7 +258,7 @@ public class MaitreDuJeu {
             Equipement equipementChoisi = equipementListe.get(choix - 1);
             System.out.println("Vous avez choisi : " + equipementChoisi);
 
-            donjon.getEquipementsListe().add(equipementChoisi);
+
 
             boolean positionValide = false;
             while (!positionValide) {
@@ -281,6 +283,8 @@ public class MaitreDuJeu {
         }
     }
 
+
+
     public Donjon getDonjon() {
         return donjon;
     }
@@ -292,17 +296,7 @@ public class MaitreDuJeu {
 
     }
 
-    public Equipement getEquipementSurCase(int x, int y) {
-        for (Equipement equipement : donjon.getEquipementsListe()) {
-            if (equipement.getPositionX() == x && equipement.getPositionY() == y) {
-                donjon.mettreAJourEquipement(equipement,x,y);
-                }
-                afficherCarte();
-                return equipement;
-            }
 
-        return null;
-    }
 
 
     public void afficherCarte() {

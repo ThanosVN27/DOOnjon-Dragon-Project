@@ -1,6 +1,6 @@
 package equipements;
 import java.util.random.RandomGenerator;
-import jeu.Joueur;
+import personnage.*;
 
 public enum Arme implements Equipement {
     BATON("Bâton", "1d6", 1, false),

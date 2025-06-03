@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import jeu.Donjon;
 import races.*;
 
 public class Joueur extends Personnage {
@@ -17,7 +18,7 @@ public class Joueur extends Personnage {
     private Equipement armurEquipe;
 
     public Joueur(String nom) {
-        super(nom, 0, 0, 0, 0); // Initialisé temporairement
+        super(nom, 0, 0, 0, 0);
         this.race = choisirRace();
         this.classe = choisirClasse();
         this.pointsDeVie = classe.getPointsDeVie() + race.getPointsDeVie();
@@ -185,35 +186,50 @@ public class Joueur extends Personnage {
                 ", PV: " + getPointsDeVie() +
                 ", Position: " + getX() + "," + getY() + ")" + " ARME: " + (armeEquipe != null ? armeEquipe.getNom() : "Aucune" )  + " || "  + "ARMURE: " + (armurEquipe != null ? armurEquipe.getNom() : "Aucune");
     }
-    @Override
+
+
     public void seDeplacer(int x, int y) {
-        int portee = Math.max(1, getVitesse() / 3);
+        int portee = Math.max(1, getVitesse() / 3); // Garantit une portée minimale de 1
         int posX = getX();
         int posY = getY();
 
-        while (x < posX - portee || x > posX + portee || y < posY - portee || y > posY + portee) {
+
+
+        System.out.println("\n*------------------- Déplacement ------------------------------*");
+        System.out.println(getNom() + " se prépare à se déplacer.");
+        System.out.println("Position actuelle : (" + posX + ", " + posY + ")");
+        System.out.println("Portée de déplacement : " + portee);
+
+
+        while (!estDansLaPortee(x, y, posX, posY, portee)) {
             System.out.println("❌ Déplacement impossible, trop loin !");
             System.out.println("Veuillez entrer une nouvelle position (X, Y) dans la portée de " + portee + " :");
             x = lireEntier("X : ");
             y = lireEntier("Y : ");
         }
 
-        setX(x);
-        setY(y);
+        // Met à jour la position
+        this.x = x;
+        this.y = y;
+
         System.out.println(getNom() + " se déplace vers la position (" + x + ", " + y + ")");
+        System.out.println("*--------------------------------------------------------------*");
+    }
+
+
+    private boolean estDansLaPortee(int destX, int destY, int posX, int posY, int portee) {
+        return Math.abs(destX - posX) <= portee && Math.abs(destY - posY) <= portee;
     }
 
     public void ramasser(Equipement equipement) {
         System.out.println();
-        System.out.println("*--------------------Object trouvé------------------------------*");
+        System.out.println("*----------------------Ramassage------------------------------*");
+
         inventaire.add(equipement);
-        System.out.println(nom + " ramasse l'équipement : " + equipement.getNom());
-        System.out.println("Équipement ajouté à l'inventaire.");
-        System.out.println("Inventaire actuel :");
-        for (int i = 0; i < inventaire.size(); i++) {
-            System.out.println((i + 1) + " : " + inventaire.get(i).getNom());
-        }
-        System.out.println("*--------------------------------------------------------------*");
+        System.out.println(getNom() + " a ramassé l'équipement : " + equipement.getNom());
+        System.out.println("Position de l'équipement : (" + x + ", " + y + ")");
+        System.out.println("*-------------------------------------------------------------*");
+
     }
 
     public void equiperInventaire() {
@@ -273,14 +289,15 @@ public class Joueur extends Personnage {
     }
 
     @Override
-    public void jouerTour(MaitreDuJeu mj) {
+    public void jouerTour(Donjon donjon) {
         System.out.println();
-        System.out.println("--------------------Tour de " + getNom() + " ------------------------------");
+        System.out.println("********************** Tour de " + getNom() + "**********************");
         Scanner scanner = new Scanner(System.in);
         int actions = 3;
-        mj.afficherCarte();
+        donjon.afficherCarte();
         while (actions > 0) {
-            System.out.println(afficherInfos());
+            System.out.println("---------------------------------------------------------");
+            System.out.println(afficherJoueur());
             System.out.println("\n🎮 Tour de " + getNom() + " - Actions restantes : " + actions);
             System.out.println("1. Se déplacer");
             System.out.println("2. Attaquer");
@@ -292,35 +309,35 @@ public class Joueur extends Personnage {
 
             if (!scanner.hasNextInt()) {
                 System.out.println("❌ Veuillez entrer un nombre valide.");
-                scanner.next(); // consomme la mauvaise entrée
+                scanner.next();
                 continue;
             }
 
             int choix = scanner.nextInt();
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
 
             switch (choix) {
                 case 1 -> {
-                    mj.afficherCarte();
+                    donjon.afficherCarte();
+                    System.out.println("Position actuelle : (" + getX() + ", " + getY() + ")");
                     System.out.println("Vitesse = " + vitesse / 3);
-                    System.out.println("Entrez les coordonnées de destination :");
 
                     int x = demanderCoordonnee(scanner, "X");
                     int y = demanderCoordonnee(scanner, "Y");
 
-                    // Vérifie si déplacement valide + mise à jour de la carte
-                    if (mj.getDonjon().mettreAPositionJoueur(this, x, y)) {
-                        System.out.println(getNom() + " s'est déplacé en (" + x + ", " + y + ").");
+                    if (donjon.mettreAPositionJoueur(this, x, y)) {
                         actions--;
                     } else {
-                        System.out.println("❌ Déplacement échoué.");
+                        System.out.println("❌ Déplacement impossible, case occupée ou position invalide.");
                     }
 
                 }
 
                 case 2 -> {
                     if (armeEquipe != null) {
-                        List<Monstre> monstres = mj.getDonjon().ordreJeuMonstre();
-                        mj.afficherCarte();
+                        List<Monstre> monstres = donjon.ordreJeuMonstre();
+                        donjon.afficherCarte();
                         Monstre cible = null;
 
                         for (Monstre monstre : monstres) {
@@ -346,18 +363,11 @@ public class Joueur extends Personnage {
                     actions--;
                 }
                 case 4 -> {
-                    mj.afficherCarte();
-                    int x = demanderCoordonnee(scanner, "X");
-                    int y = demanderCoordonnee(scanner, "Y");
+                    donjon.afficherCarte();
+                    System.out.println("Position actuelle : (" + getX() + ", " + getY() + ")");
+                    donjon.verifierPositionJoueur(this);
+                    actions--;
 
-                    Equipement eq = mj.getEquipementSurCase(x, y);
-                    if (eq != null) {
-                        ramasser(eq);
-                        mj.getDonjon().mettreAPositionJoueur(this, x, y); // Met à jour la position du joueur
-                        actions--;
-                    } else {
-                        System.out.println("❌ Rien à ramasser ici.");
-                    }
                 }
                 case 0 -> actions = 0;
                 default -> System.out.println("❌ Choix invalide.");

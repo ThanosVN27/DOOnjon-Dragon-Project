@@ -1,5 +1,7 @@
 package personnage;
 
+import jeu.Donjon;
+
 public abstract class Personnage {
     protected String nom;
     protected int pointsDeVie;
@@ -21,7 +23,7 @@ public abstract class Personnage {
         this.y = 0;
     }
 
-    public abstract void jouerTour(MaitreDuJeu mj);
+    public abstract void jouerTour(Donjon donjon);
     public abstract void attaquer(Personnage cible);
     public abstract void seDeplacer(int x, int y);
 

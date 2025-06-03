@@ -8,7 +8,6 @@ import personnage.Monstre;
 import personnage.Personnage;
 import personnage.Joueur;
 
-
 public class Jeu {
     private final MaitreDuJeu maitreDuJeu;
     private List<Joueur> listeJoueurs;
@@ -32,26 +31,10 @@ public class Jeu {
 
     public void jouerTour() {
         System.out.println("------------------Tour " + (tour + 1) + "-----------------");
-        tour++;
         for (Personnage entite : listeEntite) {
-            if (entite instanceof Joueur) {
-                Joueur joueur = (Joueur) entite;
-                actionsJoueur(joueur);
-                if (joueur.getPointsDeVie() > 0) {
-                    System.out.println(joueur.getNom() + " joue son tour.");
-                } else {
-                    System.out.println(joueur.getNom() + " est mort et ne peut pas jouer.");
-                }
-            } else if (entite instanceof Monstre) {
-                Monstre monstre = (Monstre) entite;
-                if (monstre.getPointsDeVie() > 0) {
-                    System.out.println(monstre.getNom() + " joue son tour.");
-
-                } else {
-                    System.out.println(monstre.getNom() + " est mort et ne peut pas jouer.");
-                }
-            }
+            entite.jouerTour(maitreDuJeu.getDonjon());
         }
+        tour++;
 
     }
 
@@ -64,16 +47,17 @@ public class Jeu {
         listeMonstres = maitreDuJeu.getDonjon().ordreJeuMonstre();
 
         // Fusion des deux listes
-        listeEntite.clear(); // important pour éviter des doublons si la méthode est appelée plusieurs fois
+        listeEntite.clear();
         listeEntite.addAll(listeJoueurs);
         listeEntite.addAll(listeMonstres);
 
         // Tri unique
         listeEntite.sort((e1, e2) -> {
-
-            int i1 = (e1 instanceof Joueur) ? ((Joueur) e1).getInitiative() : ((Monstre) e1).getInitiative();
-            int i2 = (e2 instanceof Joueur) ? ((Joueur) e2).getInitiative() : ((Monstre) e2).getInitiative();
-            return Integer.compare(i2, i1); // ordre décroissant
+            if (e1.getInitiative() != e2.getInitiative()) {
+                return Integer.compare(e2.getInitiative(), e1.getInitiative());
+            } else {
+                return e1.getNom().compareTo(e2.getNom());
+            }
 
         });
 
@@ -96,10 +80,5 @@ public class Jeu {
         System.out.println("🎉 Partie terminée !");
     }
 
-    public void actionsJoueur(Joueur joueur) {
-        for(Personnage entite : listeEntite) {
-            entite.jouerTour(maitreDuJeu);
-        }
 
-    }
 }

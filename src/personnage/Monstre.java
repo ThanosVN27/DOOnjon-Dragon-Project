@@ -1,6 +1,7 @@
 package personnage;
 
-import jeu.Joueur;
+import jeu.Donjon;
+import personnage.Personnage;
 
 public class Monstre extends Personnage{
     private final int numero;
@@ -136,12 +137,12 @@ public class Monstre extends Personnage{
     }
 
     @Override
-    public void jouerTour(MaitreDuJeu mj) {
+    public void jouerTour(Donjon donjon) {
         // Logique de jeu pour le monstre, par exemple attaquer un joueur ou se déplacer
         System.out.println(nom + " joue son tour.");
         // Exemple d'attaque aléatoire sur un joueur
-        if (mj.getDonjon().getJoueurs().size() > 0) {
-            Joueur cible = mj.getDonjon().getJoueurs().get((int) (Math.random() * mj.getDonjon().getJoueurs().size()));
+        if (donjon.getJoueurs().size() > 0) {
+            Joueur cible = donjon.getJoueurs().get((int) (Math.random() * donjon.getJoueurs().size()));
             attaquer(cible);
         }
     }

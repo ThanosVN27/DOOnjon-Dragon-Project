@@ -1,5 +1,5 @@
 package equipements;
-import personnage.Joueur;
+import personnage.*;
 
 public interface Equipement {
     

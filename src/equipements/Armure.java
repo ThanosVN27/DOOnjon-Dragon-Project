@@ -1,5 +1,5 @@
 package equipements;
-import jeu.Joueur;
+import personnage.*;
 
 public enum Armure implements Equipement {
     ARMURE_ECAILLES("Armure d'écailles", 9, false),
