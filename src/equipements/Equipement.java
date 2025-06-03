@@ -10,5 +10,9 @@ public interface Equipement {
     String toString();
     int getPortee();
     int getDegatsNumeriques();
+    int getPositionX();
+    int getPositionY();
+    void setPositionX(int x);
+    void setPositionY(int y);
 }
 

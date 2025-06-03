@@ -4,7 +4,7 @@ import equipements.Equipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import personnage.Joueur;
+
 import personnage.Monstre;
 
 public class Donjon {
@@ -26,19 +26,20 @@ public class Donjon {
     }
 
     private void creerCarte() {
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
-                carte[0][0] = "0";
-                if (i == 0 && j > 0) {
-                    carte[i][j] = String.valueOf(j );
-                } else if (j == 0 && i > 0) {
-                    carte[i][j] = String.valueOf(i);
-                } else {
-                    carte[i][j] = ".";
-                }
+        carte[0][0] = " "; // case vide en haut à gauche
+        for (int i = 1; i < hauteur; i++) {
+            carte[i][0] = String.valueOf(i); // première colonne = index ligne
+        }
+        for (int j = 1; j < largeur; j++) {
+            carte[0][j] = String.valueOf(j); // première ligne = index colonne
+        }
+        for (int i = 1; i < hauteur; i++) {
+            for (int j = 1; j < largeur; j++) {
+                carte[i][j] = "."; // reste de la carte
             }
         }
     }
+
 
     public void positionnerObstacles(int nombreObstacles) {
         Random random = new Random();
@@ -64,6 +65,8 @@ public class Donjon {
     public boolean placerEquipement(Equipement equipement, int x, int y) {
         if (carte[x][y].equals(".")) {
             carte[x][y] = "E";
+            equipement.setPositionX(x);
+            equipement.setPositionY(y);
             equipementsListe.add(equipement);
             return true;
         } else {
@@ -138,7 +141,7 @@ public class Donjon {
 
     public void afficherCarte() {
         System.out.println();
-        System.out.println("--------------------- Carte du Donjon --------------------");
+        System.out.println("-------------------------- Carte du Donjon --------------------------------");
 
         for (int i = 0; i < hauteur; i++) {
             for (int j = 0; j < largeur; j++) {
@@ -146,7 +149,7 @@ public class Donjon {
             }
             System.out.println();
         }
-        System.out.println("---------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------");
     }
 
     public List<Joueur> ordreJeuJoueur() {
@@ -173,10 +176,72 @@ public class Donjon {
         return (int) (Math.random() * 20) + 1;
     }
 
+    public  List<Monstre> getMonstres() {
+        return monstres;
+    }
+
+    public List<Joueur> getJoueurs() {
+        return joueurs;
+    }
+
+    public boolean mettreAPositionJoueur(Joueur joueur, int x, int y) {
+        if (x > 0 && x < hauteur && y > 0 && y < largeur) {
+            if (carte[x][y].equals(".")) {
+                int ancienX = joueur.getX();
+                int ancienY = joueur.getY();
+
+                joueur.seDeplacer(x, y);
+
+                if (ancienX > 0 && ancienY > 0) {
+                    carte[ancienX][ancienY] = ".";
+                }
+
+                int numeroJoueur = joueurs.indexOf(joueur) + 1;
+                carte[x][y] = "J" + numeroJoueur;
+                afficherCarte();
+
+                return true;
+            } else {
+                System.out.println("Impossible de déplacer le joueur ici. Case occupée.");
+            }
+        } else {
+            System.out.println("Position invalide.");
+        }
+        return false;
+    }
 
 
+    public void mettreAPositionMonstre(Monstre monstre, int x, int y) {
+        if (x >= 0 && x < hauteur && y >= 0 && y < largeur) {
+            if (carte[x][y].equals(".")) {
+                carte[monstre.getX()][monstre.getY()] = ".";
+                int numeroMonstre = monstres.indexOf(monstre) + 1;
+                carte[x][y] = "M" + numeroMonstre;
+                monstre.setX(x);
+                monstre.setY(y);
+            } else {
+                System.out.println("Impossible de déplacer le monstre ici. Case occupée.");
+            }
+        } else {
+            System.out.println("Position invalide.");
+        }
+    }
 
-
+    public boolean mettreAJourEquipement(Equipement equipement, int x, int y) {
+        if( x >= 0 && x < hauteur && y >= 0 && y < largeur) {
+            if (carte[x][y].equals("E")) {
+                carte[equipement.getPositionX()][equipement.getPositionY()] = "E";
+                equipementsListe.remove(equipement);
+                carte[x][y] = ".";
+                return true;
+            } else {
+                System.out.println("Impossible de déplacer l'équipement ici. Case occupée.");
+            }
+        } else {
+            System.out.println("Position invalide.");
+        }
+        return false;
+    }
 
 
 }

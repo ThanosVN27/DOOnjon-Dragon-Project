@@ -1,35 +1,26 @@
 package personnage;
 
-public class Monstre {
-    private final String nom;
+import jeu.Joueur;
+
+public class Monstre extends Personnage{
     private final int numero;
     private final String attaque;
     private final int portee;
     private final String degats;
-    private int pointsDeVie;
-    private final int vitesse;
-    private final int force;
-    private final int dexterite;
     private final int classeArmure;
-    private int initiative;
-    private int x;
-    private int y;
 
-    public Monstre(String nom, int numero, String attaque, int portee, String degats, int pointsDeVie, int vitesse, int force, int dexterite, int classeArmure) {
-        this.nom = nom;
+    public Monstre(String nom, int numero, String attaque, int portee, String degats,
+                   int pointsDeVie, int vitesse, int force, int dexterite, int classeArmure) {
+        super(nom, pointsDeVie, force, dexterite, vitesse);
         this.numero = numero;
         this.attaque = attaque;
         this.portee = portee;
         this.degats = degats;
-        this.pointsDeVie = pointsDeVie;
-        this.vitesse = vitesse;
-        this.force = force;
-        this.dexterite = dexterite;
         this.classeArmure = classeArmure;
-        this.initiative = 0;
     }
 
-    public void attaquer(Joueur cible) {
+    @Override
+    public void attaquer(Personnage cible) {
         System.out.println(nom + " #" + numero + " attaque " + cible.getNom() + " avec " + attaque);
         int degatsInfliges = lancerDes(degats);
         cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
@@ -133,5 +124,25 @@ public class Monstre {
         this.x = x;
         this.y = y;
         System.out.println(nom + " se déplace vers la position(" + x + ", " + y + ")");
+    }
+
+
+
+    public void seDeplacer(int x, int y) {
+        // Logique de déplacement pour le monstre
+        System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public void jouerTour(MaitreDuJeu mj) {
+        // Logique de jeu pour le monstre, par exemple attaquer un joueur ou se déplacer
+        System.out.println(nom + " joue son tour.");
+        // Exemple d'attaque aléatoire sur un joueur
+        if (mj.getDonjon().getJoueurs().size() > 0) {
+            Joueur cible = mj.getDonjon().getJoueurs().get((int) (Math.random() * mj.getDonjon().getJoueurs().size()));
+            attaquer(cible);
+        }
     }
 }

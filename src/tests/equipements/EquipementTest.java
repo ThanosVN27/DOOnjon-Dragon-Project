@@ -11,6 +11,6 @@ import equipements.Armure;
 public class EquipementTest {
     @Test
     void testGetNom() {
-        Arme a = new Arme("Épée", "1d5", 1, true);
+
     }
 }

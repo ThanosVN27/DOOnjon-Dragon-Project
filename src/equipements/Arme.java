@@ -1,7 +1,6 @@
 package equipements;
-import java.util.Random;
 import java.util.random.RandomGenerator;
-import personnage.Joueur;
+import jeu.Joueur;
 
 public enum Arme implements Equipement {
     BATON("Bâton", "1d6", 1, false),
@@ -16,6 +15,8 @@ public enum Arme implements Equipement {
     private final String degats;
     private final int portee;
     private final boolean estArmeDeGuerre;
+    private int positionX = 0;
+    private int positionY = 0;
 
     Arme(String nom, String degats, int portee, boolean estArmeDeGuerre) {
         this.nom = nom;
@@ -67,5 +68,18 @@ public enum Arme implements Equipement {
         return nom + " (Dégâts : " + degats + ", Portée : " + portee + ")";
     }
 
+    public int getPositionX() {
+        return positionX; // Position X par défaut
+    }
+    public int getPositionY() {
+        return positionY; // Position Y par défaut
+    }
 
+    public void setPositionX(int x) {
+        this.positionX = x;
+    }
+
+    public void setPositionY(int y) {
+        this.positionY = y;
+    }
 }

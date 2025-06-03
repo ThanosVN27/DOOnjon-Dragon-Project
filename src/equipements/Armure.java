@@ -1,5 +1,5 @@
 package equipements;
-import personnage.Joueur;
+import jeu.Joueur;
 
 public enum Armure implements Equipement {
     ARMURE_ECAILLES("Armure d'écailles", 9, false),
@@ -10,11 +10,16 @@ public enum Armure implements Equipement {
     private final String nom;
     private final int classeArmure;
     private final boolean estArmureLourde;
+    private int positionX;
+    private int positionY;
+
 
     Armure(String nom, int classeArmure, boolean estArmureLourde) {
         this.nom = nom;
         this.classeArmure = classeArmure;
         this.estArmureLourde = estArmureLourde;
+        this.positionX = 0; // Position par défaut
+        this.positionY = 0; // Position par défaut
     }
 
     @Override
@@ -35,6 +40,7 @@ public enum Armure implements Equipement {
         return TypeEquipement.ARMURE;
     }
 
+
     @Override
     public void appliquerEffets(Joueur p) {
         if (estArmureLourde) {
@@ -48,10 +54,27 @@ public enum Armure implements Equipement {
         return nom + " (Classe d'armure : " + classeArmure + ")";
     }
 
+
+
+    public int getPositionX() {
+        return positionX;
+    }
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionX(int x) {
+        this.positionX = x;
+    }
+
+    public void setPositionY(int y) {
+        this.positionY = y;
+    }
+
     public int getPortee() {
         return 0; // Les armures n'ont pas de portée
     }
     public int getDegatsNumeriques() {
-        return 0; // Les armures n'infligent pas de dégâts
+        return 0;
     }
 }

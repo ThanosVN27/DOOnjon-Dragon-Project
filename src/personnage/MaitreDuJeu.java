@@ -291,4 +291,25 @@ public class MaitreDuJeu {
         ajouterJoueur();
 
     }
+
+    public Equipement getEquipementSurCase(int x, int y) {
+        for (Equipement equipement : donjon.getEquipementsListe()) {
+            if (equipement.getPositionX() == x && equipement.getPositionY() == y) {
+                donjon.mettreAJourEquipement(equipement,x,y);
+                }
+                afficherCarte();
+                return equipement;
+            }
+
+        return null;
+    }
+
+
+    public void afficherCarte() {
+        donjon.afficherCarte();
+    }
+
+
+
+
 }
