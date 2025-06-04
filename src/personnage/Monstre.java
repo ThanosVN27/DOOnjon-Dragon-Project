@@ -1,7 +1,8 @@
 package personnage;
 
+import jeu.Delai;
 import jeu.Donjon;
-import personnage.Personnage;
+import java.util.List;
 
 public class Monstre extends Personnage{
     private final int numero;
@@ -22,12 +23,38 @@ public class Monstre extends Personnage{
 
     @Override
     public void attaquer(Personnage cible) {
-        System.out.println(nom + " #" + numero + " attaque " + cible.getNom() + " avec " + attaque);
-        int degatsInfliges = lancerDes(degats);
-        cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
-        System.out.println("Dégâts infligés : " + degatsInfliges);
-        System.out.println("Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
+
+        System.out.println("\n╠════════════════════════════ ATTAQUE ═════════════════════════════════╣");
+        System.out.println(" " + getNom() + " #" + numero + " tente d'attaquer " + cible.getNom());
+
+        int distance = Math.abs(this.x - cible.getX()) + Math.abs(this.y - cible.getY());
+        if (distance > portee) {
+            System.out.println(" " + nom + " #" + numero + " est trop loin pour attaquer " + cible.getNom());
+            return;
+        }
+
+        System.out.println(" " + nom + " #" + numero + " attaque " + cible.getNom() + " avec " + attaque);
+
+        int jetAttaque = (int)(Math.random() * 20) + 1; // 1d20
+        int mod = portee == 1 ? force : dexterite; // portee==1 => corps-à-corps
+        int total = jetAttaque + mod;
+
+        System.out.println(" Jet d'attaque : " + jetAttaque + " + " + mod + " = " + total);
+        if (total >= cible.getClasseArmure()) {
+            int degatsInfliges = lancerDes(degats);
+            cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
+            System.out.println("Attaque réussie ! Dégâts infligés : " + degatsInfliges);
+            if (cible.getPointsDeVie() <= 0) {
+                System.out.println("💀 " + cible.getNom() + " est mort !");
+            }
+        } else {
+            System.out.println("Attaque échouée. Classe d'armure de la cible : " + cible.getClasseArmure());
+        }
+
+        System.out.println(" Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
+        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝\n");
     }
+
 
     private int lancerDes(String des) {
         String[] parts = des.split("d");
@@ -68,13 +95,6 @@ public class Monstre extends Personnage{
         return vitesse;
     }
 
-    public int getForce() {
-        return force;
-    }
-
-    public int getDexterite() {
-        return dexterite;
-    }
 
     public int getClasseArmure() {
         return classeArmure;
@@ -117,33 +137,94 @@ public class Monstre extends Personnage{
                 ",Position: " + getX() + "," + getY() + ")";
     }
 
-    public boolean estJoueur() {
-        return false;
-    }
-
-    public void deplacer(int x, int y) {
-        this.x = x;
-        this.y = y;
-        System.out.println(nom + " se déplace vers la position(" + x + ", " + y + ")");
-    }
-
-
 
     public void seDeplacer(int x, int y) {
         // Logique de déplacement pour le monstre
-        System.out.println(nom + " se déplace vers la position (" + x + ", " + y + ")");
+        Delai.attendre();
+        System.out.println("\n╠════════════════════════════ DÉPLACEMENT ═══════════════════════════════╣");
+        System.out.println(getNom() + " se déplace vers la position (" + x + ", " + y + ")");
         this.x = x;
         this.y = y;
+        System.out.println("Nouvelle position de " + getNom() + " : (" + this.x + ", " + this.y + ")");
+        System.out.println("╚═══════════════════════════════════════════════════════════════════════╝\n");
     }
 
     @Override
     public void jouerTour(Donjon donjon) {
-        // Logique de jeu pour le monstre, par exemple attaquer un joueur ou se déplacer
-        System.out.println(nom + " joue son tour.");
-        // Exemple d'attaque aléatoire sur un joueur
-        if (donjon.getJoueurs().size() > 0) {
-            Joueur cible = donjon.getJoueurs().get((int) (Math.random() * donjon.getJoueurs().size()));
-            attaquer(cible);
+        Delai.attendre();
+        System.out.println("\n╠══════════════════════════ TOUR DU MONSTRE ═══════════════════════════╣");
+        System.out.println(getNom() + " joue son tour.");
+
+        int action = 3;
+
+        while (action > 0) {
+            Joueur cible = trouverCibleAPortee(donjon);
+
+            if (cible != null) {
+                attaquer(cible);
+                Delai.attendre();
+            } else {
+                seDeplacerVersJoueur(donjon);
+                Delai.attendre();
+            }
+            action--;
+        }
+
+        System.out.println("╚═══════════════════════════ FIN DU TOUR ══════════════════════════════╝\n");
+    }
+
+    private Joueur trouverCibleAPortee(Donjon donjon) {
+        for (Joueur joueur : donjon.getJoueurs()) {
+            int distance = Math.abs(this.x - joueur.getX()) + Math.abs(this.y - joueur.getY());
+            if (distance <= portee) {
+                return joueur;
+            }
+        }
+        return null; // Aucune cible à portée
+    }
+
+    private void seDeplacerVersJoueur(Donjon donjon) {
+        Joueur cible = donjon.getJoueurLePlusProche(this);
+        if (cible == null) return;
+
+        int distanceMax = vitesse / 3;
+        int dx = Integer.compare(cible.getX(), x);
+        int dy = Integer.compare(cible.getY(), y);
+
+        int nouveauX = x;
+        int nouveauY = y;
+        for (int i = 0; i < distanceMax; i++) {
+            int tentativeX = nouveauX + dx;
+            int tentativeY = nouveauY + dy;
+            if (donjon.estCaseLibre(tentativeX, tentativeY)) {
+                nouveauX = tentativeX;
+                nouveauY = tentativeY;
+            } else {
+                break;
+            }
+        }
+
+        if (nouveauX != x || nouveauY != y) {
+            donjon.mettreAJourMonstre(this, x, y, nouveauX, nouveauY);
+            seDeplacer(nouveauX, nouveauY);
         }
     }
+
+
+
+
+
+    @Override
+    public boolean estMort() {
+        return pointsDeVie <= 0;
+    }
+
+    @Override
+    public void mourir(Donjon donjon) {
+        System.out.println("💀 " + getNom() + " est mort !");
+        donjon.supprimerMonstre(this);
+    }
+
+
+
 }

@@ -14,6 +14,7 @@ public enum Armure implements Equipement {
     private int positionY;
 
 
+
     Armure(String nom, int classeArmure, boolean estArmureLourde) {
         this.nom = nom;
         this.classeArmure = classeArmure;
@@ -34,6 +35,10 @@ public enum Armure implements Equipement {
     public boolean estArmureLourde() {
         return estArmureLourde;
     }
+
+
+
+
 
     @Override
     public TypeEquipement getType() {

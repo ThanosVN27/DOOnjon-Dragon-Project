@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import jeu.Donjon;
-
+import java.util.InputMismatchException;
 
 public class MaitreDuJeu {
     private Donjon donjon;
@@ -16,6 +16,7 @@ public class MaitreDuJeu {
     public MaitreDuJeu() {
         this.donjon = creerDonjon();
     }
+
 
     public Donjon creerDonjon() {
         Scanner scanner = new Scanner(System.in);
@@ -47,110 +48,134 @@ public class MaitreDuJeu {
         }
         donjon.positionnerObstacles(nombreObstacles);
 
+
         return donjon;
     }
 
-    public void ajouterMonstre() {
-        Scanner scanner = new Scanner(System.in);
-        String[] nomsMonstres = {
-                "Gobelin", "Orc", "Dragon", "Vampire", "Loup",
-                "Squelette", "Zombie", "Fantome", "Troll", "Minotaure"
-        };
 
-        System.out.println("Choisissez une option :");
-        System.out.println("1. Décider les monstres manuellement");
-        System.out.println("2. Générer des monstres aléatoirement");
-        int option = scanner.nextInt();
+    public void ajouterMonstre() {
+        int option = choisirOption();
+        int nbMonstres = demanderNombreMonstres();
 
         if (option == 1) {
-            // Option: Décider
-            System.out.println("Combien de monstres voulez-vous ajouter ?");
-            int nbMonstre = scanner.nextInt();
-
-            for (int i = 0; i < nomsMonstres.length; i++) {
-                System.out.println((i + 1) + ". " + nomsMonstres[i]);
-            }
-
-            for (int i = 0; i < nbMonstre; i++) {
-                System.out.println("Choisissez le numéro du monstre #" + (i + 1) + " : ");
-                int choix = scanner.nextInt();
-
-                if (choix < 1 || choix > nomsMonstres.length) {
-                    System.out.println("\u001B[31mChoix invalide. Réessayez.\u001B[0m");
-                    i--;
-                    continue;
-                }
-
-                String nom = nomsMonstres[choix - 1];
-
-                System.out.println("Entrez les points de vie:");
-                int pointsDeVie = scanner.nextInt();
-
-                System.out.println("Entrez la vitesse:");
-                int vitesse = scanner.nextInt();
-
-                System.out.println("Entrez la force:");
-                int force = scanner.nextInt();
-
-                System.out.println("Entrez la dextérité:");
-                int dexterite = scanner.nextInt();
-
-                System.out.println("Entrez la classe d'armure:");
-                int classeArmure = scanner.nextInt();
-
-                System.out.println("Entrez l'attaque:");
-                scanner.nextLine();
-                String attaque = scanner.nextLine();
-
-                System.out.println("Entrez la portée de l'attaque :");
-                int portee = scanner.nextInt();
-
-                System.out.println("Entrez les dégâts de l'attaque (ex: 1d6) :");
-                scanner.nextLine();
-                String degats = scanner.nextLine();
-
-                System.out.println("La position du x du monstre :");
-                int x = scanner.nextInt();
-
-                System.out.println("La position du y du monstre :");
-                int y = scanner.nextInt();
-
-                Monstre monstre = new Monstre(nom, i + 1, attaque, portee, degats, pointsDeVie, vitesse, force, dexterite, classeArmure);
-
-                donjon.placerMonstre(monstre,x,y,i + 1);
-                System.out.println("Monstres ajoutés et positionnés.!!");
-
-
-            }
-        } else if (option == 2) {
-            // Option: Random
-            System.out.println("Combien de monstres voulez-vous générer ?");
-            int nombreDeMonstres = scanner.nextInt();
-
-            Random random = new Random();
-            for (int i = 0; i < nombreDeMonstres; i++) {
-                String nom = nomsMonstres[random.nextInt(nomsMonstres.length)];
-                int pointsDeVie = random.nextInt(50) + 10; // Random points de vie
-                int vitesse = random.nextInt(10) + 1;      // Random vitesse
-                int force = random.nextInt(10) + 1;       // Random force
-                int dexterite = random.nextInt(10) + 1;   // Random dexterité
-                int classeArmure = random.nextInt(5) + 1; // Random armoure
-                String attaque = "Attaque aléatoire";
-                int portee = random.nextInt(5) + 1;       // Random portée
-                String degats = "1d" + (random.nextInt(6) + 4); // Random dégâts (1d4 à 1d10)
-
-                Monstre monstre = new Monstre(nom, i + 1, attaque, portee, degats, pointsDeVie, vitesse, force, dexterite, classeArmure);
-                donjon.placerMonstreAleatoirement(monstre, i + 1);
-
-            }
-
-
+            ajouterMonstresManuellement(nbMonstres);
         } else {
-            System.out.println("\u001B[31mOption invalide. Réessayez.\u001B[0m");
+            genererMonstresAleatoires(nbMonstres);
         }
 
-        System.out.println("Monstres ajoutés et positionnés.");
         donjon.afficherCarte();
+    }
+
+
+
+    private int choisirOption() {
+        System.out.println("Choisissez une option :\n1. Manuellement\n2. Aléatoirement");
+        return lireEntier(1, 2);
+    }
+
+    private int demanderNombreMonstres() {
+        System.out.println("Combien de monstres voulez-vous ajouter ?");
+        return lireEntier(1, 20);
+    }
+
+    private void ajouterMonstresManuellement(int nbMonstres) {
+        String[] nomsMonstres = initialiserNomsMonstres();
+
+        for (int i = 0; i < nbMonstres; i++) {
+            afficherListeMonstres(nomsMonstres);
+            Monstre monstre = creerMonstreManuellement(nomsMonstres, i);
+            placerMonstre(monstre, i);
+        }
+    }
+
+    private String[] initialiserNomsMonstres() {
+        return new String[]{"Gobelin", "Orc", "Dragon", "Vampire", "Loup",
+                "Squelette", "Zombie", "Fantome", "Troll", "Minotaure"};
+    }
+
+    private void afficherListeMonstres(String[] nomsMonstres) {
+        System.out.println("Choisissez un monstre :");
+        for (int i = 0; i < nomsMonstres.length; i++) {
+            System.out.printf("%d. %s%n", i+1, nomsMonstres[i]);
+        }
+    }
+
+    private Monstre creerMonstreManuellement(String[] nomsMonstres, int id) {
+        int choixMonstre = lireEntier(1, nomsMonstres.length) - 1;
+        String nom = nomsMonstres[choixMonstre];
+
+
+        System.out.println("Entrez les caractéristiques du monstre :");
+        System.out.println("Points de vie (10-50) :");
+        int pv = lireEntier(10, 50);
+
+        System.out.println("Force (1-10) :");
+        int force = lireEntier(1, 10);
+
+        System.out.println("Dégâts (ex: 1d6) :");
+        String degats = lireEntier(1, 6) + "d" + lireEntier(4, 10); // Exemple de format "1d6"
+
+
+        System.out.println("Vitesse (1-10) :");
+        int vitesse = lireEntier(1, 10);
+
+        System.out.println("Dextérité (1-10) :");
+        int dexterite = lireEntier(1, 10);
+
+        System.out.println("Classe d'armure (1-20) :");
+        int classeArmure = lireEntier(1, 20);
+
+        System.out.println("Portée de l'attaque (1-5) :");
+        int portee = lireEntier(1, 5);
+
+        System.out.println("Entrez le nom de l'attaque :");
+        Scanner scanner = new Scanner(System.in);
+        String attaque = scanner.nextLine();
+
+        return new Monstre(nom, id,attaque,
+                force, degats, pv, vitesse, dexterite, classeArmure, portee);
+    }
+
+    private void genererMonstresAleatoires(int nbMonstres) {
+        Random random = new Random();
+        String[] nomsMonstres = initialiserNomsMonstres();
+
+        for (int i = 0; i < nbMonstres; i++) {
+            String nom = nomsMonstres[random.nextInt(nomsMonstres.length)];
+            int pv = random.nextInt(30) + 10;
+            int vitesse = random.nextInt(10) + 1;
+
+            Monstre monstre = new Monstre(nom, i, "Attaque aléatoire",
+                    random.nextInt(3)+1, "1d"+(random.nextInt(6)+4),
+                    pv, vitesse, 10, 10, 5);
+            donjon.placerMonstreAleatoirement(monstre, i);
+        }
+    }
+
+    private void placerMonstre(Monstre monstre, int id) {
+        System.out.println("Position x :");
+        int x = lireEntier(0, donjon.getLargeur()-1);
+
+        System.out.println("Position y :");
+        int y = lireEntier(0, donjon.getHauteur()-1);
+
+        donjon.placerMonstre(monstre, x, y, id);
+    }
+
+    private int lireEntier(int min, int max) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                int valeur = scanner.nextInt();
+                if (valeur >= min && valeur <= max) {
+                    return valeur;
+                }
+                System.out.printf("Veuillez entrer un nombre entre %d et %d%n", min, max);
+            } catch (InputMismatchException e) {
+                System.out.println("Veuillez entrer un nombre valide");
+                scanner.next();
+            }
+        }
     }
 
     public void ajouterJoueur() {
@@ -284,10 +309,12 @@ public class MaitreDuJeu {
     }
 
 
-
     public Donjon getDonjon() {
         return donjon;
     }
+
+
+
 
     public void miseEnPlace(){
         ajouterMonstre();
@@ -298,8 +325,71 @@ public class MaitreDuJeu {
 
 
 
-
     public void afficherCarte() {
+        donjon.afficherCarte();
+    }
+
+    public void passerAuDonjon() {
+        System.out.println("Passage au donjon suivant...");
+
+        // Sauvegarde des joueurs
+        List<Joueur> anciensJoueurs = donjon.getJoueurs();
+
+        // Nouveau donjon
+        donjon = creerDonjon();
+
+        // Réinitialiser la carte sans perdre les joueurs
+        for (int i = 0; i < anciensJoueurs.size(); i++) {
+            Joueur joueur = anciensJoueurs.get(i);
+            Scanner scanner = new Scanner(System.in);
+            int x = -1, y = -1;
+            boolean valide = false;
+
+            while (!valide) {
+                System.out.println("Pour le joueur " + joueur.getNom() + ", choisissez une nouvelle position :");
+
+                while (x < 1 || x >= donjon.getHauteur()) {
+                    System.out.println("Position X (1-" + (donjon.getHauteur() - 1) + ") :");
+                    if (scanner.hasNextInt()) {
+                        x = scanner.nextInt();
+                        if (x < 1 || x >= donjon.getHauteur()) {
+                            System.out.println("\u001B[31mX hors limites\u001B[0m");
+                        }
+                    } else {
+                        System.out.println("\u001B[31mEntrez un nombre valide\u001B[0m");
+                        scanner.next();
+                    }
+                }
+
+                scanner.nextLine();
+
+                while (y < 1 || y >= donjon.getLargeur()) {
+                    System.out.println("Position Y (1-" + (donjon.getLargeur() - 1) + ") :");
+                    if (scanner.hasNextInt()) {
+                        y = scanner.nextInt();
+                        if (y < 1 || y >= donjon.getLargeur()) {
+                            System.out.println("\u001B[31mY hors limites\u001B[0m");
+                        }
+                    } else {
+                        System.out.println("\u001B[31mEntrez un nombre valide\u001B[0m");
+                        scanner.next();
+                    }
+                }
+
+                scanner.nextLine();
+
+                if (donjon.placerJoueur(joueur, x, y, i + 1)) {
+                    System.out.println("✅ Joueur " + joueur.getNom() + " ajouté en (" + x + "," + y + ")");
+                    valide = true;
+                } else {
+                    System.out.println("\u001B[31mCase occupée, choisissez une autre position\u001B[0m");
+                    x = y = -1;
+                }
+            }
+        }
+
+        ajouterMonstre();
+        ajouterEquipement();// ajouter monstres et équipements pour le nouveau donjon
         donjon.afficherCarte();
     }
 

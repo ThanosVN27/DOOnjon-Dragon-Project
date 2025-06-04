@@ -46,7 +46,7 @@ public abstract class Race {
     }
 
 
-    public String getNomRaces() {
+    public String getNomRace() {
         return "\u001B[32m" + nom + "\u001B[0m";
     }
 

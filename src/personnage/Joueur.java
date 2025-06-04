@@ -1,12 +1,14 @@
 package personnage;
 
 import classes.*;
+import equipements.Armure;
 import equipements.Equipement;
 import equipements.TypeEquipement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import equipements.Arme;
+import jeu.Delai;
 import jeu.Donjon;
 import races.*;
 
@@ -14,18 +16,20 @@ public class Joueur extends Personnage {
     private final Race race;
     private final Classe classe;
     private List<Equipement> inventaire;
-    private Equipement armeEquipe;
-    private Equipement armurEquipe;
+    private Arme armeEquipe;
+    private Armure armurEquipe;
+    private int pointsDeVieMax;
 
     public Joueur(String nom) {
         super(nom, 0, 0, 0, 0);
         this.race = choisirRace();
         this.classe = choisirClasse();
         this.pointsDeVie = classe.getPointsDeVie() + race.getPointsDeVie();
-        this.force = race.getForce() + lancerDes();
-        this.dexterite = race.getDexterite() + lancerDes();
-        this.vitesse = race.getVitesse() + lancerDes();
+        this.force = race.getForce() + lancerDesDepart();
+        this.dexterite = race.getDexterite() + lancerDesDepart();
+        this.vitesse = race.getVitesse() + lancerDesDepart();
         this.inventaire = new ArrayList<>();
+        this.pointsDeVieMax = pointsDeVie;
         initialiserEquipement();
     }
 
@@ -43,13 +47,6 @@ public class Joueur extends Personnage {
     }
 
 
-    public int getForce() {
-        return force;
-    }
-
-    public int getDexterite() {
-        return dexterite;
-    }
 
     public int getVitesse() {
         return vitesse;
@@ -90,6 +87,11 @@ public class Joueur extends Personnage {
     public Race getRace() { return race; }
 
     public Classe getClasse() { return classe; }
+
+
+    public void restaurerVie() {
+        this.pointsDeVie = this.pointsDeVieMax;
+    }
 
     private static Classe choisirClasse() {
         Scanner scanner = new Scanner(System.in);
@@ -147,7 +149,7 @@ public class Joueur extends Personnage {
 
 
 
-    public int lancerDes() {
+    public int lancerDesDepart() {
         int total = 0;
         for (int i = 0; i < 4; i++) {
             int des = (int) (Math.random() * 4) + 1;
@@ -165,37 +167,53 @@ public class Joueur extends Personnage {
 
 
     public String afficherJoueur() {
-        return  "\u001B[34m" + "--[Personnage]-- = "  + nom + "\u001B[0m [ " +
-                "Race = " + race.getNomRaces()  +
-                " ; Classe = " + classe.getNomClasse()  +
-                " ; PointsDeVie = " + pointsDeVie  +
-                " ; Force = " + force  +
-                " ; Dexterite = " + dexterite  +
-                " ; Vitesse = " + vitesse  +
-                " ; Initiative = " + initiative + "\n" +
-                "--[Inventaire]-- = " + inventaire  + "\n" +
-                "ArmeEquipe = " + (armeEquipe != null ? armeEquipe.toString() : "Aucune") + "\n" +
-                "ArmureEquipe = " + (armurEquipe != null ? armurEquipe.toString(): "Aucune") + "\n" +
-                "Position = (" + x + ", " + y + ")";
+        StringBuilder sb = new StringBuilder();
 
+        sb.append("\u001B[34m")
+                .append("╔════════════════════════════════════╗\n")
+                .append(String.format("║ %-34s ║\n", nom))
+                .append("╚════════════════════════════════════╝\n")
+                .append("\u001B[0m");
 
+        sb.append(String.format("Race        : %s\n", race.getNomRace()));
+        sb.append(String.format("Classe      : %s\n", classe.getNomClasse()));
+        sb.append(String.format("PV          : %d\n", pointsDeVie));
+        sb.append(String.format("Force       : %d\n", force));
+        sb.append(String.format("Dextérité   : %d\n", dexterite));
+        sb.append(String.format("Vitesse     : %d\n", vitesse));
+        sb.append(String.format("Position    : (%d, %d)\n", x, y));
+
+        sb.append(String.format("Arme        : %s\n", armeEquipe != null ? armeEquipe.getNom() : "Aucune"));
+        sb.append(String.format("Armure      : %s\n", armurEquipe != null ? armurEquipe.getNom() : "Aucune"));
+
+        sb.append("Inventaire  :\n");
+        if (inventaire.isEmpty()) {
+            sb.append(" (Vide)\n");
+        } else {
+            for (Equipement item : inventaire) {
+                sb.append("- ").append(item.getNom()).append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 
+
     public String afficherInfos() {
-        return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRaces() +
+        return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRace() +
                 ", PV: " + getPointsDeVie() +
                 ", Position: " + getX() + "," + getY() + ")" + " ARME: " + (armeEquipe != null ? armeEquipe.getNom() : "Aucune" )  + " || "  + "ARMURE: " + (armurEquipe != null ? armurEquipe.getNom() : "Aucune");
     }
 
 
     public void seDeplacer(int x, int y) {
-        int portee = Math.max(1, getVitesse() / 3); // Garantit une portée minimale de 1
+        int portee = Math.max(1, getVitesse() / 3);
         int posX = getX();
         int posY = getY();
 
 
 
-        System.out.println("\n*------------------- Déplacement ------------------------------*");
+        System.out.println("\n╠══════════════════════ SE DÉPLACER ════════════════════════════╣");
         System.out.println(getNom() + " se prépare à se déplacer.");
         System.out.println("Position actuelle : (" + posX + ", " + posY + ")");
         System.out.println("Portée de déplacement : " + portee);
@@ -213,7 +231,8 @@ public class Joueur extends Personnage {
         this.y = y;
 
         System.out.println(getNom() + " se déplace vers la position (" + x + ", " + y + ")");
-        System.out.println("*--------------------------------------------------------------*");
+        System.out.println("╠═════════════════════════════════════════════════════════════╣\n");
+        Delai.attendre();
     }
 
 
@@ -223,19 +242,22 @@ public class Joueur extends Personnage {
 
     public void ramasser(Equipement equipement) {
         System.out.println();
-        System.out.println("*----------------------Ramassage------------------------------*");
+
+        System.out.println("╠══════════════════════ RAMASSAGE ════════════════════════════╣");
 
         inventaire.add(equipement);
         System.out.println(getNom() + " a ramassé l'équipement : " + equipement.getNom());
         System.out.println("Position de l'équipement : (" + x + ", " + y + ")");
-        System.out.println("*-------------------------------------------------------------*");
+
+        System.out.println("╠═════════════════════════════════════════════════════════════╣\n");
+
 
     }
 
     public void equiperInventaire() {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("*--------------------------Inventaire-----------------*");
+        System.out.println("╠═══════════════════════INVENTAIRE═══════════════════════════╣");
         for (int i = 0; i < inventaire.size(); i++) {
             System.out.println((i + 1) + " : " + inventaire.get(i).getNom());
         }
@@ -250,10 +272,10 @@ public class Joueur extends Personnage {
 
             if (e.getType() == TypeEquipement.ARME) {
                 if (armeEquipe != null) inventaire.add(armeEquipe);
-                armeEquipe = e;
+                armeEquipe = (Arme) e;
             } else {
                 if (armurEquipe != null) inventaire.add(armurEquipe);
-                armurEquipe = e;
+                armurEquipe = (Armure) e;
             }
 
             e.appliquerEffets(this);
@@ -264,39 +286,77 @@ public class Joueur extends Personnage {
         else {
             System.out.println("Erreur !!");
         }
-        System.out.println("*-------------------------------------------------------*");}
+        System.out.println("╚═══════════════════════════════════════════════════════════════╝");
+        System.out.println();
+        }
+
+    public boolean estMort() {
+        return pointsDeVie <= 0;
+    }
 
     @Override
     public void attaquer(Personnage cible) {
         System.out.println();
-        System.out.println("*----------------------Attaque------------------------------*");
-        if (this.armeEquipe != null) {
-            //vérifie la portée de l'arme
-            int distance = (int) Math.sqrt(Math.pow(cible.getX() - this.x, 2) + Math.pow(cible.getY() - this.y, 2));
-            if (distance > this.armeEquipe.getPortee()) {
-                System.out.println(nom + " est trop loin pour attaquer " + cible.getNom() + " avec " + this.armeEquipe.getNom());
-                return;
-            }
-            System.out.println(nom + " attaque " + cible.getNom() + " avec " + this.armeEquipe.getNom());
-            int degats = this.force + this.armeEquipe.getDegatsNumeriques();
-            cible.setPointsDeVie(cible.getPointsDeVie() - degats);
-            System.out.println("Dégâts infligés : " + degats);
-            System.out.println("Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
-        } else {
-            System.out.println(nom + " n'a pas d'arme équipée pour attaquer.");
+        System.out.println("╠════════════════════════════ ATTAQUE ═════════════════════════════════╣");
+
+        if (armeEquipe == null) {
+            System.out.println("❌ " + nom + " n'a pas d'arme équipée pour attaquer.");
+            return;
         }
-        System.out.println("*-----------------------------------------------------------*");
+
+        int distance = (int) Math.sqrt(Math.pow(cible.getX() - this.x, 2) + Math.pow(cible.getY() - this.y, 2));
+        if (distance > armeEquipe.getPortee()) {
+            System.out.println("❌ " + nom + " est trop loin pour attaquer " + cible.getNom() + " avec " + armeEquipe.getNom() + ".");
+            return;
+        }
+
+        System.out.println("🎯 " + nom + " attaque " + cible.getNom() + " (" + cible.getX() + ", " + cible.getY() + ") avec " + armeEquipe.getNom() + ".");
+
+        int jetAttaque = (int) (Math.random() * 20) + 1; // 1d20
+        int bonus = armeEquipe.estDistance() ? dexterite : force;
+        int totalAttaque = jetAttaque + bonus;
+
+        System.out.println("🎲 Jet d'attaque : " + jetAttaque + " + " + bonus + " = " + totalAttaque);
+        System.out.println("🛡️ Classe d'armure de " + cible.getNom() + " : " + cible.getClasseArmure());
+
+        if (totalAttaque > cible.getClasseArmure()) {
+            int degats = armeEquipe.getDegatsNumeriques();
+            System.out.println("💥 Attaque réussie ! " + cible.getNom() + " subit " + degats + " points de dégâts.");
+            cible.setPointsDeVie(cible.getPointsDeVie() - degats);
+            System.out.println("❤️ Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
+
+            // Vérification si la cible est morte
+            if (cible.getPointsDeVie() <= 0) {
+                System.out.println("💀 " + cible.getNom() + " est mort !");
+            }
+
+        } else {
+            System.out.println("❌ Attaque échouée. Aucun dégât infligé.");
+        }
+
+        System.out.println("╠═══════════════════════════════════════════════════════════════════════╣");
+        Delai.attendre();
     }
+
+
+
+    @Override
+    public void mourir(Donjon donjon) {
+        System.out.println("💀 " + getNom() + " est mort !");
+        donjon.supprimerJoueur(this);
+
+    }
+
 
     @Override
     public void jouerTour(Donjon donjon) {
         System.out.println();
-        System.out.println("********************** Tour de " + getNom() + "**********************");
+        Delai.attendre();
         Scanner scanner = new Scanner(System.in);
         int actions = 3;
         donjon.afficherCarte();
         while (actions > 0) {
-            System.out.println("---------------------------------------------------------");
+            System.out.println("╠══════════════════════════ CHOIX DU JOUEUR ═══════════════════════════════════╣\n");
             System.out.println(afficherJoueur());
             System.out.println("\n🎮 Tour de " + getNom() + " - Actions restantes : " + actions);
             System.out.println("1. Se déplacer");
@@ -334,10 +394,11 @@ public class Joueur extends Personnage {
 
                 }
 
+
                 case 2 -> {
                     if (armeEquipe != null) {
-                        List<Monstre> monstres = donjon.ordreJeuMonstre();
-                        donjon.afficherCarte();
+                        Delai.attendre();
+                        List<Monstre> monstres = donjon.getMonstres();
                         Monstre cible = null;
 
                         for (Monstre monstre : monstres) {
@@ -354,12 +415,14 @@ public class Joueur extends Personnage {
                         } else {
                             System.out.println("❌ Aucun monstre à portée.");
                         }
+                        donjon.afficherCarte();
                     } else {
                         System.out.println("❌ Aucun arme équipée pour attaquer.");
                     }
                 }
                 case 3 -> {
                     equiperInventaire();
+                    Delai.attendre();
                     actions--;
                 }
                 case 4 -> {
@@ -373,7 +436,7 @@ public class Joueur extends Personnage {
                 default -> System.out.println("❌ Choix invalide.");
             }
         }
-        System.out.println("---------------------------------------------------------");
+        System.out.println("╠════════════════════════════ FIN TOUR ══════════════════════════════════════╣\n");
     }
 
     public static int lireEntier(String message) {

@@ -14,5 +14,6 @@ public interface Equipement {
     int getPositionY();
     void setPositionX(int x);
     void setPositionY(int y);
+
 }
 

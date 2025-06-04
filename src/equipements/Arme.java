@@ -9,7 +9,8 @@ public enum Arme implements Equipement {
     RAPIERE("Rapière", "1d8", 1, true),
     ARBALETE_LEGERE("Arbalète légère", "1d8", 16, false),
     FRONDE("Fronde", "1d4", 6, false),
-    ARC_COURT("Arc court", "1d6", 16, false);
+    ARC_COURT("Arc court", "1d6", 16, false),
+    EPEE_DEUX_MAINS("Épée à deux mains", "2d6", 1, true);
 
     private final String nom;
     private final String degats;
@@ -34,6 +35,7 @@ public enum Arme implements Equipement {
         if (degats.equals("1d4")) return RandomGenerator.getDefault().nextInt(1, 5); // 1d4
         if (degats.equals("1d6")) return RandomGenerator.getDefault().nextInt(1, 7); // 1d6
         if (degats.equals("1d8")) return RandomGenerator.getDefault().nextInt(1, 9); // 1d8
+        if (degats.equals("2d6")) return RandomGenerator.getDefault().nextInt(1, 7); // 2d6
         return 0;
     }
 
@@ -47,6 +49,10 @@ public enum Arme implements Equipement {
 
     public boolean estArmeDeGuerre() {
         return estArmeDeGuerre;
+    }
+
+    public boolean estDistance() {
+        return portee > 1;
     }
 
     @Override
