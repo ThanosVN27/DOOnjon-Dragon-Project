@@ -16,6 +16,7 @@ public class Donjon {
     private final String[][] carte;
     private List<Monstre> monstres;
     private List<Joueur> joueurs;
+    private List<Personnage> entites;
     private List<Equipement> equipementsListe;
 
 
@@ -26,6 +27,7 @@ public class Donjon {
         this.equipementsListe = new ArrayList<>();
         this.monstres = new ArrayList<>();
         this.joueurs = new ArrayList<>();
+        this.entites = new ArrayList<>();
         creerCarte();
     }
 
@@ -173,15 +175,18 @@ public class Donjon {
         return (int) (Math.random() * 20) + 1;
     }
 
-    public List<Personnage> listeEnties() {
-        List<Personnage> entites = new ArrayList<>();
+    public List<Personnage> calculerInitiative() {
         entites.addAll(joueurs);
         entites.addAll(monstres);
-
-        for(Personnage entities : entites) {
+        for (Personnage entities : entites) {
             int de = lancerDes();
             entities.setInitiative(de);
         }
+        entites.sort((p1, p2) -> Integer.compare(p2.getInitiative(), p1.getInitiative()));
+        return entites;
+    }
+
+    public List<Personnage> listeEnties() {
         return entites;
     }
 

@@ -356,6 +356,7 @@ public class Joueur extends Personnage {
         int actions = 3;
         donjon.afficherCarte();
         while (actions > 0) {
+
             System.out.println("╠══════════════════════════ CHOIX DU JOUEUR ═══════════════════════════════════╣\n");
             System.out.println(afficherJoueur());
             System.out.println("\n🎮 Tour de " + getNom() + " - Actions restantes : " + actions);
@@ -397,7 +398,6 @@ public class Joueur extends Personnage {
 
                 case 2 -> {
                     if (armeEquipe != null) {
-                        Delai.attendre();
                         List<Monstre> monstres = donjon.getMonstres();
                         Monstre cible = null;
 
@@ -415,7 +415,6 @@ public class Joueur extends Personnage {
                         } else {
                             System.out.println("❌ Aucun monstre à portée.");
                         }
-                        donjon.afficherCarte();
                     } else {
                         System.out.println("❌ Aucun arme équipée pour attaquer.");
                     }

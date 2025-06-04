@@ -142,12 +142,20 @@ public class MaitreDuJeu {
 
         for (int i = 0; i < nbMonstres; i++) {
             String nom = nomsMonstres[random.nextInt(nomsMonstres.length)];
-            int pv = random.nextInt(30) + 10;
+            int pv = random.nextInt(20) + 10;
             int vitesse = random.nextInt(10) + 1;
+            int dexterite = random.nextInt(10) + 1;
+            int portee = random.nextInt(5) + 1;
+            String degats = "1d" + (random.nextInt(6) + 4);
 
-            Monstre monstre = new Monstre(nom, i, "Attaque aléatoire",
-                    random.nextInt(3)+1, "1d"+(random.nextInt(6)+4),
-                    pv, vitesse, 10, 10, 5);
+            int force = random.nextInt(10) + 1;
+
+            int classeArmure = random.nextInt(20) + 1;
+
+            String attaque = "Attaque aléatoire";
+
+            Monstre monstre = new Monstre(nom, i, attaque,
+                    force, degats, pv, vitesse, dexterite, classeArmure, portee);
             donjon.placerMonstreAleatoirement(monstre, i);
         }
     }
@@ -320,14 +328,11 @@ public class MaitreDuJeu {
         ajouterMonstre();
         ajouterEquipement();
         ajouterJoueur();
+        donjon.calculerInitiative();
+
 
     }
 
-
-
-    public void afficherCarte() {
-        donjon.afficherCarte();
-    }
 
     public void passerAuDonjon() {
         System.out.println("Passage au donjon suivant...");

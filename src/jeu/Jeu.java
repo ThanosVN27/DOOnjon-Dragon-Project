@@ -26,7 +26,6 @@ public class Jeu {
 
     public void lancerJeu() {
         maitreDuJeu.miseEnPlace();
-        afficherOrdreDeJeu();
         boucleJeu();
     }
 
@@ -50,7 +49,7 @@ public class Jeu {
         System.out.println();
         System.out.println("╠══════════════════════════ ORDRE DU JEU ═══════════════════════════╣");
 
-        listeEntite.clear();
+
         listeEntite = maitreDuJeu.getDonjon().listeEnties();
         // Trier la liste par initiative décroissante
         listeEntite.sort((p1, p2) -> Integer.compare(p2.getInitiative(), p1.getInitiative()));
@@ -115,7 +114,6 @@ public class Jeu {
         System.out.println("Passage au donjon suivant...");
         listeMonstres.clear();
         tour = 0;
-        afficherOrdreDeJeu();
         boucleJeu();
     }
 

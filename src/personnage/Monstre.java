@@ -44,6 +44,7 @@ public class Monstre extends Personnage{
             int degatsInfliges = lancerDes(degats);
             cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
             System.out.println("Attaque réussie ! Dégâts infligés : " + degatsInfliges);
+            System.out.println(" Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
             if (cible.getPointsDeVie() <= 0) {
                 System.out.println("💀 " + cible.getNom() + " est mort !");
             }
@@ -51,7 +52,7 @@ public class Monstre extends Personnage{
             System.out.println("Attaque échouée. Classe d'armure de la cible : " + cible.getClasseArmure());
         }
 
-        System.out.println(" Points de vie restants de " + cible.getNom() + " : " + cible.getPointsDeVie());
+
         System.out.println("╚═══════════════════════════════════════════════════════════════════════╝\n");
     }
 
@@ -140,7 +141,6 @@ public class Monstre extends Personnage{
 
     public void seDeplacer(int x, int y) {
         // Logique de déplacement pour le monstre
-        Delai.attendre();
         System.out.println("\n╠════════════════════════════ DÉPLACEMENT ═══════════════════════════════╣");
         System.out.println(getNom() + " se déplace vers la position (" + x + ", " + y + ")");
         this.x = x;
