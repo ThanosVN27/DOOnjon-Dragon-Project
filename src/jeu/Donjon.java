@@ -186,9 +186,7 @@ public class Donjon {
         return entites;
     }
 
-    public List<Personnage> listeEnties() {
-        return entites;
-    }
+
 
     public boolean mettreAPositionJoueur(Joueur joueur, int x, int y) {
         if (x <= 0 || x >= hauteur || y <= 0 || y >= largeur) {

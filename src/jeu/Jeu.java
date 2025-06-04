@@ -50,7 +50,14 @@ public class Jeu {
         System.out.println("╠══════════════════════════ ORDRE DU JEU ═══════════════════════════╣");
 
 
-        listeEntite = maitreDuJeu.getDonjon().listeEnties();
+        listeJoueurs = maitreDuJeu.getDonjon().getJoueurs();
+        listeMonstres = maitreDuJeu.getDonjon().getMonstres();
+
+        listeEntite.clear();
+        listeEntite.addAll(listeJoueurs);
+        listeEntite.addAll(listeMonstres);
+
+
         // Trier la liste par initiative décroissante
         listeEntite.sort((p1, p2) -> Integer.compare(p2.getInitiative(), p1.getInitiative()));
 
