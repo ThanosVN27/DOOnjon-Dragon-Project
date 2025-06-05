@@ -43,12 +43,13 @@ public class Monstre extends Personnage{
         if (total >= cible.getClasseArmure()) {
             int degatsInfliges = lancerDes(degats);
             cible.setPointsDeVie(cible.getPointsDeVie() - degatsInfliges);
-            System.out.println("Attaque réussie ! Dégâts infligés : " + degatsInfliges);
+            System.out.println(" Attaque réussie ! Dégâts infligés : " + degatsInfliges);
+            System.out.println(" " + cible.getNom() + " a maintenant " + cible.getPointsDeVie() + " points de vie.");
             if (cible.getPointsDeVie() <= 0) {
                 System.out.println("💀 " + cible.getNom() + " est mort !");
             }
         } else {
-            System.out.println("Attaque échouée. Classe d'armure de la cible : " + cible.getClasseArmure());
+            System.out.println(" Attaque échouée. Classe d'armure de la cible : " + cible.getClasseArmure());
         }
 
 

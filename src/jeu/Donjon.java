@@ -16,7 +16,6 @@ public class Donjon {
     private final String[][] carte;
     private List<Monstre> monstres;
     private List<Joueur> joueurs;
-    private List<Personnage> entites;
     private List<Equipement> equipementsListe;
 
 
@@ -27,7 +26,6 @@ public class Donjon {
         this.equipementsListe = new ArrayList<>();
         this.monstres = new ArrayList<>();
         this.joueurs = new ArrayList<>();
-        this.entites = new ArrayList<>();
         creerCarte();
     }
 
@@ -41,7 +39,7 @@ public class Donjon {
         }
         for (int i = 1; i < hauteur; i++) {
             for (int j = 1; j < largeur; j++) {
-                carte[i][j] = "."; // reste de la carte
+                carte[i][j] = ".";
             }
         }
     }
@@ -73,6 +71,33 @@ public class Donjon {
             System.out.println("Impossible de positionner l'équipement ici. Case occupée.");
             return false;
         }
+    }
+    public List<Joueur> ordreJeuJoueur() {
+        List<Joueur> listeOrdre = joueurs;
+        for(Joueur c : listeOrdre) {
+            int des = lancerDes();
+            c.setInitiative(des);
+        }
+        listeOrdre.sort((c1, c2) -> Integer.compare(c2.getInitiative(), c1.getInitiative()));
+        return listeOrdre;
+    }
+
+    public List<Monstre> ordreJeuMonstre() {
+        List<Monstre> listeOrdre = monstres;
+        for(Monstre m : listeOrdre) {
+            int des = lancerDes();
+            m.setInitiative(des);
+        }
+        listeOrdre.sort((c1, c2) -> Integer.compare(c2.getInitiative(), c1.getInitiative()));
+        return listeOrdre;
+    }
+
+
+
+
+
+    public int lancerDes() {
+        return (int) (Math.random() * 20) + 1;
     }
 
 
@@ -170,23 +195,6 @@ public class Donjon {
     public List<Joueur> getJoueurs() {
         return joueurs;
     }
-
-    public int lancerDes() {
-        return (int) (Math.random() * 20) + 1;
-    }
-
-    public List<Personnage> calculerInitiative() {
-        entites.addAll(joueurs);
-        entites.addAll(monstres);
-        for (Personnage entities : entites) {
-            int de = lancerDes();
-            entities.setInitiative(de);
-        }
-        entites.sort((p1, p2) -> Integer.compare(p2.getInitiative(), p1.getInitiative()));
-        return entites;
-    }
-
-
 
     public boolean mettreAPositionJoueur(Joueur joueur, int x, int y) {
         if (x <= 0 || x >= hauteur || y <= 0 || y >= largeur) {
@@ -309,5 +317,7 @@ public class Donjon {
         joueurs.remove(joueur);
         System.out.println("Le joueur " + joueur.getNom() + " a été supprimé.");
     }
+
+
 
 }

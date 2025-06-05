@@ -47,16 +47,17 @@ public class Jeu {
 
     public void afficherOrdreDeJeu() {
         System.out.println();
+        listeMonstres = maitreDuJeu.getDonjon().getMonstres();
+        listeJoueurs = maitreDuJeu.getDonjon().getJoueurs();
+        if(estFinDonjon()) {
+            return;
+        }
         System.out.println("╠══════════════════════════ ORDRE DU JEU ═══════════════════════════╣");
 
-
-        listeJoueurs = maitreDuJeu.getDonjon().getJoueurs();
-        listeMonstres = maitreDuJeu.getDonjon().getMonstres();
 
         listeEntite.clear();
         listeEntite.addAll(listeJoueurs);
         listeEntite.addAll(listeMonstres);
-
 
         // Trier la liste par initiative décroissante
         listeEntite.sort((p1, p2) -> Integer.compare(p2.getInitiative(), p1.getInitiative()));
@@ -68,7 +69,6 @@ public class Jeu {
 
         System.out.println("╚══════════════════════════════════════════════════════════════════════╝");
     }
-
 
 
     public void boucleJeu() {
@@ -118,7 +118,6 @@ public class Jeu {
 
     private void passerAuDonjonSuivant() {
         maitreDuJeu.passerAuDonjon();
-        System.out.println("Passage au donjon suivant...");
         listeMonstres.clear();
         tour = 0;
         boucleJeu();

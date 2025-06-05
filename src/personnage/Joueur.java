@@ -30,6 +30,7 @@ public class Joueur extends Personnage {
         this.vitesse = race.getVitesse() + lancerDesDepart();
         this.inventaire = new ArrayList<>();
         this.pointsDeVieMax = pointsDeVie;
+        this.classeArmure =  0;
         initialiserEquipement();
     }
 
@@ -354,9 +355,8 @@ public class Joueur extends Personnage {
         Delai.attendre();
         Scanner scanner = new Scanner(System.in);
         int actions = 3;
-        donjon.afficherCarte();
         while (actions > 0) {
-
+            donjon.afficherCarte();
             System.out.println("╠══════════════════════════ CHOIX DU JOUEUR ═══════════════════════════════════╣\n");
             System.out.println(afficherJoueur());
             System.out.println("\n🎮 Tour de " + getNom() + " - Actions restantes : " + actions);
@@ -380,7 +380,6 @@ public class Joueur extends Personnage {
 
             switch (choix) {
                 case 1 -> {
-                    donjon.afficherCarte();
                     System.out.println("Position actuelle : (" + getX() + ", " + getY() + ")");
                     System.out.println("Vitesse = " + vitesse / 3);
 
@@ -425,7 +424,6 @@ public class Joueur extends Personnage {
                     actions--;
                 }
                 case 4 -> {
-                    donjon.afficherCarte();
                     System.out.println("Position actuelle : (" + getX() + ", " + getY() + ")");
                     donjon.verifierPositionJoueur(this);
                     actions--;

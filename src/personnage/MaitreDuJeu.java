@@ -62,8 +62,9 @@ public class MaitreDuJeu {
         } else {
             genererMonstresAleatoires(nbMonstres);
         }
-
+        donjon.ordreJeuMonstre();
         donjon.afficherCarte();
+
     }
 
 
@@ -86,6 +87,7 @@ public class MaitreDuJeu {
             Monstre monstre = creerMonstreManuellement(nomsMonstres, i);
             placerMonstre(monstre, i);
         }
+
     }
 
     private String[] initialiserNomsMonstres() {
@@ -257,7 +259,7 @@ public class MaitreDuJeu {
                     x = y = -1;
                 }
             }
-
+            donjon.ordreJeuJoueur();
             donjon.afficherCarte();
         }
     }
@@ -328,9 +330,6 @@ public class MaitreDuJeu {
         ajouterMonstre();
         ajouterEquipement();
         ajouterJoueur();
-        donjon.calculerInitiative();
-
-
     }
 
 
@@ -395,6 +394,7 @@ public class MaitreDuJeu {
 
         ajouterMonstre();
         ajouterEquipement();// ajouter monstres et équipements pour le nouveau donjon
+
         donjon.afficherCarte();
     }
 
