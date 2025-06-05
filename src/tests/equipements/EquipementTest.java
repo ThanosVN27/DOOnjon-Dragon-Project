@@ -11,6 +11,7 @@ import equipements.Armure;
 public class EquipementTest {
     @Test
     void testGetNom() {
-
+        Arme arme = Arme.BATON;
+        Assertions.assertEquals("Bâton", arme.getNom()); 
     }
 }
