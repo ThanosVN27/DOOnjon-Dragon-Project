@@ -49,9 +49,6 @@ public class Jeu {
         System.out.println();
         listeMonstres = maitreDuJeu.getDonjon().getMonstres();
         listeJoueurs = maitreDuJeu.getDonjon().getJoueurs();
-        if(estFinDonjon()) {
-            return;
-        }
         System.out.println("╠══════════════════════════ ORDRE DU JEU ═══════════════════════════╣");
 
 
@@ -78,6 +75,7 @@ public class Jeu {
             afficherOrdreDeJeu();
             jouerTour();
             finPartie = estFinDonjon();
+
         }
 
         System.out.println("🎉 Partie terminée !");

@@ -344,7 +344,6 @@ public class Joueur extends Personnage {
     @Override
     public void mourir(Donjon donjon) {
         System.out.println("💀 " + getNom() + " est mort !");
-        donjon.supprimerJoueur(this);
 
     }
 
@@ -380,6 +379,7 @@ public class Joueur extends Personnage {
 
             switch (choix) {
                 case 1 -> {
+                    donjon.afficherCarte();
                     System.out.println("Position actuelle : (" + getX() + ", " + getY() + ")");
                     System.out.println("Vitesse = " + vitesse / 3);
 
