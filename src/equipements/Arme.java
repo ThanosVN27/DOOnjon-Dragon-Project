@@ -18,12 +18,16 @@ public enum Arme implements Equipement {
     private final boolean estArmeDeGuerre;
     private int positionX = 0;
     private int positionY = 0;
+    private int bonusAttaque;
+    private int bonusDegats;
 
     Arme(String nom, String degats, int portee, boolean estArmeDeGuerre) {
         this.nom = nom;
         this.degats = degats;
         this.portee = portee;
         this.estArmeDeGuerre = estArmeDeGuerre;
+        this.bonusAttaque = 0; // Bonus d'attaque par défaut
+        this.bonusDegats = 0; // Bonus de dégâts par défaut
     }
 
     @Override
@@ -51,6 +55,11 @@ public enum Arme implements Equipement {
         return estArmeDeGuerre;
     }
 
+    public void ameliorer() {
+        bonusAttaque++;
+        bonusDegats++;
+    }
+
     public boolean estDistance() {
         return portee > 1;
     }
@@ -68,6 +77,8 @@ public enum Arme implements Equipement {
             System.out.println("Force +4, Vitesse -2 (arme de guerre)");
         }
     }
+
+
 
     @Override
     public String toString() {

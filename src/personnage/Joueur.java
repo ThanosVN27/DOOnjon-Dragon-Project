@@ -11,6 +11,7 @@ import equipements.Arme;
 import jeu.Delai;
 import jeu.Donjon;
 import races.*;
+import sorts.Sort;
 
 public class Joueur extends Personnage {
     private final Race race;
@@ -18,7 +19,8 @@ public class Joueur extends Personnage {
     private List<Equipement> inventaire;
     private Arme armeEquipe;
     private Armure armurEquipe;
-    private int pointsDeVieMax;
+    private final int pointsDeVieMax;
+    private List<Sort> sorts;
 
     public Joueur(String nom) {
         super(nom, 0, 0, 0, 0);
@@ -34,27 +36,8 @@ public class Joueur extends Personnage {
         initialiserEquipement();
     }
 
-
-    public int getPointsDeVie() {
-        return pointsDeVie;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-
-
-    public int getVitesse() {
-        return vitesse;
-    }
-
-    public int getInitiative() {
-        return initiative;
+    public int getPointsDeVieMax() {
+        return pointsDeVieMax;
     }
 
     public void modifierForce(int points) {
@@ -65,27 +48,24 @@ public class Joueur extends Personnage {
         vitesse += points;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public List<Arme> getArmes() {
+        List<Arme> armes = new ArrayList<>();
+        for (Equipement equipement : inventaire) {
+            if(equipement.getType() == TypeEquipement.ARME) {
+                armes.add((Arme) equipement);
+            }
+        }
+        return armes;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
 
     public void setPointsDeVie(int pv) {
         this.pointsDeVie = Math.max(0, pv); // empêche les valeurs négatives
     }
 
-    public void setForce(int force) { this.force = force; }
-
-    public void setDexterite(int dexterite) { this.dexterite = dexterite; }
 
     public void setVitesse(int vitesse) { this.vitesse = vitesse; }
 
-    public void setInitiative(int initiative) { this.initiative = initiative; }
-
-    public Race getRace() { return race; }
 
     public Classe getClasse() { return classe; }
 
@@ -363,6 +343,7 @@ public class Joueur extends Personnage {
             System.out.println("2. Attaquer");
             System.out.println("3. S'équiper");
             System.out.println("4. Ramasser");
+            System.out.println("5. Lancer un sort");
             System.out.println("0. Terminer le tour");
             System.out.print("Choisissez une action : ");
 
@@ -429,11 +410,36 @@ public class Joueur extends Personnage {
                     actions--;
 
                 }
+                case 5 -> {
+                    utiliserSort(donjon);
+                    donjon.mettreAjourTous();
+                    actions--;
+
+                }
                 case 0 -> actions = 0;
                 default -> System.out.println("❌ Choix invalide.");
             }
         }
         System.out.println("╠════════════════════════════ FIN TOUR ══════════════════════════════════════╣\n");
+    }
+
+    public void utiliserSort(Donjon donjon) {
+        if (classe.getSortsDisponibles().isEmpty()) {
+            System.out.println("❌ Aucun sort disponible.");
+            return;
+        }
+
+        System.out.println("Choisissez un sort à utiliser :");
+        List<Sort> sorts = classe.getSortsDisponibles();
+        for (int i = 0; i < sorts.size(); i++) {
+            System.out.println((i + 1) + " - " + sorts.get(i).getNom());
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        int choix = scanner.nextInt() - 1;
+
+        Sort sort = sorts.get(choix);
+        sort.utiliserSort(this, donjon.getJoueurs(), donjon.getMonstres());
     }
 
     public static int lireEntier(String message) {

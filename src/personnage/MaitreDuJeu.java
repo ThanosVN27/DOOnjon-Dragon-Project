@@ -219,9 +219,9 @@ public class MaitreDuJeu {
             boolean valide = false;
 
             while (!valide) {
-                // Posiotion X
-                while (x < 1 || x >= donjon.getHauteur()) {
-                    System.out.println("Position X (1-" + (donjon.getHauteur()-1) + ") :");
+                // Posiotion Y
+                while (y < 1 || x >= donjon.getHauteur()) {
+                    System.out.println("Position Y (1-" + (donjon.getHauteur()-1) + ") :");
                     if (scanner.hasNextInt()) {
                         x = scanner.nextInt();
                         if (x < 1 || x >= donjon.getHauteur()) {
@@ -234,9 +234,9 @@ public class MaitreDuJeu {
                 }
                 scanner.nextLine();
 
-                // Position Y
-                while (y < 1 || y >= donjon.getLargeur()) {
-                    System.out.println("Position Y (1-" + (donjon.getLargeur()-1) + ") :");
+                // Position X
+                while (x < 1 || y >= donjon.getLargeur()) {
+                    System.out.println("Position X (1-" + (donjon.getLargeur()-1) + ") :");
                     if (scanner.hasNextInt()) {
                         y = scanner.nextInt();
                         if (y < 1 || y >= donjon.getLargeur()) {

@@ -78,6 +78,10 @@ public abstract class Personnage {
         this.initiative = initiative;
     }
 
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public int getVitesse() {
         return vitesse;

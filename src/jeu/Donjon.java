@@ -302,6 +302,8 @@ public class Donjon {
         carte[nouveauX][nouveauY] = "M" + monstre.getNumero();
     }
 
+
+
     public void supprimerMonstre(Monstre monstre) {
         int x = monstre.getX();
         int y = monstre.getY();
@@ -310,14 +312,19 @@ public class Donjon {
         System.out.println("Le monstre " + monstre.getNom() + " a été supprimé.");
     }
 
-    public void supprimerJoueur(Joueur joueur) {
-        int x = joueur.getX();
-        int y = joueur.getY();
-        carte[x][y] = ".";
-        joueurs.remove(joueur);
-        System.out.println("Le joueur " + joueur.getNom() + " a été supprimé.");
-    }
+    public void mettreAjourTous() {
+        for(Joueur joueur : joueurs) {
+            int x = joueur.getX();
+            int y = joueur.getY();
+            carte[x][y] = "J" + (joueurs.indexOf(joueur) + 1);
+        }
 
+        for(Monstre monstre : monstres) {
+            int x = monstre.getX();
+            int y = monstre.getY();
+            carte[x][y] = "M" + monstre.getNumero();
+        }
+    }
 
 
 }

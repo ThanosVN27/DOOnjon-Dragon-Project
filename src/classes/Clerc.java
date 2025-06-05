@@ -2,6 +2,7 @@ package classes;
 
 import equipements.Arme;
 import equipements.Armure;
+import sorts.Guerison;
 
 public class Clerc extends Classe {
     public Clerc() {
@@ -9,5 +10,7 @@ public class Clerc extends Classe {
         ajouterEquipement(Arme.MASSE_ARMES);
         ajouterEquipement(Armure.ARMURE_ECAILLES);
         ajouterEquipement(Arme.ARBALETE_LEGERE);
+        ajouterSort(this, new Guerison());
+
     }
 }

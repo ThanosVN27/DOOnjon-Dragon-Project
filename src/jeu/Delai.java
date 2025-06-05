@@ -7,7 +7,7 @@ public class Delai {
         try {
             Thread.sleep(DELAI);
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Restauration de l'état d'interruption
+            Thread.currentThread().interrupt();
             System.err.println("Le délai a été interrompu : " + e.getMessage());
         }
     }
