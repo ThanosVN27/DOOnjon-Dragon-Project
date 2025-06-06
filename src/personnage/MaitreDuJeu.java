@@ -4,11 +4,11 @@ import equipements.Arme;
 import equipements.Armure;
 import equipements.Equipement;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import jeu.Donjon;
-import java.util.InputMismatchException;
 
 public class MaitreDuJeu {
     private Donjon donjon;
@@ -220,11 +220,11 @@ public class MaitreDuJeu {
 
             while (!valide) {
                 // Posiotion Y
-                while (y < 1 || x >= donjon.getHauteur()) {
+                while (y < 1 || y >= donjon.getHauteur()) {
                     System.out.println("Position Y (1-" + (donjon.getHauteur()-1) + ") :");
                     if (scanner.hasNextInt()) {
-                        x = scanner.nextInt();
-                        if (x < 1 || x >= donjon.getHauteur()) {
+                        y = scanner.nextInt();
+                        if (y < 1 || y >= donjon.getHauteur()) {
                             System.out.println("\u001B[31mX hors limites\u001B[0m");
                         }
                     } else {
@@ -235,11 +235,11 @@ public class MaitreDuJeu {
                 scanner.nextLine();
 
                 // Position X
-                while (x < 1 || y >= donjon.getLargeur()) {
+                while (x < 1 || x >= donjon.getLargeur()) {
                     System.out.println("Position X (1-" + (donjon.getLargeur()-1) + ") :");
                     if (scanner.hasNextInt()) {
-                        y = scanner.nextInt();
-                        if (y < 1 || y >= donjon.getLargeur()) {
+                        x = scanner.nextInt();
+                        if (x < 1 || x >= donjon.getLargeur()) {
                             System.out.println("\u001B[31mY hors limites\u001B[0m");
                         }
                     } else {

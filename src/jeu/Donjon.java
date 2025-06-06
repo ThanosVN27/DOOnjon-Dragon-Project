@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
 import personnage.Joueur;
 import personnage.Monstre;
-import personnage.Personnage;
 
 public class Donjon {
     private final int hauteur;
@@ -225,6 +223,34 @@ public class Donjon {
         return true;
     }
 
+    public boolean mettreAPositionMonstre(Monstre monstre, int x, int y) {
+        if (x <= 0 || x >= hauteur || y <= 0 || y >= largeur) {
+            System.out.println("❌ Position invalide.");
+            return false;
+        }
+
+        String caseContenu = carte[x][y];
+        if (caseContenu.startsWith("J") || caseContenu.startsWith("M") || caseContenu.equals("#")) {
+            System.out.println("❌ Case occupée par un autre joueur ou un monstre.");
+            return false;
+        }
+
+        int ancienX = monstre.getX();
+        int ancienY = monstre.getY();
+        if (ancienX > 0 && ancienY > 0) {
+            carte[ancienX][ancienY] = ".";
+        }
+
+        monstre.seDeplacer(x, y);
+        int nouveauX = monstre.getX();
+        int nouveauY = monstre.getY();
+        int numeroMonstre = monstre.getNumero();
+        carte[nouveauX][nouveauY] = "J" + numeroMonstre;
+
+        mettreAJourEquipement();
+        afficherCarte();
+        return true;
+    }
 
 
 
