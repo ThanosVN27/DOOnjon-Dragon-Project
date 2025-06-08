@@ -5,6 +5,7 @@ public interface Equipement {
     
     String getNom();
     void appliquerEffets(Joueur p);
+    void retirerEffets(Joueur p);
     TypeEquipement getType();
     @Override
     String toString();

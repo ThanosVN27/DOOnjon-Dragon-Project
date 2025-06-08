@@ -188,7 +188,7 @@ public class MaitreDuJeu {
         }
     }
 
-    public void ajouterJoueur() {
+    private void ajouterJoueur() {
         Scanner scanner = new Scanner(System.in);
 
         int nbJoueurs = 0;
@@ -264,7 +264,7 @@ public class MaitreDuJeu {
         }
     }
 
-    public void ajouterEquipement() {
+    private void ajouterEquipement() {
         List<Equipement> equipementListe = new ArrayList<>();
         equipementListe.addAll(List.of(Arme.values()));
         equipementListe.addAll(List.of(Armure.values()));

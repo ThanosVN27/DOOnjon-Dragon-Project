@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class Classe {
     private final String nom;
-    private int pointsDeVie;
+    private final int pointsDeVie;
     private final List<Equipement> equipementDeBase;
     private final List<Sort> sortsDisponibles = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public abstract class Classe {
     }
 
     public String getNomClasse() {
-        return "\u001B[33m" + nom + "\u001B[0m"; // Yellow
+        return "\u001B[33m" + nom + "\u001B[0m";
     }
 
     public List<Sort> getSortsDisponibles() {

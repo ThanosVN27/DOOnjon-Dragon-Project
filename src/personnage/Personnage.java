@@ -23,7 +23,6 @@ public abstract class Personnage {
         this.initiative = 0;
         this.x = 0;
         this.y = 0;
-        this.classeArmure = 10 + dexterite;
     }
 
     public abstract void jouerTour(Donjon donjon);
@@ -76,11 +75,6 @@ public abstract class Personnage {
 
     public void setInitiative(int initiative) {
         this.initiative = initiative;
-    }
-
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 
     public int getVitesse() {

@@ -36,8 +36,13 @@ public enum Armure implements Equipement {
         return estArmureLourde;
     }
 
-
-
+    @Override
+    public void retirerEffets(Joueur p) {
+        if (estArmureLourde) {
+            p.modifierVitesse(4);
+            System.out.println("Vitesse +4 (effets retirés de l'armure lourde)");
+        }
+    }
 
 
     @Override

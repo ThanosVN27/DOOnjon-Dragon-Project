@@ -78,6 +78,15 @@ public enum Arme implements Equipement {
         }
     }
 
+    @Override
+    public void retirerEffets(Joueur p) {
+        if (estArmeDeGuerre) {
+            p.modifierForce(-4);
+            p.modifierVitesse(2);
+            System.out.println("Force -4, Vitesse +2 (effets retirés de l'arme de guerre)");
+        }
+    }
+
 
 
     @Override

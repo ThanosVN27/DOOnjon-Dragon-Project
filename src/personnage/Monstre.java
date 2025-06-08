@@ -2,7 +2,7 @@ package personnage;
 
 import jeu.Delai;
 import jeu.Donjon;
-import java.util.List;
+
 
 public class Monstre extends Personnage{
     private final int numero;
@@ -19,6 +19,22 @@ public class Monstre extends Personnage{
         this.portee = portee;
         this.degats = degats;
         this.classeArmure = classeArmure;
+    }
+    public String getNom() {
+        return "\u001B[31m" + nom + "\u001B[0m";
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+
+    public void setPointsDeVie(int pv) {
+        this.pointsDeVie = Math.max(0, pv); //valeur negatif
+    }
+
+    public int getClasseArmure() {
+        return classeArmure;
     }
 
     @Override
@@ -56,7 +72,6 @@ public class Monstre extends Personnage{
         System.out.println("╚═══════════════════════════════════════════════════════════════════════╝\n");
     }
 
-
     private int lancerDes(String des) {
         String[] parts = des.split("d");
         int nombreDeDes = Integer.parseInt(parts[0]);
@@ -67,55 +82,7 @@ public class Monstre extends Personnage{
         }
         return total;
     }
-    
-    public void setInitiative(int initiative) {
-        this.initiative = initiative;
-    }
 
-    public int getInitiative() {
-        return initiative;
-    }
-
-    public String getNom() {
-        return "\u001B[31m" + nom + "\u001B[0m";
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public int getPointsDeVie() {
-        return pointsDeVie;
-    }
-    
-    public void setPointsDeVie(int pv) {
-        this.pointsDeVie = Math.max(0, pv); //valeur negatif
-    }
-
-    public int getVitesse() {
-        return vitesse;
-    }
-
-
-    public int getClasseArmure() {
-        return classeArmure;
-    }
-
-    public int getX() {
-        return x;
-    }
-    
-    public void setX(int x) {
-        this.x = x;
-    }
-    
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public String afficherMonster() {
         return "\u001B[31m --[Monstre]--\u001B[0m = [" +
@@ -180,7 +147,7 @@ public class Monstre extends Personnage{
                 return joueur;
             }
         }
-        return null; // Aucune cible à portée
+        return null;
     }
 
     private void seDeplacerVersJoueur(Donjon donjon) {
@@ -211,9 +178,6 @@ public class Monstre extends Personnage{
     }
 
 
-
-
-
     @Override
     public boolean estMort() {
         return pointsDeVie <= 0;
@@ -224,7 +188,5 @@ public class Monstre extends Personnage{
         System.out.println("💀 " + getNom() + " est mort !");
         donjon.supprimerMonstre(this);
     }
-
-
 
 }

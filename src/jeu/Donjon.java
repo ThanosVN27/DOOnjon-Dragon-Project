@@ -27,6 +27,19 @@ public class Donjon {
         creerCarte();
     }
 
+    public int lancerDes() {
+        return (int) (Math.random() * 20) + 1;
+    }
+
+
+    public int getHauteur() {
+        return hauteur;
+    }
+
+    public int getLargeur() {
+        return largeur;
+    }
+
     private void creerCarte() {
         carte[0][0] = " "; // case vide en haut à gauche
         for (int i = 1; i < hauteur; i++) {
@@ -70,42 +83,26 @@ public class Donjon {
             return false;
         }
     }
-    public List<Joueur> ordreJeuJoueur() {
+    public void ordreJeuJoueur() {
         List<Joueur> listeOrdre = joueurs;
         for(Joueur c : listeOrdre) {
             int des = lancerDes();
             c.setInitiative(des);
         }
         listeOrdre.sort((c1, c2) -> Integer.compare(c2.getInitiative(), c1.getInitiative()));
-        return listeOrdre;
+
     }
 
-    public List<Monstre> ordreJeuMonstre() {
+    public void ordreJeuMonstre() {
         List<Monstre> listeOrdre = monstres;
         for(Monstre m : listeOrdre) {
             int des = lancerDes();
             m.setInitiative(des);
         }
         listeOrdre.sort((c1, c2) -> Integer.compare(c2.getInitiative(), c1.getInitiative()));
-        return listeOrdre;
     }
 
 
-
-
-
-    public int lancerDes() {
-        return (int) (Math.random() * 20) + 1;
-    }
-
-
-    public int getHauteur() {
-        return hauteur;
-    }
-
-    public int getLargeur() {
-        return largeur;
-    }
 
     public void placerMonstreAleatoirement(Monstre monstre,int numero) {
         Random random = new Random();

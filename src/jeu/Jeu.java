@@ -156,7 +156,6 @@ public class Jeu {
                                     choix = Integer.parseInt(rep);
                                 } catch (NumberFormatException e) {
                                     System.out.println("\nMJ : entrée invalide, essaie encore.");
-                                    continue;
                                 }
                             }
                             Personnage personnageADecalage = listeEntite.get(choix - 1);
@@ -169,7 +168,6 @@ public class Jeu {
                                     choix = Integer.parseInt(rep);
                                 } catch (NumberFormatException e) {
                                     System.out.println("\nMJ : entrée invalide, essaie encore.");
-                                    continue;
                                 }
                             }
                             int totalDesDegats = choix;
@@ -183,7 +181,7 @@ public class Jeu {
                                     choix = Integer.parseInt(rep);
                                 } catch (NumberFormatException e) {
                                     System.out.println("\nMJ : entrée invalide, essaie encore.");
-                                    continue;
+
                                 }
                             }
                             for (int i = 0; i < totalDesDegats; i++) {

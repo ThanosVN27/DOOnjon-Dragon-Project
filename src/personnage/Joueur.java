@@ -20,7 +20,7 @@ public class Joueur extends Personnage {
     private Arme armeEquipe;
     private Armure armurEquipe;
     private final int pointsDeVieMax;
-    private List<Sort> sorts;
+
 
     public Joueur(String nom) {
         super(nom, 0, 0, 0, 0);
@@ -32,8 +32,12 @@ public class Joueur extends Personnage {
         this.vitesse = race.getVitesse() + lancerDesDepart();
         this.inventaire = new ArrayList<>();
         this.pointsDeVieMax = pointsDeVie;
-        this.classeArmure =  0;
+        this.classeArmure = 0;
         initialiserEquipement();
+    }
+
+    public String getNom() {
+        return "\u001B[34m" + nom + "\u001B[0m";
     }
 
     public int getPointsDeVieMax() {
@@ -58,6 +62,11 @@ public class Joueur extends Personnage {
         return armes;
     }
 
+    public int getClasseArmure() {
+        return (armurEquipe != null) ? armurEquipe.getClasseArmure() : 0;
+    }
+
+    public Classe getClasse() { return classe; }
 
     public void setPointsDeVie(int pv) {
         this.pointsDeVie = Math.max(0, pv); // empêche les valeurs négatives
@@ -65,9 +74,6 @@ public class Joueur extends Personnage {
 
 
     public void setVitesse(int vitesse) { this.vitesse = vitesse; }
-
-
-    public Classe getClasse() { return classe; }
 
 
     public void restaurerVie() {
@@ -124,9 +130,7 @@ public class Joueur extends Personnage {
         }
     }
 
-    public String getNom() {
-        return "\u001B[34m" + nom + "\u001B[0m";
-    }
+
 
 
 
@@ -163,6 +167,7 @@ public class Joueur extends Personnage {
         sb.append(String.format("Dextérité   : %d\n", dexterite));
         sb.append(String.format("Vitesse     : %d\n", vitesse));
         sb.append(String.format("Position    : (%d, %d)\n", x, y));
+        sb.append(String.format("Classe d'armure : %d\n", classeArmure));
 
         sb.append(String.format("Arme        : %s\n", armeEquipe != null ? armeEquipe.getNom() : "Aucune"));
         sb.append(String.format("Armure      : %s\n", armurEquipe != null ? armurEquipe.getNom() : "Aucune"));
@@ -179,14 +184,16 @@ public class Joueur extends Personnage {
         return sb.toString();
     }
 
-
+    /*
     public String afficherInfos() {
         return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRace() +
                 ", PV: " + getPointsDeVie() +
                 ", Position: " + getX() + "," + getY() + ")" + " ARME: " + (armeEquipe != null ? armeEquipe.getNom() : "Aucune" )  + " || "  + "ARMURE: " + (armurEquipe != null ? armurEquipe.getNom() : "Aucune");
     }
 
+     */
 
+    @Override
     public void seDeplacer(int x, int y) {
         int portee = Math.max(1, getVitesse() / 3);
         int posX = getX();
@@ -238,38 +245,47 @@ public class Joueur extends Personnage {
     public void equiperInventaire() {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("╠═══════════════════════INVENTAIRE═══════════════════════════╣");
+        System.out.println("╠═══════════════════════ INVENTAIRE ═══════════════════════════╣");
+
         for (int i = 0; i < inventaire.size(); i++) {
             System.out.println((i + 1) + " : " + inventaire.get(i).getNom());
         }
-        System.out.println(inventaire.size() + 1 + " : Aucun équipement");
+        System.out.println((inventaire.size() + 1) + " : Aucun équipement");
 
-
-        System.out.println("Choisissez un équipement à équiper :");
+        System.out.print("Choisissez un équipement à équiper : ");
         int choix = scanner.nextInt() - 1;
 
         if (choix >= 0 && choix < inventaire.size()) {
             Equipement e = inventaire.remove(choix);
 
             if (e.getType() == TypeEquipement.ARME) {
-                if (armeEquipe != null) inventaire.add(armeEquipe);
+                if (armeEquipe != null) {
+                    armeEquipe.retirerEffets(this);
+                    inventaire.add(armeEquipe);
+                }
                 armeEquipe = (Arme) e;
             } else {
-                if (armurEquipe != null) inventaire.add(armurEquipe);
+                if (armurEquipe != null) {
+                    armurEquipe.retirerEffets(this);
+                    inventaire.add(armurEquipe);
+                }
                 armurEquipe = (Armure) e;
+                classeArmure = armurEquipe.getClasseArmure();
             }
 
             e.appliquerEffets(this);
-            System.out.println("Équipé : " + e.getNom());
+            System.out.println("✅ Équipé : " + e.getNom());
+
         } else if (choix == inventaire.size()) {
-            System.out.println("Choix aucun.");
+            System.out.println("❌ Aucun équipement sélectionné.");
+        } else {
+            System.out.println("❌ Choix invalide !");
         }
-        else {
-            System.out.println("Erreur !!");
-        }
+
         System.out.println("╚═══════════════════════════════════════════════════════════════╝");
         System.out.println();
-        }
+    }
+
 
     public boolean estMort() {
         return pointsDeVie <= 0;
@@ -391,6 +407,7 @@ public class Joueur extends Personnage {
 
                         if (cible != null) {
                             attaquer(cible);
+
                             actions--;
                         } else {
                             System.out.println("❌ Aucun monstre à portée.");
@@ -423,7 +440,7 @@ public class Joueur extends Personnage {
         System.out.println("╠════════════════════════════ FIN TOUR ══════════════════════════════════════╣\n");
     }
 
-    public void utiliserSort(Donjon donjon) {
+    private void utiliserSort(Donjon donjon) {
         if (classe.getSortsDisponibles().isEmpty()) {
             System.out.println("❌ Aucun sort disponible.");
             return;
