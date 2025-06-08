@@ -336,7 +336,7 @@ class Jeu {
 
 Joueur o-- "1\n -race " Race                : possède une race
 Joueur o-- "1\n -class " Classe              : possède une classe
-Joueur o-- "*" Equipement          : inventaire
+Joueur o-- "*" Equipement          : a inventaire
 
 Classe o-- "*" Equipement          : equipementDeBase
 Classe o-- "*" Sort                : sortsDisponibles
