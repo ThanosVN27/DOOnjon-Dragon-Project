@@ -313,7 +313,7 @@ Package jeu {
     }
 
 
-class Jeu {
+    class Jeu {
     - maitreDuJeu: MaitreDuJeu
     - listeJoueurs: Joueur[]
     - listeMonstres: Monstre[]
@@ -321,7 +321,6 @@ class Jeu {
     - tour: int
 
     + <<create>> Jeu()
-    + demarrerJeu(): void
     + lancerJeu(): void
     + jouerTour(): void
     + afficherOrdreDeJeu(): void
@@ -330,13 +329,41 @@ class Jeu {
     - estFinDonjon(): boolean
     - restaurerVieJoueurs(): void
     - passerAuDonjonSuivant(): void
-}
+    }
+
+    Package sorts {
+    interface Sort {
+        + {abstract} utiliserSort(joueur: Joueur, listeJoueurs : Joueur[],listeMonstres[]): void
+        + {abstract} getNom(): String
+
+    }
+
+    class Guerison implements Sort {
+        + utiliserSort(joueur: Joueur, listeJoueurs : Joueur[], listeMonstres[]): void
+        + getNom(): String
+    }
+
+    class BoogieWoogie implements Sort {
+        + utiliserSort(joueur: Joueur, listeJoueurs : Joueur[], listeMonstres[]): void
+        + getNom(): String
+    }
+
+    class ArmeMagique implements Sort {
+        + utiliserSort(joueur: Joueur, listeJoueurs : Joueur[], listeMonstres[]): void
+        + getNom(): String
+    }
+
+
 
 
 
 Joueur "1" o-- "1\n -race " Race                : possède une race
 Joueur "1" o-- "1\n -class " Classe              : possède une classe
 Joueur "1" o-- "*" Equipement          : a inventaire
+Joueur "1" o-- "0\1 -armeEquipee" Equipement : equipe
+Joueur "1" o-- "0\1 -armureEquipee" Equipement : equipe
+Joueur "1" o-- "0..* -sorts" Sort                :  possède
+
 
 Classe o-- "*" Equipement          : equipementDeBase
 Classe o-- "*" Sort                : sortsDisponibles
@@ -344,8 +371,6 @@ Classe o-- "*" Sort                : sortsDisponibles
 Arme "1" o-- TypeEquipement : getType()
 Armure "1" o-- TypeEquipement : getType()
 
-Personnage "1" o-- "0\1 -armeEquipe" Arme  : equipe
-Personnage "1" o-- "0\1 -armureEquipe" Armure   : equipe
 
 MaitreDuJeu *-- "1" Donjon         : gère
 MaitreDuJeu o-- "0..*" Monstre        : contrôle
