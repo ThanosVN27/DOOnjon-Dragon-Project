@@ -28,7 +28,6 @@ public class Monstre extends Personnage{
         return numero;
     }
 
-
     public void setPointsDeVie(int pv) {
         this.pointsDeVie = Math.max(0, pv); //valeur negatif
     }
