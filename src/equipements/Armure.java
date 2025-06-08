@@ -36,6 +36,7 @@ public enum Armure implements Equipement {
         return estArmureLourde;
     }
 
+
     @Override
     public void retirerEffets(Joueur p) {
         if (estArmureLourde) {
@@ -45,11 +46,11 @@ public enum Armure implements Equipement {
     }
 
 
+
     @Override
     public TypeEquipement getType() {
         return TypeEquipement.ARMURE;
     }
-
 
     @Override
     public void appliquerEffets(Joueur p) {
@@ -64,11 +65,10 @@ public enum Armure implements Equipement {
         return nom + " (Classe d'armure : " + classeArmure + ")";
     }
 
-
-
     public int getPositionX() {
         return positionX;
     }
+    
     public int getPositionY() {
         return positionY;
     }
@@ -80,10 +80,11 @@ public enum Armure implements Equipement {
     public void setPositionY(int y) {
         this.positionY = y;
     }
-
+    
     public int getPortee() {
         return 0; // Les armures n'ont pas de portée
     }
+
     public int getDegatsNumeriques() {
         return 0;
     }

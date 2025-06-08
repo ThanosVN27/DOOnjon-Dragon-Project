@@ -15,7 +15,6 @@ public class Jeu {
     private List<Joueur> listeJoueurs;
     private List<Personnage> listeEntite;
 
-
     public Jeu() {
         this.maitreDuJeu = new MaitreDuJeu();
         this.tour = 0;
@@ -242,7 +241,6 @@ public class Jeu {
         System.out.println("╚══════════════════════════════════════════════════════════════════════╝");
     }
 
-
     public void boucleJeu() {
         boolean finPartie = false;
 
@@ -287,8 +285,6 @@ public class Jeu {
         }
     }
 
-
-
     private void passerAuDonjonSuivant() {
         maitreDuJeu.passerAuDonjon();
         listeMonstres.clear();
@@ -296,5 +292,7 @@ public class Jeu {
         boucleJeu();
     }
 
-
+    public MaitreDuJeu getMaitreDuJeu() {
+        return maitreDuJeu;
+    }
 }
