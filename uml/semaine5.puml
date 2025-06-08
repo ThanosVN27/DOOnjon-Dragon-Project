@@ -341,19 +341,25 @@ Joueur o-- "*" Equipement          : inventaire
 Classe o-- "*" Equipement          : equipementDeBase
 Classe o-- "*" Sort                : sortsDisponibles
 
-MaitreDuJeu *-- "1" Donjon         : gère un donjon (composition)
-MaitreDuJeu o-- "0..*" Monstre        : contrôle des monstres
-MaitreDuJeu o-- "0..*" Joueur         : contrôle des joueurs
-MaitreDuJeu o-- "0...*" Equipement     : possède des équipements
+Arme o-- TypeEquipement : getType()
+Armure o-- TypeEquipement : getType()
 
-Donjon o-- "0..*" Monstre             : contient des monstres
-Donjon o-- "0..*" Joueur              : contient des joueurs
-Donjon o-- "0..*" Equipement          : contient des équipements
+Personnage o-- "0\1 -armeEquipe" Arme  : equipe
+Personnage o-- "0\1 -armureEquipe" Armure   : equipe
+
+MaitreDuJeu *-- "1" Donjon         : gère
+MaitreDuJeu o-- "0..*" Monstre        : contrôle
+MaitreDuJeu o-- "0..*" Joueur         : contrôle
+MaitreDuJeu o-- "0...*" Equipement     : contrôle
+
+Donjon o-- "0..*" Monstre             : contient
+Donjon o-- "0..*" Joueur              : contient
+Donjon o-- "0..*" Equipement          : contient
 
 Jeu *-- "1" MaitreDuJeu            : a un maître du jeu (composition)
-Jeu o-- "*" Joueur                 : listeJoueurs
-Jeu o-- "*" Monstre                : listeMonstres
-Jeu o-- "*" Personnage             : listeEntite
+Jeu o-- "*" Joueur                 : a listeJoueurs
+Jeu o-- "*" Monstre                : a listeMonstres
+Jeu o-- "*" Personnage             : a listeEntite
 
 }
 
