@@ -334,27 +334,27 @@ class Jeu {
 
 
 
-Joueur o-- "1\n -race " Race                : possède une race
-Joueur o-- "1\n -class " Classe              : possède une classe
-Joueur o-- "*" Equipement          : a inventaire
+Joueur "1" o-- "1\n -race " Race                : possède une race
+Joueur "1" o-- "1\n -class " Classe              : possède une classe
+Joueur "1" o-- "*" Equipement          : a inventaire
 
 Classe o-- "*" Equipement          : equipementDeBase
 Classe o-- "*" Sort                : sortsDisponibles
 
-Arme o-- TypeEquipement : getType()
-Armure o-- TypeEquipement : getType()
+Arme "1" o-- TypeEquipement : getType()
+Armure "1" o-- TypeEquipement : getType()
 
-Personnage o-- "0\1 -armeEquipe" Arme  : equipe
-Personnage o-- "0\1 -armureEquipe" Armure   : equipe
+Personnage "1" o-- "0\1 -armeEquipe" Arme  : equipe
+Personnage "1" o-- "0\1 -armureEquipe" Armure   : equipe
 
 MaitreDuJeu *-- "1" Donjon         : gère
 MaitreDuJeu o-- "0..*" Monstre        : contrôle
 MaitreDuJeu o-- "0..*" Joueur         : contrôle
 MaitreDuJeu o-- "0...*" Equipement     : contrôle
 
-Donjon o-- "0..*" Monstre             : contient
-Donjon o-- "0..*" Joueur              : contient
-Donjon o-- "0..*" Equipement          : contient
+Donjon o-- "0..* -listeMonstre" Monstre             : contient
+Donjon o-- "0..* -listeJoueur" Joueur              : contient
+Donjon o-- "0..* -listeEquipement" Equipement          : contient
 
 Jeu *-- "1" MaitreDuJeu            : a un maître du jeu (composition)
 Jeu o-- "*" Joueur                 : a listeJoueurs
