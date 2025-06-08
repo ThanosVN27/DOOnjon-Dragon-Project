@@ -47,6 +47,4 @@ public abstract class Classe {
     protected void ajouterEquipement(Equipement equipement) {
         equipementDeBase.add(equipement);
     }
-
-
 }

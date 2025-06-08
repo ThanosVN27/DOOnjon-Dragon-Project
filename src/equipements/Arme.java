@@ -78,8 +78,6 @@ public enum Arme implements Equipement {
         }
     }
 
-
-
     @Override
     public String toString() {
         return nom + " (Dégâts : " + degats + ", Portée : " + portee + ")";
@@ -88,6 +86,7 @@ public enum Arme implements Equipement {
     public int getPositionX() {
         return positionX; // Position X par défaut
     }
+    
     public int getPositionY() {
         return positionY; // Position Y par défaut
     }

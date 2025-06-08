@@ -58,17 +58,13 @@ public class Joueur extends Personnage {
         return armes;
     }
 
-
     public void setPointsDeVie(int pv) {
         this.pointsDeVie = Math.max(0, pv); // empêche les valeurs négatives
     }
 
-
     public void setVitesse(int vitesse) { this.vitesse = vitesse; }
 
-
     public Classe getClasse() { return classe; }
-
 
     public void restaurerVie() {
         this.pointsDeVie = this.pointsDeVieMax;
@@ -128,8 +124,6 @@ public class Joueur extends Personnage {
         return "\u001B[34m" + nom + "\u001B[0m";
     }
 
-
-
     public int lancerDesDepart() {
         int total = 0;
         for (int i = 0; i < 4; i++) {
@@ -145,7 +139,6 @@ public class Joueur extends Personnage {
         inventaire.addAll(classe.getEquipementDeBase());
         System.out.println("Équipement initial ajouté à l'inventaire : " + inventaire);
     }
-
 
     public String afficherJoueur() {
         StringBuilder sb = new StringBuilder();
@@ -179,13 +172,11 @@ public class Joueur extends Personnage {
         return sb.toString();
     }
 
-
     public String afficherInfos() {
         return getNom() + " (" + classe.getNomClasse() + " " + race.getNomRace() +
                 ", PV: " + getPointsDeVie() +
                 ", Position: " + getX() + "," + getY() + ")" + " ARME: " + (armeEquipe != null ? armeEquipe.getNom() : "Aucune" )  + " || "  + "ARMURE: " + (armurEquipe != null ? armurEquipe.getNom() : "Aucune");
     }
-
 
     public void seDeplacer(int x, int y) {
         int portee = Math.max(1, getVitesse() / 3);
@@ -215,7 +206,6 @@ public class Joueur extends Personnage {
         System.out.println("╠═════════════════════════════════════════════════════════════╣\n");
         Delai.attendre();
     }
-
 
     private boolean estDansLaPortee(int destX, int destY, int posX, int posY, int portee) {
         return Math.abs(destX - posX) <= portee && Math.abs(destY - posY) <= portee;
@@ -319,14 +309,11 @@ public class Joueur extends Personnage {
         Delai.attendre();
     }
 
-
-
     @Override
     public void mourir(Donjon donjon) {
         System.out.println("💀 " + getNom() + " est mort !");
 
     }
-
 
     @Override
     public void jouerTour(Donjon donjon) {

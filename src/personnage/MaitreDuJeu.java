@@ -17,7 +17,6 @@ public class MaitreDuJeu {
         this.donjon = creerDonjon();
     }
 
-
     public Donjon creerDonjon() {
         Scanner scanner = new Scanner(System.in);
 
@@ -52,7 +51,6 @@ public class MaitreDuJeu {
         return donjon;
     }
 
-
     public void ajouterMonstre() {
         int option = choisirOption();
         int nbMonstres = demanderNombreMonstres();
@@ -66,8 +64,6 @@ public class MaitreDuJeu {
         donjon.afficherCarte();
 
     }
-
-
 
     private int choisirOption() {
         System.out.println("Choisissez une option :\n1. Manuellement\n2. Aléatoirement");
@@ -318,20 +314,15 @@ public class MaitreDuJeu {
         }
     }
 
-
     public Donjon getDonjon() {
         return donjon;
     }
-
-
-
 
     public void miseEnPlace(){
         ajouterMonstre();
         ajouterEquipement();
         ajouterJoueur();
     }
-
 
     public void passerAuDonjon() {
         System.out.println("Passage au donjon suivant...");
@@ -397,8 +388,5 @@ public class MaitreDuJeu {
 
         donjon.afficherCarte();
     }
-
-
-
 
 }

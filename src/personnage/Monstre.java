@@ -56,7 +56,6 @@ public class Monstre extends Personnage{
         System.out.println("╚═══════════════════════════════════════════════════════════════════════╝\n");
     }
 
-
     private int lancerDes(String des) {
         String[] parts = des.split("d");
         int nombreDeDes = Integer.parseInt(parts[0]);
@@ -95,7 +94,6 @@ public class Monstre extends Personnage{
     public int getVitesse() {
         return vitesse;
     }
-
 
     public int getClasseArmure() {
         return classeArmure;
@@ -137,7 +135,6 @@ public class Monstre extends Personnage{
         return getNom() + " (PV: " + getPointsDeVie() +
                 ",Position: " + getX() + "," + getY() + ")";
     }
-
 
     public void seDeplacer(int x, int y) {
         // Logique de déplacement pour le monstre
@@ -210,10 +207,6 @@ public class Monstre extends Personnage{
         }
     }
 
-
-
-
-
     @Override
     public boolean estMort() {
         return pointsDeVie <= 0;
@@ -224,7 +217,5 @@ public class Monstre extends Personnage{
         System.out.println("💀 " + getNom() + " est mort !");
         donjon.supprimerMonstre(this);
     }
-
-
 
 }

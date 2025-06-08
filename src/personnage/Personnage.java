@@ -45,7 +45,6 @@ public abstract class Personnage {
 
     }
 
-
     public int getPointsDeVie() {
         return pointsDeVie;
     }

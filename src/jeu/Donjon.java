@@ -16,7 +16,6 @@ public class Donjon {
     private List<Joueur> joueurs;
     private List<Equipement> equipementsListe;
 
-
     public Donjon(int hauteur, int largeur) {
         this.hauteur = hauteur;
         this.largeur = largeur;
@@ -42,7 +41,6 @@ public class Donjon {
         }
     }
 
-
     public void positionnerObstacles(int nombreObstacles) {
         Random random = new Random();
         for (int i = 0; i < nombreObstacles; i++) {
@@ -55,7 +53,6 @@ public class Donjon {
             }
         }
     }
-
 
     public boolean placerEquipement(Equipement equipement, int x, int y) {
         if (carte[x][y].equals(".")) {
@@ -70,6 +67,7 @@ public class Donjon {
             return false;
         }
     }
+    
     public List<Joueur> ordreJeuJoueur() {
         List<Joueur> listeOrdre = joueurs;
         for(Joueur c : listeOrdre) {
@@ -90,14 +88,9 @@ public class Donjon {
         return listeOrdre;
     }
 
-
-
-
-
     public int lancerDes() {
         return (int) (Math.random() * 20) + 1;
     }
-
 
     public int getHauteur() {
         return hauteur;
@@ -169,7 +162,6 @@ public class Donjon {
 
         afficherLigneBasCarte();
     }
-
     // Affiche le titre centré en fonction de la largeur de la carte
     private void afficherTitreCarte() {
         String titre = " Carte du Donjon ";
@@ -179,7 +171,6 @@ public class Donjon {
         String ligne = "─".repeat(Math.max(0, pad)) + titre + "─".repeat(Math.max(0, largeurTotale - pad - titre.length()));
         System.out.println(ligne);
     }
-
     // Affiche une ligne de fin pour fermer la carte proprement
     private void afficherLigneBasCarte() {
         int largeurTotale = largeur * 5;
@@ -251,8 +242,6 @@ public class Donjon {
         afficherCarte();
         return true;
     }
-
-
 
     public void mettreAJourEquipement() {
         for(Equipement equipement : equipementsListe) {
@@ -328,8 +317,6 @@ public class Donjon {
         carte[nouveauX][nouveauY] = "M" + monstre.getNumero();
     }
 
-
-
     public void supprimerMonstre(Monstre monstre) {
         int x = monstre.getX();
         int y = monstre.getY();
@@ -351,6 +338,4 @@ public class Donjon {
             carte[x][y] = "M" + monstre.getNumero();
         }
     }
-
-
 }
