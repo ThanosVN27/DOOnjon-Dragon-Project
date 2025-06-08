@@ -334,28 +334,26 @@ class Jeu {
 
 
 
-' Agrégations / Compositions
-Joueur o-- Race
-Joueur o-- Classe
-Joueur o-- "*" Equipement : inventaire
+Joueur o-- "1\n -race " Race                : possède une race
+Joueur o-- "1\n -class " Classe              : possède une classe
+Joueur o-- "*" Equipement          : inventaire
 
-Classe o-- "*" Equipement : equipementDeBase
-Classe o-- "*" Sort : sortsDisponibles
+Classe o-- "*" Equipement          : equipementDeBase
+Classe o-- "*" Sort                : sortsDisponibles
 
-MaitreDuJeu *-- Donjon
-MaitreDuJeu o-- "*" Monstre
-MaitreDuJeu o-- "*" Joueur
-MaitreDuJeu o-- "*" Equipement
+MaitreDuJeu *-- "1" Donjon         : gère un donjon (composition)
+MaitreDuJeu o-- "0..*" Monstre        : contrôle des monstres
+MaitreDuJeu o-- "0..*" Joueur         : contrôle des joueurs
+MaitreDuJeu o-- "0...*" Equipement     : possède des équipements
 
-Donjon o-- "*" Monstre
-Donjon o-- "*" Joueur
-Donjon o-- "*" Equipement
+Donjon o-- "0..*" Monstre             : contient des monstres
+Donjon o-- "0..*" Joueur              : contient des joueurs
+Donjon o-- "0..*" Equipement          : contient des équipements
 
-Jeu *-- MaitreDuJeu
-Jeu o-- "*" Joueur : listeJoueurs
-Jeu o-- "*" Monstre : listeMonstres
-Jeu o-- "*" Personnage : listeEntite
-
+Jeu *-- "1" MaitreDuJeu            : a un maître du jeu (composition)
+Jeu o-- "*" Joueur                 : listeJoueurs
+Jeu o-- "*" Monstre                : listeMonstres
+Jeu o-- "*" Personnage             : listeEntite
 
 }
 
