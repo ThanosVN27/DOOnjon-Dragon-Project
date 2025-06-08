@@ -326,6 +326,7 @@ class Jeu {
     + jouerTour(): void
     + afficherOrdreDeJeu(): void
     + boucleJeu(): void
+    + getMaitreDuJeu(): MaitreDuJeu
     - estFinDonjon(): boolean
     - restaurerVieJoueurs(): void
     - passerAuDonjonSuivant(): void
