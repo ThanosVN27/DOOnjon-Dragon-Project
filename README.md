@@ -252,4 +252,9 @@ Il n'est pas nécessaire de reproduire le visuel tel quel mais toutes les inform
 
 À la fin du jeu, un écran affiche "Vous avez perdu" ou "Vous avez gagné" et indique la cause de la défaite ou de la victoire.
 
+## 🚀 Exécution
+Compilation
+javac src/*.java
 
+# Lancement
+java -cp src Main
